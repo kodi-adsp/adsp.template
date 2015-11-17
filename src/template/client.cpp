@@ -1,6 +1,6 @@
 /*
- *      Copyright (C) 2005-2014 Team KODI
- *      http://kodi.tv
+ *      Copyright (C) 2005-2014 Team XBMC
+ *      http://xbmc.org
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -13,24 +13,29 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with KODI; see the file COPYING.  If not, write to
+ *  along with XBMC; see the file COPYING.  If not, write to
  *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *  http://www.gnu.org/copyleft/gpl.html
  *
  */
+
+#include <vector>
+#include <string>
+
+// include template configuration header files
 #include "configuration/templateConfiguration.h"
 #include "../template/include/MACROHelper.h"
 #include "include/checkTemplateConfig.h"
 
-#include <vector>
-#include <string>
-#include "include/client.h"
+// include kodi platform header files
 #include <kodi/kodi_adsp_dll.h>
-#include "util/util.h"
+#include <platform/util/util.h>
 
 // include adsp template specific header files
+#include "include/client.h"
 #include "include/ADSPProcessorHandle.h"
 #include "include/ADSPAddonHandler.h"
+
 // includes your DSP Processor class
 #include ADSP_PROCESSOR_HEADER_FILE
 
@@ -53,9 +58,9 @@ std::string   g_strUserPath       = "";
 std::string   g_strAddonPath      = "";
 
 
-CHelper_libXBMC_addon  *KODI      = NULL;
-CHelper_libKODI_adsp   *ADSP      = NULL;
-CHelper_libKODI_guilib *GUI       = NULL;
+CHelper_libXBMC_addon   *KODI       = NULL;
+CHelper_libKODI_adsp    *ADSP       = NULL;
+CHelper_libKODI_guilib  *GUI        = NULL;
 
 /*
  *	ADSP Addon handling class
@@ -233,26 +238,24 @@ AE_DSP_ERROR GetAddonCapabilities(AE_DSP_ADDON_CAPABILITIES* pCapabilities)
 		return AE_DSP_ERROR_FAILED;
 	}
 
-	pCapabilities->bSupportsInputProcess		= g_AddonHandler.SupportsInputProcess();
-	pCapabilities->bSupportsPreProcess			= g_AddonHandler.SupportsPreProcess();
-	pCapabilities->bSupportsMasterProcess		= g_AddonHandler.SupportsMasterProcess();
-	pCapabilities->bSupportsPostProcess			= g_AddonHandler.SupportsPostProcess();
-	pCapabilities->bSupportsInputResample		= g_AddonHandler.SupportsInputResample();
-	pCapabilities->bSupportsOutputResample		= g_AddonHandler.SupportsOutputResample();
+	pCapabilities->bSupportsInputProcess    = g_AddonHandler.SupportsInputProcess();
+	pCapabilities->bSupportsPreProcess      = g_AddonHandler.SupportsPreProcess();
+	pCapabilities->bSupportsMasterProcess   = g_AddonHandler.SupportsMasterProcess();
+	pCapabilities->bSupportsPostProcess     = g_AddonHandler.SupportsPostProcess();
+	pCapabilities->bSupportsInputResample   = g_AddonHandler.SupportsInputResample();
+	pCapabilities->bSupportsOutputResample  = g_AddonHandler.SupportsOutputResample();
 
 	return AE_DSP_ERROR_NO_ERROR;
 }
 
 const char* GetDSPName(void)
 {
-	static string s_DSPName(ADSP_ADDON_NAME);
-	return s_DSPName.c_str();
+  return ADSP_ADDON_NAME;
 }
 
 const char* GetDSPVersion(void)
 {
-	static string s_ADSPVersion(ADSP_ADDON_VERSION);
-	return s_ADSPVersion.c_str();
+  return ADSP_ADDON_VERSION;
 }
 
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)

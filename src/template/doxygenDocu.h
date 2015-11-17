@@ -1,31 +1,31 @@
 #pragma once
-/*! \mainpage KODI ADSP Addon Handling & Template Documentation
+/*! \mainpage XBMC ADSP Addon Handling & Template Documentation
  *
  * \section overview_sec Overview
- * This documentation describes how to setup KODI with 
+ * This documentation describes how to setup XBMC with 
  * Audio Digital Signal Processing (ADSP) addons and how to start developing for it.
- * At the moment of writting there only exist a branch of KODI for that 
- * (<a href="https://github.com/AlwinEsch/kodi/tree/audio-dsp-addon-handling">AlwinEsch's 
+ * At the moment of writting there only exist a branch of XBMC for that 
+ * (<a href="https://github.com/AlwinEsch/xbmc/tree/audio-dsp-addon-handling">AlwinEsch's 
  * audio-dsp-addon-handling modification</a> ).
- * We hope that this modifications will be added to KODI master repository very soon.
+ * We hope that this modifications will be added to XBMC master repository very soon.
  *
  * \section reference_sec Reference
- * - If you wanna compile KODI with alwinus modifications see \ref how_to_compile_page. <br>
+ * - If you wanna compile XBMC with alwinus modifications see \ref how_to_compile_page. <br>
  * - For more informations about how to develop a ADSP addon see \ref how_to_develop_page.
  * - If you wanna know how to use the ADSP addon modification in the view of an user then 
  * you have to follow the instructions in \ref how_to_use_adsp_addons_page.
  *
  * \section todo_sec Things to do 
- * The ADSP handling in KODI and the template are almost finished,
+ * The ADSP handling in XBMC and the template are almost finished,
  * but there are things to do for more details see \ref todo.
  *
  * \subsection license_sec License
  * @author     wisler (ADSP addon developer), wislerelectronics@googlemail.com
- * @author	   alwinus (ADSP KODI addong handling & ADSP addon developer), email@email.com
+ * @author	   alwinus (ADSP XBMC addong handling & ADSP addon developer), email@email.com
  * @date       April 22, 2014
  */
 
-/*! \page how_to_compile_page How to compile KODI with ADSP addon handling
+/*! \page how_to_compile_page How to compile XBMC with ADSP addon handling
  * \tableofcontents
  * \section win_sec Compiling for Windows
  * ToDo!
@@ -34,11 +34,11 @@
  * ToDo!
  *
  * \section mac_os_x_sec Compiling for MAC OS X
- * Find someone who can compile and test KODI with ADSP addon handling under MAC OS X.
+ * Find someone who can compile and test XBMC with ADSP addon handling under MAC OS X.
 */
 
 
-/*! \page how_to_develop_page How to develop a ADSP addon for KODI
+/*! \page how_to_develop_page How to develop a ADSP addon for XBMC
  * \tableofcontents
  * \section introduction_sec Introduction
  * The ADSP addon API is quite complex and the prefered way is to build the template first.
@@ -78,7 +78,7 @@
 
 /*! \page how_to_use_adsp_addons_page How to use the ADSP addon handling modification (user perspective)
  * \tableofcontents
- * \section enable_disable_sec Enable or Disable an ADSP addon (KODI's addon manager)
+ * \section enable_disable_sec Enable or Disable an ADSP addon (XBMC's addon manager)
  * ToDo
  *
  * \section DSP_manager_sec How to use the DSP Manager

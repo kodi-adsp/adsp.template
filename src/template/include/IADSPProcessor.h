@@ -1,7 +1,7 @@
 #pragma once
 /*
- *      Copyright (C) 2005-2014 Team KODI
- *      http://kodi.tv
+ *      Copyright (C) 2005-2014 Team XBMC
+ *      http://xbmc.org
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with KODI; see the file COPYING.  If not, see
+ *  along with XBMC; see the file COPYING.  If not, see
  *  <http://www.gnu.org/licenses/>.
  *
  */
@@ -198,7 +198,7 @@ public:
 	 * If you wanna use this function then you have to overload it and
 	 * set your own channel flags.
 	 * @retval	Out_channel_present_flags the exact channel present flags after performed up-/downmix 
-	 *			for availible flags see AE_DSP_CHANNEL_PRESENT in kodi_adsp_types.h
+	 *			for availible flags see AE_DSP_CHANNEL_PRESENT in xbmc_adsp_types.h
 	 * @return	The amount channels, when no up- or downmix should be performed always return -1. 
 	 *			This method returns always -1 by default.
 	 * @remarks Optional. Must be used and set if a channel up- or downmix is processed from the active master mode
@@ -268,7 +268,36 @@ public:
 	 */
 	virtual AE_DSP_ERROR StreamIsModeSupported(AE_DSP_MODE_TYPE Type, unsigned int Mode_id, int Unique_db_mode_id);
 
+  //! ToDo: description.
+  /*!
+   * Returns ToDo!
+   * @return ToDo!
+   * @remarks ToDo!
+   */
+  virtual AE_DSP_ERROR Create() = 0;
+  
+  //!	This gets the current stream settings and properties. 
+  /*!
+   * Get stream settings and properties. For details see  and AE_DSP_STREAM_PROPERTIES structures.
+   * If the add-on operate with buffered arrays and the output size can be higher as 
+   * the input it becomes asked about needed size before any PostProcess call.
+   * @param pSettings Stream settings for details see AE_DSP_SETTINGS.
+   * @param pProperties Stream properties for details see AE_DSP_STREAM_PROPERTIES.
+   * @return AE_DSP_ERROR_INVALID_PARAMETERS: if your input parameters were invalid.
+   * AE_DSP_ERROR_NO_ERROR: if all was ok.
+   */
+  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS *pSettings, const AE_DSP_STREAM_PROPERTIES* pProperties, void *CustomStreamInfos=NULL);
+
+
 protected:
+  //! ToDo: description.
+  /*!
+   * Returns ToDo!
+   * @return ToDo!
+   * @remarks ToDo!
+   */
+  virtual AE_DSP_ERROR GetCustomStreamInfos(void *CustomStreamSettings);
+
 	//! Used stream settings for details see AE_DSP_SETTINGS.
 	AE_DSP_SETTINGS m_StreamSettings;
 	//! Used stream properties for details see AE_DSP_STREAM_PROPERTIES.
