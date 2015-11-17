@@ -8,25 +8,32 @@ enable_language(CXX)
 
 find_package(kodi REQUIRED)
 find_package(kodiplatform REQUIRED)
+find_package(platform REQUIRED)
+find_package(TinyXML REQUIRED)
+find_package(kodiplatform REQUIRED)
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/src
                     ${PROJECT_SOURCE_DIR}/src/template)
 
-set(TEMPLATE_SOURCES src/channelUpmixer.cpp
-                     src/DSPProcessor.cpp
-                     src/Dialogs/GUIDialogMasterProcess.cpp
-                     src/Dialogs/GUIDialogOutputResample.cpp
-                     src/Dialogs/GUIDialogPreProcess.cpp
-                     src/Dialogs/GUIDialogPostProcess.cpp
-                     src/ADDONOptional.cpp
-                     src/template/client.cpp
-                     src/template/GUIDialogBase.cpp
-                     src/template/IADSPProcessor.cpp
-                     src/template/ADSPProcessorHandle.cpp
-                     src/template/IADDONOptional.cpp
-                     src/template/configuration/templateConfiguration.cpp
-                     src/template/ADSPAddonHandler.cpp)
+set(TEMPLATE_SOURCES  src/channelUpmixer.cpp
+                      src/DSPProcessor.cpp
+                      src/Dialogs/GUIDialogMasterProcess.cpp
+                      src/Dialogs/GUIDialogOutputResample.cpp
+                      src/Dialogs/GUIDialogPreProcess.cpp
+                      src/Dialogs/GUIDialogPostProcess.cpp
+                      src/template/AddonHelpers.cpp
+                      src/template/ADSPAddonHandler.cpp
+                      src/template/ADSPHelpers.cpp
+                      src/template/ADSPProcessorHandle.cpp
+                      src/template/client.cpp
+                      src/template/GUIDialogBase.cpp
+                      src/template/IADDONOptional.cpp
+                      src/template/IADSPProcessor.cpp
+                      src/template/Settings/SettingsManager.cpp
+                      src/template/Settings/SettingsHelpers.cpp
+                      src/template/Messages/ADSPModeMessage.cpp
+                      src/template/configuration/templateConfiguration.cppp)
 
 set(DEPLIBS ${kodiplatform_LIBRARIES})
 
