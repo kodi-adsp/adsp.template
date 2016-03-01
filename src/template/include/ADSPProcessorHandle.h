@@ -27,14 +27,14 @@
 class CADSPProcessorHandle : public ADSP_PROCESSOR_CLASS_NAME
 {
 public:
-	CADSPProcessorHandle(const AE_DSP_SETTINGS *settings, const AE_DSP_STREAM_PROPERTIES *pProperties);
-	~CADSPProcessorHandle();
+  CADSPProcessorHandle(const AE_DSP_SETTINGS *settings, const AE_DSP_STREAM_PROPERTIES *pProperties);
+  ~CADSPProcessorHandle();
 
-	AE_DSP_ERROR StreamInitialize(const AE_DSP_SETTINGS *settings);
+  AE_DSP_ERROR StreamInitialize(const AE_DSP_SETTINGS *settings);
 
-	float OutputResampleGetDelay();
-	float PostProcessGetDelay(unsigned int Mode_id);
-	float MasterProcessGetDelay();
-	float PreProcessGetDelay(unsigned int Mode_id);
-	float InputResampleGetDelay();
+  float OutputResampleGetDelay();
+  float PostProcessGetDelay(unsigned int Mode_id);
+  float MasterProcessGetDelay();
+  float PreProcessGetDelay(unsigned int Mode_id);
+  float InputResampleGetDelay();
 };

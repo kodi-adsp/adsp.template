@@ -26,31 +26,31 @@
 class IADDONOptional
 {
 public:
-	IADDONOptional();
-	virtual ~IADDONOptional();
+  IADDONOptional();
+  virtual ~IADDONOptional();
 
 #ifdef ADSP_ADDON_USE_SETTINGS
-	virtual ADDON_STATUS SetSetting(std::string SettingName, const void *SettingValue) = 0;
+  virtual ADDON_STATUS SetSetting(std::string SettingName, const void *SettingValue) = 0;
 #endif
 #ifdef ADSP_ADDON_USE_GETSETTINGS
-	virtual unsigned int GetSettings(ADDON_StructSetting ***sSet) = 0;
+  virtual unsigned int GetSettings(ADDON_StructSetting ***sSet) = 0;
 #endif
 #ifdef ADSP_ADDON_USE_STOP
-	virtual void Stop() = 0;
+  virtual void Stop() = 0;
 #endif
 #ifdef ADSP_ADDON_USE_FREESETTINGS
-	virtual void FreeSettings() = 0;
+  virtual void FreeSettings() = 0;
 #endif
 #ifdef ADSP_ADDON_USE_ANNOUNCE
-	virtual void Announce(std::string Flag, std::string Sender, std::string Message, const void *Data) = 0;
+  virtual void Announce(std::string Flag, std::string Sender, std::string Message, const void *Data) = 0;
 #endif
-#ifdef	ADSP_ADDON_USE_READSETTINGS
-	virtual void ReadSettings(void) = 0;
+#ifdef  ADSP_ADDON_USE_READSETTINGS
+  virtual void ReadSettings(void) = 0;
 #endif
 #ifdef ADSP_ADDON_USE_MENUHOOK
-	virtual AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item) = 0;
+  virtual AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item) = 0;
 #endif
 #ifdef ADSP_ADDON_USE_OPTIONAL_INIT
-	virtual bool OptionalInit() = 0;
+  virtual bool OptionalInit() = 0;
 #endif
 };

@@ -26,6 +26,7 @@
 #include "include/ADSPAddonHandler.h"
 #include "configuration/templateConfiguration.h"
 #include "template/include/MACROHelper.h"
+#include "template/ADSPHelpers.h"
 #include "template/AddonExceptions/TAddonException.h"
 
 #ifndef strcpy_s
@@ -198,7 +199,7 @@ bool CADSPAddonHandler::Init()
 
   temp = imagePath + adspOutResampleOwnImage;
   strcpy_s(modeSettings.strOwnModeImage, AE_DSP_ADDON_STRING_LENGTH, temp.c_str());
-  temp = imagePath + adspOutResampleOverrideImage;
+  temp = imagePath + adspOutResampleOverrideImage[0]; // TODO: Add a loop
   strcpy_s(modeSettings.strOverrideModeImage, AE_DSP_ADDON_STRING_LENGTH, temp.c_str());
 
   ADSP->RegisterMode(&modeSettings);
@@ -261,25 +262,25 @@ AE_DSP_ERROR CADSPAddonHandler::StreamCreate(const AE_DSP_SETTINGS *addonSetting
 
 AE_DSP_ERROR CADSPAddonHandler::StreamDestroy(unsigned int Id)
 {
-	if(Id >= AE_DSP_STREAM_MAX_STREAMS)
-	{
-		KODI->Log(LOG_ERROR, "StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!");
-		return AE_DSP_ERROR_UNKNOWN;
-	}
+  if(Id >= AE_DSP_STREAM_MAX_STREAMS)
+  {
+    KODI->Log(LOG_ERROR, "StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!");
+    return AE_DSP_ERROR_UNKNOWN;
+  }
 
   PLATFORM::CLockObject modeLock(m_ADSPModeLock);
-	if(m_ADSPProcessor[Id])
-	{
-		delete m_ADSPProcessor[Id];
-		m_ADSPProcessor[Id] = NULL;
-	}
-	else
-	{
-		KODI->Log(LOG_ERROR, "Couldn't destroy Stream: %i! It was not created!", Id);
-		return AE_DSP_ERROR_UNKNOWN;
-	}
+  if(m_ADSPProcessor[Id])
+  {
+    delete m_ADSPProcessor[Id];
+    m_ADSPProcessor[Id] = NULL;
+  }
+  else
+  {
+    KODI->Log(LOG_ERROR, "Couldn't destroy Stream: %i! It was not created!", Id);
+    return AE_DSP_ERROR_UNKNOWN;
+  }
 
-	return AE_DSP_ERROR_NO_ERROR;
+  return AE_DSP_ERROR_NO_ERROR;
 }
 
 // ToDo: Reimplement mode handling with AddonHandler. 

@@ -26,26 +26,26 @@
 class CGUIDialogBase
 {
 public:
-	CGUIDialogBase( std::string xmlFilename, bool ForceFallback, bool AsDialog, std::string DefaultSkin = "Confluence" );
-	virtual ~CGUIDialogBase();
+  CGUIDialogBase( std::string xmlFilename, bool ForceFallback, bool AsDialog, std::string DefaultSkin = "Confluence" );
+  virtual ~CGUIDialogBase();
 
-	bool Show();
-	void Close();
-	void DoModal();
+  bool Show();
+  void Close();
+  void DoModal();
 
 private:
-	static bool OnClickCB(GUIHANDLE cbhdl, int controlId);
-	static bool OnFocusCB(GUIHANDLE cbhdl, int controlId);
-	static bool OnInitCB(GUIHANDLE cbhdl);
-	static bool OnActionCB(GUIHANDLE cbhdl, int actionId);
+  static bool OnClickCB(GUIHANDLE cbhdl, int controlId);
+  static bool OnFocusCB(GUIHANDLE cbhdl, int controlId);
+  static bool OnInitCB(GUIHANDLE cbhdl);
+  static bool OnActionCB(GUIHANDLE cbhdl, int actionId);
 
 protected:
-	CAddonGUIWindow          *m_window;	// window handle
+  CAddonGUIWindow          *m_window;  // window handle
 
-private:	// private virtual methods
-	virtual bool OnInit()               = 0;
-	virtual bool OnClick(int controlId) = 0;
-	virtual bool OnFocus(int controlId) = 0;
-	virtual bool OnAction(int actionId) = 0;
+private:  // private virtual methods
+  virtual bool OnInit()               = 0;
+  virtual bool OnClick(int controlId) = 0;
+  virtual bool OnFocus(int controlId) = 0;
+  virtual bool OnAction(int actionId) = 0;
   virtual void OnClose()              = 0;
 };

@@ -24,12 +24,13 @@
 class CGUIDialogMasterProcess : public CGUIDialogBase
 {
 public:
-	CGUIDialogMasterProcess();
-	~CGUIDialogMasterProcess();
+  CGUIDialogMasterProcess();
+  ~CGUIDialogMasterProcess();
 
 private:
-	virtual bool OnInit();
-	virtual bool OnClick(int controlId);
-	virtual bool OnFocus(int controlId);
-	virtual bool OnAction(int actionId);
+  virtual bool OnInit();
+  virtual bool OnClick(int controlId);
+  virtual bool OnFocus(int controlId);
+  virtual bool OnAction(int actionId);
+  virtual void OnClose();
 };

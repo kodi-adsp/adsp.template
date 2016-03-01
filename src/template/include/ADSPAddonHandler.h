@@ -40,41 +40,41 @@ extern CADSPAddonHandler g_AddonHandler;
 class CADSPAddonHandler
 //#if USE_ADDONOPTIONAL
 #ifdef ADSP_ADDON_OPTIONAL_CLASS_NAME
-	: public ADSP_ADDON_OPTIONAL_CLASS_NAME
+  : public ADSP_ADDON_OPTIONAL_CLASS_NAME
 #endif
 {
 public:
-	CADSPAddonHandler();			//! Constructor: here you can define global settings of the Addon
-	virtual ~CADSPAddonHandler();	//! Destructor: here you can delete all buffers from the Addon
+  CADSPAddonHandler();      //! Constructor: here you can define global settings of the Addon
+  virtual ~CADSPAddonHandler();  //! Destructor: here you can delete all buffers from the Addon
 
-	/*!
-	 * Control function for start and stop of dsp processing.
-	 */
-	AE_DSP_ERROR StreamCreate(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties, const ADDON_HANDLE handle);
-	AE_DSP_ERROR StreamDestroy(unsigned int Id);
-	AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE handle, const AE_DSP_SETTINGS *Settings);
+  /*!
+   * Control function for start and stop of dsp processing.
+   */
+  AE_DSP_ERROR StreamCreate(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties, const ADDON_HANDLE handle);
+  AE_DSP_ERROR StreamDestroy(unsigned int Id);
+  AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE handle, const AE_DSP_SETTINGS *Settings);
 
-	/*!
-	 * initialize or destroy methods for the AddonHandler
-	 */
-	void Destroy();
-	bool Init();
+  /*!
+   * initialize or destroy methods for the AddonHandler
+   */
+  void Destroy();
+  bool Init();
 
-	/*!
-	 * Supported processing methods
-	 */
-	bool SupportsInputProcess();
-	bool SupportsPreProcess();
-	bool SupportsMasterProcess();
-	bool SupportsPostProcess();
-	bool SupportsInputResample();
-	bool SupportsOutputResample();
+  /*!
+   * Supported processing methods
+   */
+  bool SupportsInputProcess();
+  bool SupportsPreProcess();
+  bool SupportsMasterProcess();
+  bool SupportsPostProcess();
+  bool SupportsInputResample();
+  bool SupportsOutputResample();
 
-	/*!
-	 * Get Stream
-	*/
-	CADSPProcessorHandle *GetStream(AE_DSP_STREAM_ID Id);
-  //!	This gets the current stream Id settings and properties. 
+  /*!
+   * Get Stream
+  */
+  CADSPProcessorHandle *GetStream(AE_DSP_STREAM_ID Id);
+  //!  This gets the current stream Id settings and properties. 
   /*!
   * Get stream settings and properties. For details see  and AE_DSP_STREAM_PROPERTIES structures.
   * If the add-on operate with buffered arrays and the output size can be higher as
@@ -96,20 +96,20 @@ public:
    PLATFORM::CMutex m_ADSPModeLock;
 
 private:
-	//AE_DSP_SETTINGS           m_Settings;           /*!< @brief (required) the active XBMC audio settings */
-	//AE_DSP_STREAM_PROPERTIES  m_Properties;
-	//int                       m_iStreamType;
-	//int                       m_iBaseType;
-	//std::string               m_strName;            /*!< @brief (required) the audio stream name */
-	//std::string               m_strCodecId;         /*!< @brief (required) codec id string of the audio stream */
-	//std::string               m_strLanguage;        /*!< @brief (required) language id of the audio stream */
-	//int                       m_iIdentifier;        /*!< @brief (required) audio stream id inside player */
-	//int                       m_iChannels;          /*!< @brief (required) amount of basic channels */
-	//int                       m_iSampleRate;        /*!< @brief (required) input sample rate */
+  //AE_DSP_SETTINGS           m_Settings;           /*!< @brief (required) the active XBMC audio settings */
+  //AE_DSP_STREAM_PROPERTIES  m_Properties;
+  //int                       m_iStreamType;
+  //int                       m_iBaseType;
+  //std::string               m_strName;            /*!< @brief (required) the audio stream name */
+  //std::string               m_strCodecId;         /*!< @brief (required) codec id string of the audio stream */
+  //std::string               m_strLanguage;        /*!< @brief (required) language id of the audio stream */
+  //int                       m_iIdentifier;        /*!< @brief (required) audio stream id inside player */
+  //int                       m_iChannels;          /*!< @brief (required) amount of basic channels */
+  //int                       m_iSampleRate;        /*!< @brief (required) input sample rate */
 
-	/*!
-	 * Pointer array for active dsp processing classes, for this reason the
-	 * stream id is never more as AE_DSP_STREAM_MAX_STREAMS and can be used as pointer to this array.
-	 */
-	CADSPProcessorHandle *m_ADSPProcessor[AE_DSP_STREAM_MAX_STREAMS];
+  /*!
+   * Pointer array for active dsp processing classes, for this reason the
+   * stream id is never more as AE_DSP_STREAM_MAX_STREAMS and can be used as pointer to this array.
+   */
+  CADSPProcessorHandle *m_ADSPProcessor[AE_DSP_STREAM_MAX_STREAMS];
 };

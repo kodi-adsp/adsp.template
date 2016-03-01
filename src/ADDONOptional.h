@@ -33,15 +33,15 @@
 class CADDONOptional : public IADDONOptional
 {
 public:
-	CADDONOptional();
-	~CADDONOptional();
+  CADDONOptional();
+  ~CADDONOptional();
 
-	virtual ADDON_STATUS SetSetting(std::string SettingName, const void *SettingValue);
-	virtual unsigned int GetSettings(ADDON_StructSetting ***sSet);
-	virtual void Stop();
-	virtual void FreeSettings();
-	virtual void Announce(std::string Flag, std::string Sender, std::string Message, const void *Data);
-	virtual void ReadSettings(void);
-	virtual AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item);
-	virtual bool OptionalInit();
+  virtual ADDON_STATUS SetSetting(std::string SettingName, const void *SettingValue);
+  virtual unsigned int GetSettings(ADDON_StructSetting ***sSet);
+  virtual void Stop();
+  virtual void FreeSettings();
+  virtual void Announce(std::string Flag, std::string Sender, std::string Message, const void *Data);
+  virtual void ReadSettings(void);
+  virtual AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item);
+  virtual bool OptionalInit();
 };
