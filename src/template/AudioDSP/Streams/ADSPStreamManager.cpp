@@ -31,6 +31,7 @@ using namespace ADDON;
 
 CADSPStreamManager::CADSPStreamManager()
 {
+  m_ADSPStreamBuilder = &m_ADSPStreamBuilderAll;
   m_HasProcesses = 0;
 
   CFactoryADSPModes::ADSPModeInfoVector_t adspModes;
@@ -70,7 +71,16 @@ CADSPStreamManager::CADSPStreamManager()
   }
 
   // set all streams to NULL
-  memset(m_ADSPStreams, 0, sizeof(CADSPStream)*AE_DSP_STREAM_MAX_STREAMS);
+  m_ADSPStreams[0] = NULL;
+  m_ADSPStreams[1] = NULL;
+  m_ADSPStreams[2] = NULL;
+  m_ADSPStreams[3] = NULL;
+  m_ADSPStreams[4] = NULL;
+  m_ADSPStreams[5] = NULL;
+  m_ADSPStreams[6] = NULL;
+  m_ADSPStreams[7] = NULL;
+
+  //memset(m_ADSPStreams, 0, sizeof(CADSPStream)*AE_DSP_STREAM_MAX_STREAMS);
 }
 
 
@@ -322,7 +332,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
   }
 
   CADSPStream *adspStream = new CADSPStream;
-  AE_DSP_ERROR err = m_ADSPStreamBuilder->ConstructStream(adspStream, Settings, pProperties); //m_ADSPStreams[iStreamID]->Create(Settings, pProperties);
+  AE_DSP_ERROR err = m_ADSPStreamBuilder->ConstructStream(*adspStream, Settings, pProperties); //m_ADSPStreams[iStreamID]->Create(Settings, pProperties);
   if (err != AE_DSP_ERROR_NO_ERROR)
   {
     delete adspStream;

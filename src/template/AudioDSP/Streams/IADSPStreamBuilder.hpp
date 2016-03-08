@@ -30,11 +30,31 @@
 class IADSPStreamBuilder
 {
 public:
-  virtual AE_DSP_ERROR ConstructStream(CADSPStream *ADSPStream, const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties) = 0;
-  
-  virtual AE_DSP_ERROR AddMode(CADSPStream *ADSPStream, IADSPMode *ADSPMode) = 0;
-  virtual AE_DSP_ERROR AddMode(CADSPStream *ADSPStream, unsigned int ModeID) = 0;
+  virtual AE_DSP_ERROR ConstructStream(CADSPStream &ADSPStream, const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties) = 0;
 
-  virtual AE_DSP_ERROR RemoveMode(CADSPStream *ADSPStream, IADSPMode *ADSPMode) = 0;
-  virtual AE_DSP_ERROR RemoveMode(CADSPStream *ADSPStream, unsigned int ModeID) = 0;
+  virtual AE_DSP_ERROR AddMode(CADSPStream &ADSPStream, IADSPMode *ADSPMode) = 0;
+  virtual AE_DSP_ERROR AddMode(CADSPStream &ADSPStream, unsigned int ModeID) = 0;
+
+  virtual AE_DSP_ERROR RemoveMode(CADSPStream &ADSPStream, IADSPMode *ADSPMode) = 0;
+  virtual AE_DSP_ERROR RemoveMode(CADSPStream &ADSPStream, unsigned int ModeID) = 0;
+
+protected:
+  class CADSPStreamAccessor
+  {
+  public:
+    static inline CADSPStream::ADSPModeVector_t m_ADSPModeVector(CADSPStream &ADSPStream)
+    {
+      return ADSPStream.m_ADSPModeVector;
+    }
+
+    static inline unsigned int& m_MaxADSPModes(CADSPStream &ADSPStream)
+    {
+      return ADSPStream.m_MaxADSPModes;
+    }
+
+    static inline IADSPMode*& m_ADSPModes(CADSPStream &ADSPStream)
+    {
+      return ADSPStream.m_ADSPModes;
+    }
+  };
 };

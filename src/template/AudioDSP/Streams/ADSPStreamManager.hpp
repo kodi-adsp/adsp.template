@@ -26,6 +26,7 @@
 
 #include "AudioDSP/Streams/ADSPStream.hpp"
 #include "AudioDSP/Streams/IADSPStreamBuilder.hpp"
+#include "AudioDSP/Streams/ADSPStreamBuilderAll.hpp"
 
 class CADSPStreamManager
 {
@@ -123,7 +124,8 @@ private:
   * Pointer array for active dsp processing classes, for this reason the
   * stream id is never more as AE_DSP_STREAM_MAX_STREAMS and can be used as pointer to this array.
   */
-  CADSPStream *m_ADSPStreams[AE_DSP_STREAM_MAX_STREAMS];
-  CCriticalSection m_Lock;
-  IADSPStreamBuilder *m_ADSPStreamBuilder;
+  CADSPStream             *m_ADSPStreams[AE_DSP_STREAM_MAX_STREAMS];
+  CCriticalSection        m_Lock; // Lock for access to m_ADSPStreams
+  IADSPStreamBuilder      *m_ADSPStreamBuilder;
+  CADSPStreamBuilderAll   m_ADSPStreamBuilderAll;
 };

@@ -21,11 +21,22 @@
 
 
 
+#include <vector>
+
 #include <kodi/kodi_adsp_types.h>
+
+#include "AudioDSP/FactoryADSPModes/IADSPMode.hpp"
+
+class IADSPStreamBuilder;
+
 
 class CADSPStream
 {
+  friend class IADSPStreamBuilder;
+
 public:
+  typedef std::vector<IADSPMode*> ADSPModeVector_t;
+
   CADSPStream();
   ~CADSPStream();
 
@@ -50,4 +61,9 @@ public:
 
   // Optional Resampling Methods
   int ResamplingRate(AE_DSP_MODE_TYPE ModeType);
+
+private:
+  ADSPModeVector_t  m_ADSPModeVector;
+  unsigned int      m_MaxADSPModes;
+  IADSPMode         *m_ADSPModes;
 };
