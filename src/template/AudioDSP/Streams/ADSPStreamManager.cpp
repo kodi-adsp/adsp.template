@@ -29,7 +29,14 @@
 using namespace ADDON;
 
 
-CADSPStreamManager::CADSPStreamManager()
+int CADSPStreamManager::m_HasProcesses;
+CADSPStream *CADSPStreamManager::m_ADSPStreams[AE_DSP_STREAM_MAX_STREAMS];
+CCriticalSection CADSPStreamManager::m_Lock;
+IADSPStreamBuilder *CADSPStreamManager::m_ADSPStreamBuilder;
+CADSPStreamBuilderAll CADSPStreamManager::m_ADSPStreamBuilderAll;
+
+
+AE_DSP_ERROR CADSPStreamManager::Create()
 {
   m_ADSPStreamBuilder = &m_ADSPStreamBuilderAll;
   m_HasProcesses = 0;
@@ -39,8 +46,7 @@ CADSPStreamManager::CADSPStreamManager()
 
   if (adspModes.size() <= 0)
   {
-    // TODO: use ADDON Exception
-    throw std::exception();
+    return AE_DSP_ERROR_FAILED;
   }
     
   KODI->Log(LOG_DEBUG, "%s, %s, %i, Available ADSP Modes:", __FILE__, __FUNCTION__, __LINE__);
@@ -51,10 +57,6 @@ CADSPStreamManager::CADSPStreamManager()
     if (adspModes[ii].ModeInfo.ModeType >= 0)
     {
       m_HasProcesses |= 1 << adspModes[ii].ModeInfo.ModeType;
-    }
-    else
-    {
-      // TODO: Log Warning!
     }
 
     AE_DSP_MODES::AE_DSP_MODE adspModeSettings;
@@ -67,24 +69,21 @@ CADSPStreamManager::CADSPStreamManager()
     else
     {
       KODI->Log(LOG_ERROR, "%s, %s, %i, Failed to retrieve ADSP Mode settings for %s", __FILE__, __FUNCTION__, __LINE__, adspModes[ii].ModeName.c_str());
+      return AE_DSP_ERROR_FAILED;
     }
   }
 
   // set all streams to NULL
-  m_ADSPStreams[0] = NULL;
-  m_ADSPStreams[1] = NULL;
-  m_ADSPStreams[2] = NULL;
-  m_ADSPStreams[3] = NULL;
-  m_ADSPStreams[4] = NULL;
-  m_ADSPStreams[5] = NULL;
-  m_ADSPStreams[6] = NULL;
-  m_ADSPStreams[7] = NULL;
+  for (int st = 0; st < AE_DSP_STREAM_MAX_STREAMS; st++)
+  {
+    m_ADSPStreams[st] = NULL;
+  }
 
-  //memset(m_ADSPStreams, 0, sizeof(CADSPStream)*AE_DSP_STREAM_MAX_STREAMS);
+  return AE_DSP_ERROR_NO_ERROR;
 }
 
 
-CADSPStreamManager::~CADSPStreamManager()
+void CADSPStreamManager::Destroy()
 {
   for (int ii = 0; ii < AE_DSP_STREAM_MAX_STREAMS; ii++)
   {

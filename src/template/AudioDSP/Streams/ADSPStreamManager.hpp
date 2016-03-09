@@ -31,37 +31,36 @@
 class CADSPStreamManager
 {
 public:
-  CADSPStreamManager();       //! Constructor: here you can define global settings of the Addon
-  ~CADSPStreamManager();      //! Destructor: here you can delete all buffers from the Addon
+  static AE_DSP_ERROR Create();
+  static void Destroy();
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-  // stream methods
-  AE_DSP_ERROR StreamIsModeSupported(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, unsigned int ModeID, int UniqueDBModeID);
+// stream methods
+  static AE_DSP_ERROR StreamIsModeSupported(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, unsigned int ModeID, int UniqueDBModeID);
 
-  unsigned int ProcessMode(const ADDON_HANDLE Handle, unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples);
-  unsigned int ProcessMode(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, float **Array_in, float **Array_out, unsigned int Samples);
-  unsigned int ProcessMode(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, const float **Array_in, unsigned int Samples);
+  static unsigned int ProcessMode(const ADDON_HANDLE Handle, unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples);
+  static unsigned int ProcessMode(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, float **Array_in, float **Array_out, unsigned int Samples);
+  static unsigned int ProcessMode(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType, const float **Array_in, unsigned int Samples);
 
-  unsigned int NeededSamplesize(const ADDON_HANDLE Handle, unsigned int ModeID);
-  unsigned int NeededSamplesize(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
-  float GetDelay(const ADDON_HANDLE Handle, unsigned int ModeID);
-  float GetDelay(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
+  static unsigned int NeededSamplesize(const ADDON_HANDLE Handle, unsigned int ModeID);
+  static unsigned int NeededSamplesize(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
+  static float GetDelay(const ADDON_HANDLE Handle, unsigned int ModeID);
+  static float GetDelay(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
 
-  // Optional Methods for Master Modes
-  int MasterProcessGetOutChannels(const ADDON_HANDLE Handle, unsigned long &OutChannelFlags);
-  const char* MasterProcessGetStreamInfoString(const ADDON_HANDLE Handle);
-  AE_DSP_ERROR MasterProcessSetMode(const ADDON_HANDLE Handle, AE_DSP_STREAMTYPE StreamType, unsigned int ModeID, int UniqueDBModeID);
+// Optional Methods for Master Modes
+  static int MasterProcessGetOutChannels(const ADDON_HANDLE Handle, unsigned long &OutChannelFlags);
+  static const char* MasterProcessGetStreamInfoString(const ADDON_HANDLE Handle);
+  static AE_DSP_ERROR MasterProcessSetMode(const ADDON_HANDLE Handle, AE_DSP_STREAMTYPE StreamType, unsigned int ModeID, int UniqueDBModeID);
 
-  // Optional Resampling Methods
-  int ResamplingRate(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
-/////////////////////////////////////////////////////////////////////////////////////////////////
+// Optional Resampling Methods
+  static int ResamplingRate(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE ModeType);
+
 
   /*!
   * Control function for start and stop of dsp processing.
   */
-  AE_DSP_ERROR StreamCreate(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties, const ADDON_HANDLE handle);
-  AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE Handle, const AE_DSP_SETTINGS *AddonSettings);
-  AE_DSP_ERROR StreamDestroy(unsigned int Id);
+  static AE_DSP_ERROR StreamCreate(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties, const ADDON_HANDLE handle);
+  static AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE Handle, const AE_DSP_SETTINGS *AddonSettings);
+  static AE_DSP_ERROR StreamDestroy(unsigned int Id);
 
   ///*!
   //* initialize or destroy methods for the AddonHandler
@@ -72,12 +71,12 @@ public:
   /*!
   * Supported processing methods
   */
-  bool SupportsInputProcess();
-  bool SupportsPreProcess();
-  bool SupportsMasterProcess();
-  bool SupportsPostProcess();
-  bool SupportsInputResample();
-  bool SupportsOutputResample();
+  static bool SupportsInputProcess();
+  static bool SupportsPreProcess();
+  static bool SupportsMasterProcess();
+  static bool SupportsPostProcess();
+  static bool SupportsInputResample();
+  static bool SupportsOutputResample();
 
   ///*!
   //* Get Stream
@@ -100,32 +99,16 @@ public:
 
   //AE_DSP_ERROR SendMessageToStream(/*CADSPModeMessage &Message*/);
 
-  ///*!
-  //* Mutex for safe access to processing modes
-  //*/
-  //PLATFORM::CMutex m_ADSPModeLock;
 
 private:
-  int m_HasProcesses;
-
-
-  //AE_DSP_SETTINGS           m_Settings;           /*!< @brief (required) the active XBMC audio settings */
-  //AE_DSP_STREAM_PROPERTIES  m_Properties;
-  //int                       m_iStreamType;
-  //int                       m_iBaseType;
-  //std::string               m_strName;            /*!< @brief (required) the audio stream name */
-  //std::string               m_strCodecId;         /*!< @brief (required) codec id string of the audio stream */
-  //std::string               m_strLanguage;        /*!< @brief (required) language id of the audio stream */
-  //int                       m_iIdentifier;        /*!< @brief (required) audio stream id inside player */
-  //int                       m_iChannels;          /*!< @brief (required) amount of basic channels */
-  //int                       m_iSampleRate;        /*!< @brief (required) input sample rate */
+  static int m_HasProcesses;
 
   /*!
   * Pointer array for active dsp processing classes, for this reason the
   * stream id is never more as AE_DSP_STREAM_MAX_STREAMS and can be used as pointer to this array.
   */
-  CADSPStream             *m_ADSPStreams[AE_DSP_STREAM_MAX_STREAMS];
-  CCriticalSection        m_Lock; // Lock for access to m_ADSPStreams
-  IADSPStreamBuilder      *m_ADSPStreamBuilder;
-  CADSPStreamBuilderAll   m_ADSPStreamBuilderAll;
+  static CADSPStream             *m_ADSPStreams[AE_DSP_STREAM_MAX_STREAMS];
+  static CCriticalSection        m_Lock; // Lock for access to m_ADSPStreams
+  static IADSPStreamBuilder      *m_ADSPStreamBuilder;
+  static CADSPStreamBuilderAll   m_ADSPStreamBuilderAll;
 };

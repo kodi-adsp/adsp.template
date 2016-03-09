@@ -68,7 +68,6 @@ CHelper_libKODI_guilib  *GUI        = NULL;
  *  ADSP Addon handling class
  */
 CADSPAddonHandler g_AddonHandler;
-CADSPStreamManager *g_StreamManager = NULL;
 
 
 extern "C" {
@@ -120,14 +119,12 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
 
   ADDON_ReadSettings();
 
-  //if(!g_AddonHandler.Init())
-  //{
-  //  return m_CurStatus;
-  //}
-
-  g_StreamManager = new CADSPStreamManager;
-
   m_CurStatus = ADDON_STATUS_OK;
+  if (CADSPStreamManager::Create() != AE_DSP_ERROR_NO_ERROR)
+  {
+    m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
+  }
+
   m_bCreated = true;
   m_iStreamsPresent = 0;
   return m_CurStatus;
@@ -146,8 +143,7 @@ void ADDON_Destroy()
   //g_AddonHandler.Destroy();
 
   // TODO: why does Kodi crash, when g_StreamManager is deleted?
-  delete g_StreamManager;
-  g_StreamManager = NULL;
+  CADSPStreamManager::Destroy();
 
   SAFE_DELETE(ADSP);
   SAFE_DELETE(GUI);
@@ -248,12 +244,12 @@ AE_DSP_ERROR GetAddonCapabilities(AE_DSP_ADDON_CAPABILITIES* pCapabilities)
     return AE_DSP_ERROR_FAILED;
   }
 
-  pCapabilities->bSupportsInputProcess    = g_StreamManager->SupportsInputProcess();
-  pCapabilities->bSupportsPreProcess      = g_StreamManager->SupportsPreProcess();
-  pCapabilities->bSupportsMasterProcess   = g_StreamManager->SupportsMasterProcess();
-  pCapabilities->bSupportsPostProcess     = g_StreamManager->SupportsPostProcess();
-  pCapabilities->bSupportsInputResample   = g_StreamManager->SupportsInputResample();
-  pCapabilities->bSupportsOutputResample  = g_StreamManager->SupportsOutputResample();
+  pCapabilities->bSupportsInputProcess    = CADSPStreamManager::SupportsInputProcess();
+  pCapabilities->bSupportsPreProcess      = CADSPStreamManager::SupportsPreProcess();
+  pCapabilities->bSupportsMasterProcess   = CADSPStreamManager::SupportsMasterProcess();
+  pCapabilities->bSupportsPostProcess     = CADSPStreamManager::SupportsPostProcess();
+  pCapabilities->bSupportsInputResample   = CADSPStreamManager::SupportsInputResample();
+  pCapabilities->bSupportsOutputResample  = CADSPStreamManager::SupportsOutputResample();
 
   return AE_DSP_ERROR_NO_ERROR;
 }
@@ -283,17 +279,17 @@ AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK
  */
 AE_DSP_ERROR StreamCreate(const AE_DSP_SETTINGS *AddonSettings, const AE_DSP_STREAM_PROPERTIES* pProperties, ADDON_HANDLE Handle)
 {
-  return g_StreamManager->StreamCreate(AddonSettings, pProperties, Handle);
+  return CADSPStreamManager::StreamCreate(AddonSettings, pProperties, Handle);
 }
 
 AE_DSP_ERROR StreamDestroy(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->StreamDestroy(Handle->dataIdentifier);
+  return CADSPStreamManager::StreamDestroy(Handle->dataIdentifier);
 }
 
 AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE Handle, const AE_DSP_SETTINGS *AddonSettings)
 {
-  return g_StreamManager->StreamInitialize(Handle, AddonSettings);
+  return CADSPStreamManager::StreamInitialize(Handle, AddonSettings);
 }
 
 
@@ -302,12 +298,12 @@ AE_DSP_ERROR StreamInitialize(const ADDON_HANDLE Handle, const AE_DSP_SETTINGS *
  */
 unsigned int PreProcessNeededSamplesize(const ADDON_HANDLE Handle, unsigned int Mode_id)
 {
-  return g_StreamManager->NeededSamplesize(Handle, Mode_id);
+  return CADSPStreamManager::NeededSamplesize(Handle, Mode_id);
 }
 
 float PreProcessGetDelay(const ADDON_HANDLE Handle, unsigned int Mode_id)
 {
-  return g_StreamManager->GetDelay(Handle, Mode_id);
+  return CADSPStreamManager::GetDelay(Handle, Mode_id);
 }
 
 /*!
@@ -316,17 +312,17 @@ float PreProcessGetDelay(const ADDON_HANDLE Handle, unsigned int Mode_id)
  */
 unsigned int InputResampleProcessNeededSamplesize(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->NeededSamplesize(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
+  return CADSPStreamManager::NeededSamplesize(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
 }
 
 int InputResampleSampleRate(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->ResamplingRate(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
+  return CADSPStreamManager::ResamplingRate(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
 }
   
 float InputResampleGetDelay(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->GetDelay(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
+  return CADSPStreamManager::GetDelay(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE);
 }
 
 /*!
@@ -335,27 +331,27 @@ float InputResampleGetDelay(const ADDON_HANDLE Handle)
  */
 AE_DSP_ERROR MasterProcessSetMode(const ADDON_HANDLE Handle, AE_DSP_STREAMTYPE Type, unsigned int Mode_id, int Unique_db_mode_id)
 {
-  return g_StreamManager->MasterProcessSetMode(Handle, Type, Mode_id, Unique_db_mode_id);
+  return CADSPStreamManager::MasterProcessSetMode(Handle, Type, Mode_id, Unique_db_mode_id);
 }
 
 unsigned int MasterProcessNeededSamplesize(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->NeededSamplesize(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS);
+  return CADSPStreamManager::NeededSamplesize(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS);
 }
 
 float MasterProcessGetDelay(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->GetDelay(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS);
+  return CADSPStreamManager::GetDelay(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS);
 }
 
 int MasterProcessGetOutChannels(const ADDON_HANDLE Handle, unsigned long &Out_channel_present_flags)
 {
-  return g_StreamManager->MasterProcessGetOutChannels(Handle, Out_channel_present_flags);
+  return CADSPStreamManager::MasterProcessGetOutChannels(Handle, Out_channel_present_flags);
 }
 
 const char *MasterProcessGetStreamInfoString(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->MasterProcessGetStreamInfoString(Handle);
+  return CADSPStreamManager::MasterProcessGetStreamInfoString(Handle);
 }
 
 
@@ -365,12 +361,12 @@ const char *MasterProcessGetStreamInfoString(const ADDON_HANDLE Handle)
  */
 unsigned int PostProcessNeededSamplesize(const ADDON_HANDLE Handle, unsigned int Mode_id)
 {
-  return g_StreamManager->NeededSamplesize(Handle, Mode_id);
+  return CADSPStreamManager::NeededSamplesize(Handle, Mode_id);
 }
 
 float PostProcessGetDelay(const ADDON_HANDLE Handle, unsigned int Mode_id)
 {
-  return g_StreamManager->GetDelay(Handle, Mode_id);
+  return CADSPStreamManager::GetDelay(Handle, Mode_id);
 }
 
 /*!
@@ -379,17 +375,17 @@ float PostProcessGetDelay(const ADDON_HANDLE Handle, unsigned int Mode_id)
  */
 unsigned int OutputResampleProcessNeededSamplesize(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->NeededSamplesize(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
+  return CADSPStreamManager::NeededSamplesize(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
 }
 
 int OutputResampleSampleRate(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->ResamplingRate(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
+  return CADSPStreamManager::ResamplingRate(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
 }
 
 float OutputResampleGetDelay(const ADDON_HANDLE Handle)
 {
-  return g_StreamManager->GetDelay(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
+  return CADSPStreamManager::GetDelay(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE);
 }
 
 /*!
@@ -397,36 +393,36 @@ float OutputResampleGetDelay(const ADDON_HANDLE Handle)
  */
 bool InputProcess(const ADDON_HANDLE Handle, const float **Array_in, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, AE_DSP_MODE_TYPE_MAX, Array_in, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_MAX, Array_in, Samples);
 }
 
 unsigned int InputResampleProcess(const ADDON_HANDLE Handle, float **Array_in, float **Array_out, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE, Array_in, Array_out, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_INPUT_RESAMPLE, Array_in, Array_out, Samples);
 }
 
 unsigned int PreProcess(const ADDON_HANDLE Handle, unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, Mode_id, Array_in, Array_out, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, Mode_id, Array_in, Array_out, Samples);
 }
 
 unsigned int MasterProcess(const ADDON_HANDLE Handle, float **Array_in, float **Array_out, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS, Array_in, Array_out, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_MASTER_PROCESS, Array_in, Array_out, Samples);
 }
 
 unsigned int PostProcess(const ADDON_HANDLE Handle, unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, Mode_id, Array_in, Array_out, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, Mode_id, Array_in, Array_out, Samples);
 }
 
 unsigned int OutputResampleProcess(const ADDON_HANDLE Handle, float **Array_in, float **Array_out, unsigned int Samples)
 {
-  return g_StreamManager->ProcessMode(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE, Array_in, Array_out, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE, Array_in, Array_out, Samples);
 }
 
 AE_DSP_ERROR StreamIsModeSupported(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE Type, unsigned int Mode_id, int Unique_db_mode_id)
 {
-  return g_StreamManager->StreamIsModeSupported(Handle, Type, Mode_id, Unique_db_mode_id);
+  return CADSPStreamManager::StreamIsModeSupported(Handle, Type, Mode_id, Unique_db_mode_id);
 }
 }
