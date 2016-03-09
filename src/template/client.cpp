@@ -112,7 +112,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     SAFE_DELETE(KODI);
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
-  KODI->Log(LOG_DEBUG, "%s - Creating the Audio DSP add-on template", __FUNCTION__);
+  KODI->Log(LOG_DEBUG, "%s, %s, %i, - Creating the Audio DSP add-on template", __FILE__, __FUNCTION__, __LINE__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
   g_strUserPath   = adspprops->strUserPath;

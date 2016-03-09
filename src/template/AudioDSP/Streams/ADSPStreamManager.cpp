@@ -43,11 +43,11 @@ CADSPStreamManager::CADSPStreamManager()
     throw std::exception();
   }
     
-  KODI->Log(LOG_DEBUG, "Available ADSP Modes:");
+  KODI->Log(LOG_DEBUG, "%s, %s, %i, Available ADSP Modes:", __FILE__, __FUNCTION__, __LINE__);
 
   for (size_t ii = 0; ii < adspModes.size(); ii++)
   {
-    KODI->Log(LOG_DEBUG, "Name: %s, Internal ID: %i, ADSP Type: %i", adspModes[ii].ModeName.c_str(), adspModes[ii].ModeInfo.ModeID, adspModes[ii].ModeInfo.ModeType);
+    KODI->Log(LOG_DEBUG, "%s, %s, %i, Name: %s, Internal ID: %i, ADSP Type: %i", __FILE__, __FUNCTION__, __LINE__, adspModes[ii].ModeName.c_str(), adspModes[ii].ModeInfo.ModeID, adspModes[ii].ModeInfo.ModeType);
     if (adspModes[ii].ModeInfo.ModeType >= 0)
     {
       m_HasProcesses |= 1 << adspModes[ii].ModeInfo.ModeType;
@@ -61,12 +61,12 @@ CADSPStreamManager::CADSPStreamManager()
     AE_DSP_ERROR err = CFactoryADSPModes::GetADSPModeSettings(adspModes[ii].ModeInfo.ModeID, adspModes[ii].ModeInfo.ModeType, adspModeSettings);
     if (err == AE_DSP_ERROR_NO_ERROR)
     {
-      KODI->Log(LOG_DEBUG, "%s, Try to register ADSP Mode: %s", __FUNCTION__, adspModes[ii].ModeName.c_str());
+      KODI->Log(LOG_DEBUG, "%s, %s, %i, Try to register ADSP Mode: %s", __FILE__, __FUNCTION__, __LINE__, adspModes[ii].ModeName.c_str());
       ADSP->RegisterMode(&adspModeSettings);
     }
     else
     {
-      KODI->Log(LOG_ERROR, "%s, Failed to retrieve ADSP Mode settings for %s", __FUNCTION__, adspModes[ii].ModeName.c_str());
+      KODI->Log(LOG_ERROR, "%s, %s, %i, Failed to retrieve ADSP Mode settings for %s", __FILE__, __FUNCTION__, __LINE__, adspModes[ii].ModeName.c_str());
     }
   }
 
@@ -97,14 +97,14 @@ AE_DSP_ERROR CADSPStreamManager::StreamIsModeSupported(const ADDON_HANDLE Handle
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_UNKNOWN;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_UNKNOWN;
   }
 
@@ -116,14 +116,14 @@ unsigned int CADSPStreamManager::ProcessMode(const ADDON_HANDLE Handle, unsigned
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -135,14 +135,14 @@ unsigned int CADSPStreamManager::ProcessMode(const ADDON_HANDLE Handle, AE_DSP_M
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -154,14 +154,14 @@ unsigned int CADSPStreamManager::ProcessMode(const ADDON_HANDLE Handle, AE_DSP_M
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -173,14 +173,14 @@ unsigned int CADSPStreamManager::NeededSamplesize(const ADDON_HANDLE Handle, uns
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -192,14 +192,14 @@ unsigned int CADSPStreamManager::NeededSamplesize(const ADDON_HANDLE Handle, AE_
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -212,14 +212,14 @@ float CADSPStreamManager::GetDelay(const ADDON_HANDLE Handle, unsigned int ModeI
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return -1.0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -231,14 +231,14 @@ float CADSPStreamManager::GetDelay(const ADDON_HANDLE Handle, AE_DSP_MODE_TYPE M
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return -1.0;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -250,14 +250,14 @@ int CADSPStreamManager::MasterProcessGetOutChannels(const ADDON_HANDLE Handle, u
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return -1;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -269,14 +269,14 @@ const char* CADSPStreamManager::MasterProcessGetStreamInfoString(const ADDON_HAN
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return NULL;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -288,14 +288,14 @@ AE_DSP_ERROR CADSPStreamManager::MasterProcessSetMode(const ADDON_HANDLE Handle,
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_UNKNOWN;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_UNKNOWN;
   }
 
@@ -307,14 +307,14 @@ int CADSPStreamManager::ResamplingRate(const ADDON_HANDLE Handle, AE_DSP_MODE_TY
   const unsigned int streamID = Handle->dataIdentifier;
   if (streamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return -1;
   }
 
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[streamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Tried to process uncreated stream!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Tried to process uncreated stream!", __FILE__, __FUNCTION__, __LINE__);
     return -1;
   }
 
@@ -327,7 +327,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
   const unsigned int iStreamID = Settings->iStreamID;
   if (iStreamID >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "%s, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FUNCTION__);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Invalid input! StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!", __FILE__, __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_UNKNOWN;
   }
 
@@ -336,7 +336,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
   if (err != AE_DSP_ERROR_NO_ERROR)
   {
     delete adspStream;
-    KODI->Log(LOG_ERROR, "%s, Requested stream: %i creation failed!", __FUNCTION__, iStreamID);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Requested stream: %i creation failed!", __FILE__, __FUNCTION__, __LINE__, iStreamID);
 
     return err;
   }
@@ -359,7 +359,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
 
 AE_DSP_ERROR CADSPStreamManager::StreamInitialize(const ADDON_HANDLE handle, const AE_DSP_SETTINGS *Settings)
 {
-  KODI->Log(LOG_DEBUG, "Called %s.", __FUNCTION__);
+  KODI->Log(LOG_DEBUG, "%s, %s, %i, Called.", __FILE__, __FUNCTION__, __LINE__);
 
   // TODO: wait add wait for async stream creation
   const unsigned int iStreamID = Settings->iStreamID;
@@ -367,7 +367,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamInitialize(const ADDON_HANDLE handle, con
   CSingleLock lock(m_Lock);
   if (!m_ADSPStreams[iStreamID])
   {
-    KODI->Log(LOG_ERROR, "%s, Requested stream: %i was not created! Consquently initialization of this stream failed!", __FUNCTION__, iStreamID);
+    KODI->Log(LOG_ERROR, "%s, %s, %i, Requested stream: %i was not created! Consquently initialization of this stream failed!", __FILE__, __FUNCTION__, __LINE__, iStreamID);
     return AE_DSP_ERROR_FAILED;
   }
 
@@ -378,7 +378,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamDestroy(unsigned int Id)
 {
   if (Id >= AE_DSP_STREAM_MAX_STREAMS)
   {
-    KODI->Log(LOG_ERROR, "StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!");
+    KODI->Log(LOG_ERROR, "%s, %s, %i, StreamID was equal or greater than AE_DSP_STREAM_MAX_STREAMS!");
     return AE_DSP_ERROR_UNKNOWN;
   }
 
