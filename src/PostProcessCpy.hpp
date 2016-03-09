@@ -35,11 +35,11 @@ public:
 const std::string CPostProcessCpyModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_POSTPROCESS_CPY];
 
 
-class CPostProcessingCpy : REGISTER_ADSP_MODE_CLASS(CPostProcessingCpy, CPostProcessCpyModeName, CPostProcessCpyModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS)
+class CPostProcessCpy : REGISTER_ADSP_MODE_CLASS(CPostProcessCpy, CPostProcessCpyModeName, CPostProcessCpyModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS)
 {
 public:
-  CPostProcessingCpy();
-  ~CPostProcessingCpy();
+  CPostProcessCpy();
+  ~CPostProcessCpy();
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
   virtual void ModeDestroy();
