@@ -1,3 +1,4 @@
+#pragma once
 /*
  *      Copyright (C) 2005-2016 Team Kodi
  *      http://xbmc.org
@@ -20,11 +21,11 @@
 
 
 
-#include "ADSPModeInfos.h"
+#include <kodi/kodi_adsp_types.h>
 
-const char* CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_MAX] =
+
+class CInputResampleCpyModeSettings: public AE_DSP_MODES::AE_DSP_MODE
 {
-  "Preprocess Copy Mode",
-  "Postprocess Copy Mode",
-  "Input Resample Copy Mode"
+public:
+  CInputResampleCpyModeSettings();
 };
