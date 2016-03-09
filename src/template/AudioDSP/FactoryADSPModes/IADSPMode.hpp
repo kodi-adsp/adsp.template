@@ -22,6 +22,8 @@
 
 #include "kodi/kodi_adsp_types.h"
 
+#include "template/ADSPHelpers.h"
+
 class CFactoryADSPModes;
 
 
@@ -52,7 +54,12 @@ public:
 
   AE_DSP_ERROR Initialize(const AE_DSP_SETTINGS *Settings)
   {
-    // ToDo: Only call ModeCreate(...) and copy new settings if requiered
+    if (!CADSPHelpers::CmpStreamSettings(*Settings, m_StreamSettings))
+    {
+      return AE_DSP_ERROR_NO_ERROR;
+    }
+
+    // If stream settings have changed then copy them and recreate AudioDSP processing mode
     memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
 
     return ModeCreate(m_StreamSettings, m_StreamProperties);

@@ -444,6 +444,25 @@ float CADSPHelpers::Convert_Value_TO_dB(float Scale)
   return 20.0f*log10f(abs(Scale));
 }
 
+bool CADSPHelpers::CmpStreamSettings(const AE_DSP_SETTINGS& Settings1, const AE_DSP_SETTINGS& Settings2)
+{
+  return  Settings1.iStreamID               == Settings2.iStreamID                &&
+          Settings1.iStreamType             == Settings2.iStreamType              &&
+          Settings1.iInChannels             == Settings2.iInChannels              &&
+          Settings1.lInChannelPresentFlags  == Settings2.lInChannelPresentFlags   &&
+          Settings1.iInFrames               == Settings2.iInFrames                &&
+          Settings1.iInSamplerate           == Settings2.iInSamplerate            &&
+          Settings1.iProcessFrames          == Settings2.iProcessFrames           &&
+          Settings1.iProcessSamplerate      == Settings2.iProcessSamplerate       &&
+          Settings1.iOutChannels            == Settings2.iOutChannels             &&
+          Settings1.lOutChannelPresentFlags == Settings2.lOutChannelPresentFlags  &&
+          Settings1.iOutFrames              == Settings2.iOutFrames               &&
+          Settings1.iOutSamplerate          == Settings2.iOutSamplerate           &&
+          Settings1.bInputResamplingActive  == Settings2.bInputResamplingActive   &&
+          Settings1.bStereoUpmix            == Settings2.bStereoUpmix             &&
+          Settings1.iQualityLevel           == Settings2.iQualityLevel;
+}
+
 // reserved for future implementation
 //string CADSPHelpers::GetAddonHomePath()
 //{

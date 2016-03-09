@@ -43,6 +43,16 @@ public:
   static float                  Convert_dB_TO_Value(float dB);
   static float                  Convert_Value_TO_dB(float Scale);
 
+  /** @name Compare AudioDSP stream settings
+   */
+  /*!
+   * @brief You can use this function to compare two stream settings.
+   * @param Settings1 First stream settings.
+   * @param Settings2 Second stream settings.
+   * @return True if they're equal otherwise false.
+   */
+  static bool                   CmpStreamSettings(const AE_DSP_SETTINGS& Settings1, const AE_DSP_SETTINGS& Settings2);
+
   // reserved for future implementation
   //static std::string            GetAddonHomePath();
   //static std::string            GetAddonSettingsFile();
