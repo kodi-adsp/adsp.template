@@ -42,7 +42,7 @@ public:
   ~CPreProcessingCpy();
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
-  virtual AE_DSP_ERROR ModeDestroy();
+  virtual void ModeDestroy();
 
   // Requiered Processing Methods
   virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);

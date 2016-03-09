@@ -49,9 +49,8 @@ AE_DSP_ERROR CPostProcessingCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, con
 }
 
 
-AE_DSP_ERROR CPostProcessingCpy::ModeDestroy()
+void CPostProcessingCpy::ModeDestroy()
 {
-  return AE_DSP_ERROR_NO_ERROR;
 }
 
 

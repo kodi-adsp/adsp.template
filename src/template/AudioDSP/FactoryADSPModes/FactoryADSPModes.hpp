@@ -115,7 +115,7 @@ public:
   };
 
   static AE_DSP_ERROR Create(int ModeID, AE_DSP_MODE_TYPE ModeType, IADSPMode *&InterfacePtr);
-  static AE_DSP_ERROR Destroy(IADSPMode *&ADSPMode);
+  static void Destroy(IADSPMode *&ADSPMode);
   static int RegisterADSPMode(const std::string ModeName, AE_DSP_MODE_TYPE ModeType, ADSPModeCallbacks_t Callbacks);
   static AE_DSP_ERROR GetAvailableModes(ADSPModeInfoVector_t &ModeInfos);
   static AE_DSP_ERROR GetADSPModeSettings(int ModeID, AE_DSP_MODE_TYPE ModeType, AE_DSP_MODES::AE_DSP_MODE &adspModeSettings);

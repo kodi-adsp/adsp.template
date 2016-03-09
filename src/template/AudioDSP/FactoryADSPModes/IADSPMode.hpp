@@ -84,7 +84,7 @@ public:
 
 // Requiered Create/Destroy Methods
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties) = 0;
-  virtual AE_DSP_ERROR ModeDestroy() = 0;
+  virtual void ModeDestroy() = 0;
 
 // Requiered Processing Methods
   virtual unsigned int ModeProcess(float **Array_in, float **Array_out, unsigned int Samples) = 0;

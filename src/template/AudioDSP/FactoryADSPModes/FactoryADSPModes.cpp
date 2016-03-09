@@ -45,15 +45,13 @@ AE_DSP_ERROR CFactoryADSPModes::Create(int ModeID, AE_DSP_MODE_TYPE ModeType, IA
 }
 
 
-AE_DSP_ERROR CFactoryADSPModes::Destroy(IADSPMode *&ADSPMode)
+void CFactoryADSPModes::Destroy(IADSPMode *&ADSPMode)
 {
   if (ADSPMode)
   {
     delete ADSPMode;
     ADSPMode = NULL;
   }
-
-  return AE_DSP_ERROR_NO_ERROR;
 }
 
 
