@@ -23,6 +23,10 @@
 #include "ADSPStream.hpp"
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 
+#include "include/client.h"
+
+using namespace ADDON;
+
 
 CADSPStream::CADSPStream()
 {
@@ -48,6 +52,16 @@ AE_DSP_ERROR CADSPStream::Create(const AE_DSP_SETTINGS *Settings, const AE_DSP_S
 
 AE_DSP_ERROR CADSPStream::Destroy()
 {
+  for (ADSPModeVector_t::iterator iter = m_ADSPModeVector.begin(); iter != m_ADSPModeVector.end(); ++iter)
+  {
+    if (*iter)
+    {
+      (*iter)->ModeDestroy();
+      CFactoryADSPModes::Destroy(*iter);
+      *iter = NULL;
+    }
+  }
+
   return AE_DSP_ERROR_NO_ERROR;
 }
 
