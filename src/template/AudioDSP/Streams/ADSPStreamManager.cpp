@@ -45,7 +45,7 @@ CADSPStreamManager::CADSPStreamManager()
     
   KODI->Log(LOG_DEBUG, "Available ADSP Modes:");
 
-  for (int ii = 0; ii < adspModes.size(); ii++)
+  for (size_t ii = 0; ii < adspModes.size(); ii++)
   {
     KODI->Log(LOG_DEBUG, "Name: %s, Internal ID: %i, ADSP Type: %i", adspModes[ii].ModeName.c_str(), adspModes[ii].ModeInfo.ModeID, adspModes[ii].ModeInfo.ModeType);
     if (adspModes[ii].ModeInfo.ModeType >= 0)

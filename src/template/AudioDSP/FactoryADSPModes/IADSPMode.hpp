@@ -22,9 +22,13 @@
 
 #include "kodi/kodi_adsp_types.h"
 
+class CFactoryADSPModes;
+
 
 class IADSPMode
 {
+  friend class CFactoryADSPModes;
+
 public:
   IADSPMode()
   {
@@ -64,10 +68,10 @@ public:
   * @return AE_DSP_ERROR_INVALID_PARAMETERS: if your input parameters were invalid.
   * AE_DSP_ERROR_NO_ERROR: if all was ok.
   */
-  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS& pSettings, const AE_DSP_STREAM_PROPERTIES& pProperties, void *CustomStreamInfos = NULL)
+  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS& Settings, const AE_DSP_STREAM_PROPERTIES& Properties, void *CustomStreamInfos = NULL)
   {
-    memcpy((void*)&pSettings, &m_StreamSettings, sizeof(AE_DSP_SETTINGS));
-    memcpy((void*)&pProperties, &m_StreamProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
+    memcpy((void*)&Settings, &m_StreamSettings, sizeof(AE_DSP_SETTINGS));
+    memcpy((void*)&Properties, &m_StreamProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
 
     //if (CustomStreamInfos)
     //{
@@ -79,7 +83,7 @@ public:
 
 
 // Requiered Create/Destroy Methods
-  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &pProperties) = 0;
+  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties) = 0;
   virtual AE_DSP_ERROR ModeDestroy() = 0;
 
 // Requiered Processing Methods
@@ -102,20 +106,27 @@ public:
   * Ask the add-on about a requested processing mode that it is supported on the current
   * stream. Is called about every add-on mode after successed StreamCreate.
   * @param Type The processing mode type, see AE_DSP_MODE_TYPE for definitions
-  * @param Mode_id The mode inside add-on which must be performed on call.
+  * @param ModeID The mode inside add-on which must be performed on call.
   * Id is set from add-on and can be modified templateConfiguration.cpp by
   * editing adspPreModeNum array. Best practise is to use a global enum to
   * have only a mode id once. For example see adspProcessingModeIDs in
   * templateConfiguration.h
-  * @param Unique_db_mode_id The Mode unique id generated from dsp database.
+  * @param UniqueDBModeID The Mode unique id generated from dsp database.
   * @return AE_DSP_ERROR_NO_ERROR if the properties were fetched successfully.
   * If the stream is not supported the ADSP addon must return AE_DSP_ERROR_IGNORE_ME.
   * @remarks By default this method accept all processing types.
   * If you wanna filter processing mode types then you have to overload this method in
   * your processing class.
   */
-  virtual AE_DSP_ERROR StreamIsModeSupported(AE_DSP_MODE_TYPE Type, unsigned int Mode_id, int Unique_db_mode_id)
+  virtual AE_DSP_ERROR StreamIsModeSupported(AE_DSP_MODE_TYPE Type, unsigned int ModeID, int UniqueDBModeID)
   {
+    UniqueDBModeID; // prevent compiler warnings, because adsp.template doesn't use this information
+
+    if (Type != m_ModeType || ModeID != m_ModeID)
+    {
+      return AE_DSP_ERROR_IGNORE_ME;
+    }
+
     return AE_DSP_ERROR_NO_ERROR;
   }
 
@@ -145,6 +156,8 @@ public:
   }
 
 protected:
+  unsigned int      m_ModeID;
+  AE_DSP_MODE_TYPE  m_ModeType;
   ////! ToDo: description.
   ///*!
   //* Returns ToDo!

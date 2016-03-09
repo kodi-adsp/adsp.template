@@ -54,7 +54,12 @@ AE_DSP_ERROR CADSPStream::Destroy()
 
 AE_DSP_ERROR CADSPStream::StreamIsModeSupported(AE_DSP_MODE_TYPE ModeType, unsigned int ModeID, int UniqueDBModeID)
 {
-  return AE_DSP_ERROR_NO_ERROR;
+  if (ModeID >= m_MaxADSPModes)
+  {
+    AE_DSP_ERROR_FAILED;
+  }
+
+  return m_ADSPModes[ModeID]->StreamIsModeSupported(ModeType, ModeID, UniqueDBModeID);
 }
 
 

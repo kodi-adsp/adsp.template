@@ -39,6 +39,8 @@ AE_DSP_ERROR CFactoryADSPModes::Create(int ModeID, AE_DSP_MODE_TYPE ModeType, IA
   }
 
   InterfacePtr = (*iter).second.CreateADSPMode();
+  InterfacePtr->m_ModeID   = ModeID;
+  InterfacePtr->m_ModeType = ModeType;
   return AE_DSP_ERROR_NO_ERROR;
 }
 
