@@ -20,19 +20,19 @@ msgstr ""
 #settings labels
 
 msgctxt "#30000"
-msgid "Input Resample Mode 1"
+msgid "Input Resample Copy Mode"
 msgstr ""
 
 msgctxt "#30001"
-msgid "Setup Input Resample Mode 1"
+msgid "Setup Input Resample Copy Mode"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Here you can place your description for Input Resample Mode 1 (see help for more details)"
+msgid "Here you can place your description for Input Resample Copy Mode (see help for more details)"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Here you can place your help for Input Resample Mode 1. All strings are placed in resources/language/<Language>/strings.po"
+msgid "Here you can place your help for Input Resample Copy Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
 msgctxt "#30004"
@@ -52,51 +52,51 @@ msgid "Here you can place your help for Preprocess Copy Mode. All strings are pl
 msgstr ""
 
 msgctxt "#30008"
-msgid "Master Mode 1"
+msgid "Master Copy Mode"
 msgstr ""
 
 msgctxt "#30009"
-msgid "Setup Master Mode 1"
+msgid "Setup Master Copy Mode"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Here you can place your description for Master Mode 1 (see help for more details)"
+msgid "Here you can place your description for Master Copy Mode (see help for more details)"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Here you can place your help for Master Mode 1. All strings are placed in resources/language/<Language>/strings.po"
+msgid "Here you can place your help for Master Copy Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Postprocess Mode 1"
+msgid "Postprocess Copy Mode"
 msgstr ""
 
 msgctxt "#30013"
-msgid "Setup Postprocess Mode 1"
+msgid "Setup Postprocess Copy Mode"
 msgstr ""
 
 msgctxt "#30014"
-msgid "Here you can place your description for Postprocess Mode 1 (see help for more details)"
+msgid "Here you can place your description for Postprocess Copy Mode (see help for more details)"
 msgstr ""
 
 msgctxt "#30015"
-msgid "Here you can place your help for Postprocess Mode 1. All strings are placed in resources/language/<Language>/strings.po"
+msgid "Here you can place your help for Postprocess Copy Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
 msgctxt "#30016"
-msgid "Output Resample Mode 1"
+msgid "Output Resample Copy Mode"
 msgstr ""
 
 msgctxt "#30017"
-msgid "Setup Output Resample Mode 1"
+msgid "Setup Output Resample Copy Mode"
 msgstr ""
 
 msgctxt "#30018"
-"Here you can place your description for Output Resample Mode 1 (see help for more details)"
+"Here you can place your description for Output Resample Copy Mode (see help for more details)"
 msgstr ""
 
 msgctxt "#30019"
-msgid "Here you can place your help for Output Resample Mode 1. All strings are placed in resources/language/<Language>/strings.po"
+msgid "Here you can place your help for Output Resample Copy Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
 msgctxt "#30251"
