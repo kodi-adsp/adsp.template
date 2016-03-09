@@ -146,8 +146,8 @@ void ADDON_Destroy()
   //g_AddonHandler.Destroy();
 
   // TODO: why does Kodi crash, when g_StreamManager is deleted?
-  //delete g_StreamManager;
-  //g_StreamManager = NULL;
+  delete g_StreamManager;
+  g_StreamManager = NULL;
 
   SAFE_DELETE(ADSP);
   SAFE_DELETE(GUI);
