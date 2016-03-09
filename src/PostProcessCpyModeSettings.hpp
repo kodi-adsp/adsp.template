@@ -21,18 +21,11 @@
 
 
 
-class CADSPModeInfos
+#include <kodi/kodi_adsp_types.h>
+
+
+class CPostProcessCpyModeSettings: public AE_DSP_MODES::AE_DSP_MODE
 {
 public:
-  typedef enum
-  {
-    ADSP_MODE_ID_INVALID = -1,
-    
-    ADSP_MODE_ID_PREPROCESS_CPY,
-    ADSP_MODE_ID_POSTPROCESS_CPY,
-    
-    ADSP_MODE_ID_MAX
-  }ADSP_MODE_IDS;
-
-  static const char* Strs[ADSP_MODE_ID_MAX];
+  CPostProcessCpyModeSettings();
 };

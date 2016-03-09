@@ -148,7 +148,11 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/PreProcessCpyModeSettings.cpp
                               src/PreProcessCpyModeSettings.hpp
                               src/PreProcessCpy.cpp
-                              src/PreProcessCpy.hpp)
+                              src/PreProcessCpy.hpp
+                              src/PostProcessCpyModeSettings.cpp
+                              src/PostProcessCpyModeSettings.hpp
+                              src/PostProcessCpy.cpp
+                              src/PostProcessCpy.hpp)
                               
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 

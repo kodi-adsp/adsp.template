@@ -20,10 +20,24 @@
 
 
 
+#include "PostProcessCpyModeSettings.hpp"
+
 #include "ADSPModeInfos.h"
 
-const char* CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_MAX] =
+
+CPostProcessCpyModeSettings::CPostProcessCpyModeSettings()
 {
-  "Preprocess Mode Copy",
-  "Postprocess Mode Copy"
-};
+  strcpy(this->strModeName, CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_POSTPROCESS_CPY]);
+
+  this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
+  this->bHasSettingsDialog    = false;
+  this->bIsDisabled           = true;
+
+  this->iModeName         = 30012;
+  this->iModeSetupName    = 30013;
+  this->iModeDescription  = 30014;
+  this->iModeHelp         = 30015;
+
+  strcpy(this->strOwnModeImage,       "img1.jpg");
+  strcpy(this->strOverrideModeImage,  "img1.jpg");
+}
