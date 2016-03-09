@@ -58,7 +58,6 @@ AE_DSP_ERROR CPreProcessingCpy::ModeDestroy()
 // Requiered Processing Methods
 unsigned int CPreProcessingCpy::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
-  
   for (int ch = 0; ch < m_InChannels; ch++)
   { 
     memcpy(ArrayOut[m_ChannelMappingIdx[ch]], ArrayIn[m_ChannelMappingIdx[ch]], sizeof(float)*Samples);

@@ -48,8 +48,9 @@ public:
   virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);
 
 private:
-  int m_InChannels;                         /*!< @brief the amount of input channels */
+  int           m_InChannels;               /*!< @brief the amount of input channels */
   unsigned long m_InChannelPresentFlags;    /*!< @brief the exact channel mapping flags of input */
-  int m_ChannelMappingIdx[AE_DSP_CH_MAX];
+  
+  int           m_ChannelMappingIdx[AE_DSP_CH_MAX];
   unsigned long m_ChannelMappingFlags[AE_DSP_CH_MAX];
 };
