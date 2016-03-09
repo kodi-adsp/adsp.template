@@ -41,9 +41,15 @@ public:
   CPreProcessingCpy();
   ~CPreProcessingCpy();
 
-  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &settings, const AE_DSP_STREAM_PROPERTIES &pProperties);
+  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
   virtual AE_DSP_ERROR ModeDestroy();
 
   // Requiered Processing Methods
-  virtual unsigned int ModeProcess(float **Array_in, float **Array_out, unsigned int Samples);
+  virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);
+
+private:
+  int m_InChannels;                         /*!< @brief the amount of input channels */
+  unsigned long m_InChannelPresentFlags;    /*!< @brief the exact channel mapping flags of input */
+  int m_ChannelMappingIdx[AE_DSP_CH_MAX];
+  unsigned long m_ChannelMappingFlags[AE_DSP_CH_MAX];
 };
