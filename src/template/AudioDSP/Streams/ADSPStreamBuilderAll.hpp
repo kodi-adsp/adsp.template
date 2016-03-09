@@ -31,6 +31,7 @@ public:
   ~CADSPStreamBuilderAll();
 
   virtual AE_DSP_ERROR ConstructStream(CADSPStream &ADSPStream, const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties);
+  virtual AE_DSP_ERROR InitializeStream(CADSPStream &ADSPStream, const AE_DSP_SETTINGS *Settings);
 
   virtual AE_DSP_ERROR AddMode(CADSPStream &ADSPStream, IADSPMode *ADSPMode);
   virtual AE_DSP_ERROR AddMode(CADSPStream &ADSPStream, unsigned int ModeID);

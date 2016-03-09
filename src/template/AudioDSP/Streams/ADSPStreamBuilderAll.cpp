@@ -69,15 +69,35 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
     }
   }
 
-  //if (modeVector.size() <= 0)
-  //{
-  //  KODI->Log(LOG_ERROR, "%s, Failed to create entire Stream!", __FUNCTION__);
-  //  return AE_DSP_ERROR_FAILED;
-  //}
+  if (modeVector.size() <= 0)
+  {
+    KODI->Log(LOG_ERROR, "%s, Failed to create entire Stream!", __FUNCTION__);
+    return AE_DSP_ERROR_FAILED;
+  }
 
   CADSPStreamAccessor::m_MaxADSPModes(ADSPStream) = modeVector.size();
-  //IADSPMode** modes = &CADSPStreamAccessor::m_ADSPModes(ADSPStream);
-  //modes = modeVector.data();
+  CADSPStreamAccessor::m_ADSPModes(ADSPStream)    = modeVector.data();
+
+  return AE_DSP_ERROR_NO_ERROR;
+}
+
+
+AE_DSP_ERROR CADSPStreamBuilderAll::InitializeStream(CADSPStream &ADSPStream, const AE_DSP_SETTINGS *Settings)
+{
+  CADSPStream::ADSPModeVector_t& modeVector = CADSPStreamAccessor::m_ADSPModeVector(ADSPStream);
+  if (modeVector.size() <= 0)
+  {
+    return AE_DSP_ERROR_FAILED;
+  }
+
+  for (CADSPStream::ADSPModeVector_t::iterator iter = modeVector.begin(); iter != modeVector.end(); ++iter)
+  {
+    AE_DSP_ERROR err = (*iter)->Initialize(Settings);
+    if (err != AE_DSP_ERROR_NO_ERROR)
+    {
+      return err;
+    }
+  }
 
   return AE_DSP_ERROR_NO_ERROR;
 }

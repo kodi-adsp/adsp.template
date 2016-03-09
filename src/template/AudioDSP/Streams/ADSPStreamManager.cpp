@@ -336,6 +336,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
   if (err != AE_DSP_ERROR_NO_ERROR)
   {
     delete adspStream;
+    KODI->Log(LOG_ERROR, "%s, Requested stream: %i creation failed!", __FUNCTION__, iStreamID);
 
     return err;
   }
@@ -359,8 +360,18 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
 AE_DSP_ERROR CADSPStreamManager::StreamInitialize(const ADDON_HANDLE handle, const AE_DSP_SETTINGS *Settings)
 {
   KODI->Log(LOG_DEBUG, "Called %s.", __FUNCTION__);
+
+  // TODO: wait add wait for async stream creation
+  const unsigned int iStreamID = Settings->iStreamID;
   
-  return AE_DSP_ERROR_NO_ERROR;
+  CSingleLock lock(m_Lock);
+  if (!m_ADSPStreams[iStreamID])
+  {
+    KODI->Log(LOG_ERROR, "%s, Requested stream: %i was not created! Consquently initialization of this stream failed!", __FUNCTION__, iStreamID);
+    return AE_DSP_ERROR_FAILED;
+  }
+
+  return m_ADSPStreamBuilder->InitializeStream(*m_ADSPStreams[iStreamID], Settings);
 }
 
 AE_DSP_ERROR CADSPStreamManager::StreamDestroy(unsigned int Id)

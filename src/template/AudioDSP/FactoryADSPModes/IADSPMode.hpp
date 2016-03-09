@@ -26,18 +26,70 @@
 class IADSPMode
 {
 public:
-  // Requiered Create/Destroy Methods
-  virtual AE_DSP_ERROR Create(const AE_DSP_SETTINGS *settings, const AE_DSP_STREAM_PROPERTIES *pProperties) = 0;
-  virtual AE_DSP_ERROR Destroy() = 0;
+  IADSPMode()
+  {
+    ResetStreamSettings();
+  }
 
-  // Requiered Processing Methods
-  virtual unsigned int Process(float **Array_in, float **Array_out, unsigned int Samples) = 0;
+  virtual ~IADSPMode()
+  {
+    ResetStreamSettings();
+  }
+
+
+// Fixed public methods
+  AE_DSP_ERROR Create(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties)
+  {
+    memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
+    memcpy((void*)&m_StreamProperties, pProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
+
+    return ModeCreate(m_StreamSettings, m_StreamProperties);
+  }
+
+  AE_DSP_ERROR Initialize(const AE_DSP_SETTINGS *Settings)
+  {
+    // ToDo: Only call ModeCreate(...) and copy new settings if requiered
+    memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
+
+    return ModeCreate(m_StreamSettings, m_StreamProperties);
+  }
+
+  //!  This gets the current stream settings and properties. 
+  /*!
+  * Get stream settings and properties. For details see  and AE_DSP_STREAM_PROPERTIES structures.
+  * If the add-on operate with buffered arrays and the output size can be higher as
+  * the input it becomes asked about needed size before any PostProcess call.
+  * @param pSettings Stream settings for details see AE_DSP_SETTINGS.
+  * @param pProperties Stream properties for details see AE_DSP_STREAM_PROPERTIES.
+  * @return AE_DSP_ERROR_INVALID_PARAMETERS: if your input parameters were invalid.
+  * AE_DSP_ERROR_NO_ERROR: if all was ok.
+  */
+  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS& pSettings, const AE_DSP_STREAM_PROPERTIES& pProperties, void *CustomStreamInfos = NULL)
+  {
+    memcpy((void*)&pSettings, &m_StreamSettings, sizeof(AE_DSP_SETTINGS));
+    memcpy((void*)&pProperties, &m_StreamProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
+
+    //if (CustomStreamInfos)
+    //{
+    //  return GetCustomStreamInfos(CustomStreamInfos);
+    //}
+
+    return AE_DSP_ERROR_NO_ERROR;
+  }
+
+
+// Requiered Create/Destroy Methods
+  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &pProperties) = 0;
+  virtual AE_DSP_ERROR ModeDestroy() = 0;
+
+// Requiered Processing Methods
+  virtual unsigned int ModeProcess(float **Array_in, float **Array_out, unsigned int Samples) = 0;
   
 
 // Optional common Methods
   virtual unsigned int NeededSamplesize()
   {
-    return 1024;
+    return 0;
   }
 
   virtual float GetDelay()
@@ -67,33 +119,6 @@ public:
     return AE_DSP_ERROR_NO_ERROR;
   }
 
-  //!  This gets the current stream settings and properties. 
-  /*!
-  * Get stream settings and properties. For details see  and AE_DSP_STREAM_PROPERTIES structures.
-  * If the add-on operate with buffered arrays and the output size can be higher as
-  * the input it becomes asked about needed size before any PostProcess call.
-  * @param pSettings Stream settings for details see AE_DSP_SETTINGS.
-  * @param pProperties Stream properties for details see AE_DSP_STREAM_PROPERTIES.
-  * @return AE_DSP_ERROR_INVALID_PARAMETERS: if your input parameters were invalid.
-  * AE_DSP_ERROR_NO_ERROR: if all was ok.
-  */
-  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS *pSettings, const AE_DSP_STREAM_PROPERTIES* pProperties, void *CustomStreamInfos = NULL)
-  {
-    if (!pSettings || !pProperties)
-    {
-      return AE_DSP_ERROR_INVALID_PARAMETERS;
-    }
-
-    memcpy((void*)pSettings, &m_StreamSettings, sizeof(AE_DSP_SETTINGS));
-    memcpy((void*)pProperties, &m_StreamProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
-
-    if (CustomStreamInfos)
-    {
-      return GetCustomStreamInfos(CustomStreamInfos);
-    }
-
-    return AE_DSP_ERROR_NO_ERROR;
-  }
 
 // Optional Methods for Master Modes
   virtual int MasterProcessGetOutChannels(unsigned long &OutChannelFlags)
@@ -120,15 +145,22 @@ public:
   }
 
 protected:
-  //! ToDo: description.
-  /*!
-  * Returns ToDo!
-  * @return ToDo!
-  * @remarks ToDo!
-  */
-  virtual AE_DSP_ERROR GetCustomStreamInfos(void *CustomStreamSettings)
+  ////! ToDo: description.
+  ///*!
+  //* Returns ToDo!
+  //* @return ToDo!
+  //* @remarks ToDo!
+  //*/
+  //virtual AE_DSP_ERROR GetCustomStreamInfos(void *CustomStreamSettings)
+  //{
+  //  return AE_DSP_ERROR_NO_ERROR;
+  //}
+
+private:
+  void ResetStreamSettings()
   {
-    return AE_DSP_ERROR_NO_ERROR;
+    memset(&m_StreamSettings, 0, sizeof(AE_DSP_SETTINGS));
+    memset(&m_StreamProperties, 0, sizeof(AE_DSP_STREAM_PROPERTIES));
   }
 
   //! Used stream settings for details see AE_DSP_SETTINGS.

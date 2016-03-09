@@ -26,6 +26,12 @@
 
 CADSPStream::CADSPStream()
 {
+  m_MaxADSPModes = 0;
+  m_ADSPModes    = NULL;
+
+  m_CurrentMasterMode         = NULL;
+  m_CurrentInputResampleMode  = NULL;
+  m_CurrentOutputResampleMode = NULL;
 }
 
 
@@ -36,9 +42,6 @@ CADSPStream::~CADSPStream()
 
 AE_DSP_ERROR CADSPStream::Create(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties)
 {
-  CFactoryADSPModes::ADSPModeInfoVector_t adspModes;
-  CFactoryADSPModes::GetAvailableModes(adspModes);
-
   return AE_DSP_ERROR_NO_ERROR;
 }
 
@@ -55,16 +58,28 @@ AE_DSP_ERROR CADSPStream::StreamIsModeSupported(AE_DSP_MODE_TYPE ModeType, unsig
 }
 
 
-unsigned int CADSPStream::ProcessMode(unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples)
+unsigned int CADSPStream::ProcessMode(unsigned int ModeID, float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
-  return Samples;
+  if (ModeID >= m_MaxADSPModes)
+  {
+    return 0;
+  }
+
+  return m_ADSPModes[ModeID]->ModeProcess(ArrayIn, ArrayOut, Samples);
 }
 
-unsigned int CADSPStream::ProcessMode(AE_DSP_MODE_TYPE ModeType, float **Array_in, float **Array_out, unsigned int Samples)
+unsigned int CADSPStream::ProcessMode(AE_DSP_MODE_TYPE ModeType, float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
-  return Samples;
+  IADSPMode *mode = GetSingleMode(ModeType);
+  if (!mode)
+  {
+    return 0;
+  }
+
+  return mode->ModeProcess(ArrayIn, ArrayOut, Samples);
 }
 
+// TODO: implement common buffer for input process
 unsigned int CADSPStream::ProcessMode(AE_DSP_MODE_TYPE ModeType, const float **Array_in, unsigned int Samples)
 {
   return Samples;
@@ -72,43 +87,99 @@ unsigned int CADSPStream::ProcessMode(AE_DSP_MODE_TYPE ModeType, const float **A
 
 unsigned int CADSPStream::NeededSamplesize(unsigned int ModeID)
 {
-  return 0;
+  if (ModeID >= m_MaxADSPModes)
+  {
+    return 0;
+  }
+
+  return m_ADSPModes[ModeID]->NeededSamplesize();
 }
 
 unsigned int CADSPStream::NeededSamplesize(AE_DSP_MODE_TYPE ModeType)
 {
-  return 0;
+  IADSPMode *mode = GetSingleMode(ModeType);
+  if (!mode)
+  {
+    return 0;
+  }
+
+  return mode->NeededSamplesize();
 }
 
 float CADSPStream::GetDelay(unsigned int ModeID)
 {
-  return 0.0f;
+  if (ModeID >= m_MaxADSPModes)
+  {
+    return 0;
+  }
+
+  return m_ADSPModes[ModeID]->GetDelay();
 }
 
 float CADSPStream::GetDelay(AE_DSP_MODE_TYPE ModeType)
 {
-  return 0.0f;
+  IADSPMode *mode = GetSingleMode(ModeType);
+  if (!mode)
+  {
+    return 0;
+  }
+
+  return mode->GetDelay();
 }
 
 
-// Optional Methods for Master Modes
 int CADSPStream::MasterProcessGetOutChannels(unsigned long &OutChannelFlags)
 {
+  if (m_CurrentMasterMode)
+  {
+    return m_CurrentMasterMode->MasterProcessGetOutChannels(OutChannelFlags);
+  }
+
+  OutChannelFlags = AE_DSP_PRSNT_CH_UNDEFINED;
   return 0;
 }
 
 const char* CADSPStream::MasterProcessGetStreamInfoString()
 {
+  if (m_CurrentMasterMode)
+  {
+    return m_CurrentMasterMode->MasterProcessGetStreamInfoString();
+  }
+
   return NULL;
 }
 
 AE_DSP_ERROR CADSPStream::MasterProcessSetMode(AE_DSP_STREAMTYPE StreamType, unsigned int ModeID, int UniqueDBModeID)
 {
+  if (ModeID >= m_MaxADSPModes)
+  {
+    return AE_DSP_ERROR_FAILED;
+  }
+
   return AE_DSP_ERROR_NO_ERROR;
 }
 
-// Optional Resampling Methods
+
 int CADSPStream::ResamplingRate(AE_DSP_MODE_TYPE ModeType)
 {
+  switch (ModeType)
+  {
+    case AE_DSP_MODE_TYPE_INPUT_RESAMPLE:
+    {
+      if (m_CurrentInputResampleMode)
+      {
+        return m_CurrentInputResampleMode->ResamplingRate();
+      }
+    }
+    break;
+    
+    case AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE:
+      if (m_CurrentInputResampleMode)
+      {
+        return m_CurrentOutputResampleMode->ResamplingRate();
+      }
+    break;
+  }
+
   return 0;
 }

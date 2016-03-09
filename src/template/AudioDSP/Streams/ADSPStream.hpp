@@ -45,8 +45,8 @@ public:
 
   AE_DSP_ERROR StreamIsModeSupported(AE_DSP_MODE_TYPE ModeType, unsigned int ModeID, int UniqueDBModeID);
 
-  unsigned int ProcessMode(unsigned int Mode_id, float **Array_in, float **Array_out, unsigned int Samples);
-  unsigned int ProcessMode(AE_DSP_MODE_TYPE ModeType, float **Array_in, float **Array_out, unsigned int Samples);
+  unsigned int ProcessMode(unsigned int ModeID, float **ArrayIn, float **ArrayOut, unsigned int Samples);
+  unsigned int ProcessMode(AE_DSP_MODE_TYPE ModeType, float **ArrayIn, float **ArrayOut, unsigned int Samples);
   unsigned int ProcessMode(AE_DSP_MODE_TYPE ModeType, const float **Array_in, unsigned int Samples);
 
   unsigned int NeededSamplesize(unsigned int ModeID);
@@ -63,7 +63,32 @@ public:
   int ResamplingRate(AE_DSP_MODE_TYPE ModeType);
 
 private:
+  // Gets current active master, input- or output-resampling process by mode type
+  inline IADSPMode* GetSingleMode(AE_DSP_MODE_TYPE ModeType)
+  {
+    IADSPMode *mode = NULL;
+    switch (ModeType)
+    {
+      case AE_DSP_MODE_TYPE_INPUT_RESAMPLE:
+        mode = m_CurrentInputResampleMode;
+      break;
+
+      case AE_DSP_MODE_TYPE_MASTER_PROCESS:
+        mode = m_CurrentMasterMode;
+      break;
+
+      case AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE:
+        mode = m_CurrentOutputResampleMode;
+      break;
+    }
+
+    return mode;
+  }
+
   ADSPModeVector_t  m_ADSPModeVector;
   unsigned int      m_MaxADSPModes;
-  IADSPMode         *m_ADSPModes;
+  IADSPMode         **m_ADSPModes;
+  IADSPMode         *m_CurrentMasterMode;
+  IADSPMode         *m_CurrentInputResampleMode;
+  IADSPMode         *m_CurrentOutputResampleMode;
 };
