@@ -60,6 +60,7 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               #src/template/Addon/UI/Model.cpp
                               #src/template/Addon/UI/Observer.cpp
                               #src/template/Addon/UI/View.cpp
+                              src/template/Addon/Process/AddonProcessManager.cpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
                               src/template/AudioDSP/Streams/ADSPStreamManager.cpp
                               src/template/AudioDSP/Streams/ADSPStream.cpp
@@ -108,6 +109,8 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/template/ADSPHelpers.h
                               src/template/doxygenDocu.h
                               src/template/Addon/MessageSystem/Communication/ActorProtocol.h
+                              src/template/Addon/Process/AddonProcessManager.hpp
+                              src/template/Addon/Process/IAddonProcess.hpp
                               src/template/AddonExceptions/IAddonException.h
                               src/template/AddonExceptions/TAddonException.h
                               src/template/configuration/templateConfiguration.h
@@ -156,7 +159,10 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/InputResampleCpyModeSettings.cpp
                               src/InputResampleCpyModeSettings.hpp
                               src/InputResampleCpy.cpp
-                              src/InputResampleCpy.hpp)
+                              src/InputResampleCpy.hpp
+                              
+                              src/CpyModesProcess.cpp
+                              src/CpyModesProcess.hpp)
                               
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 
