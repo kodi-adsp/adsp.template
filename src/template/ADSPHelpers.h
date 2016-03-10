@@ -32,6 +32,7 @@ typedef unsigned long AE_DSP_CHANNEL_FLAGS;
 class CADSPHelpers
 {
 public:
+  static AE_DSP_MENUHOOK_CAT    Translate_ADSPModeType_TO_MenuHook(AE_DSP_MODE_TYPE ModeType);
   static AE_DSP_CHANNEL         Translate_ChFlag_TO_ChID(AE_DSP_CHANNEL_PRESENT ChFlag);
   static AE_DSP_CHANNEL_PRESENT Translate_ChID_TO_ChFlag(AE_DSP_CHANNEL ChID);
   static std::string            Translate_ChFlag_TO_String(AE_DSP_CHANNEL_PRESENT ChFlag);

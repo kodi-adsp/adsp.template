@@ -37,6 +37,35 @@ using namespace std;
   }
 #endif
 
+AE_DSP_MENUHOOK_CAT CADSPHelpers::Translate_ADSPModeType_TO_MenuHook(AE_DSP_MODE_TYPE ModeType)
+{
+  AE_DSP_MENUHOOK_CAT menuHookCat = AE_DSP_MENUHOOK_UNKNOWN;
+  switch (ModeType)
+  {
+    case AE_DSP_MODE_TYPE_INPUT_RESAMPLE:
+      menuHookCat = AE_DSP_MENUHOOK_RESAMPLE;
+    break;
+
+    case AE_DSP_MODE_TYPE_PRE_PROCESS:
+      menuHookCat = AE_DSP_MENUHOOK_PRE_PROCESS;
+    break;
+
+    case AE_DSP_MODE_TYPE_MASTER_PROCESS:
+      menuHookCat = AE_DSP_MENUHOOK_MASTER_PROCESS;
+    break;
+
+    case AE_DSP_MODE_TYPE_POST_PROCESS:
+      menuHookCat = AE_DSP_MENUHOOK_POST_PROCESS;
+    break;
+
+    case AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE:
+      menuHookCat = AE_DSP_MENUHOOK_RESAMPLE;
+    break;
+  }
+
+  return menuHookCat;
+}
+
 // Channel Layouts and channel names are from: https://trac.ffmpeg.org/wiki/AudioChannelManipulation
 AE_DSP_CHANNEL CADSPHelpers::Translate_ChFlag_TO_ChID(AE_DSP_CHANNEL_PRESENT ChFlag)
 {
