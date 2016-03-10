@@ -20,48 +20,49 @@
  */
 
 
-template<class TADSPMode>
-class TStatisticsADSPModes
+template<class T>
+class TCreationStatistics
 {
 public:
-  TStatisticsADSPModes()
+  TCreationStatistics()
   {
-    m_CreatedADSPModes++;
-    m_ActiveADSPModes++;
+    m_Created++;
+    m_Active++;
   }
 
-  ~TStatisticsADSPModes()
+  ~TCreationStatistics()
   {
-    m_DestroyedADSPModes++;
-    m_ActiveADSPModes--;
+    m_Destroyed++;
+    m_Active--;
   }
 
-  static int GetCreatedADSPMode()
+  static int GetStatisticsCreated()
   {
-    return m_CreatedADSPModes;
+    return m_Created;
   }
 
-  static int GetDestroyedADSPMode()
+  static int GetStatisticsActive()
   {
-    return m_DestroyedADSPModes;
+    return m_Active;
   }
 
-  static int GetActiveADSPMode()
+  static int GetStatisticsDestroyed()
   {
-    return m_ActiveADSPModes;
+    return m_Destroyed;
   }
+
 
 private:
-  static int m_CreatedADSPModes;
-  static int m_DestroyedADSPModes;
-  static int m_ActiveADSPModes;
+  static int m_Created;
+  static int m_Active;
+  static int m_Destroyed;
 };
 
-template<class TADSPMode>
-int TStatisticsADSPModes<TADSPMode>::m_CreatedADSPModes;
+template<class T>
+int TCreationStatistics<T>::m_Created;
 
-template<class TADSPMode>
-int TStatisticsADSPModes<TADSPMode>::m_DestroyedADSPModes;
+template<class T>
+int TCreationStatistics<T>::m_Active;
 
-template<class TADSPMode>
-int TStatisticsADSPModes<TADSPMode>::m_ActiveADSPModes;
+template<class T>
+int TCreationStatistics<T>::m_Destroyed;

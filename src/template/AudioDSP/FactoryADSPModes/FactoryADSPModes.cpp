@@ -20,7 +20,9 @@
 
 
 #include "FactoryADSPModes.hpp"
+
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -87,13 +89,16 @@ AE_DSP_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfo
 
   for (ADSPModeNameMap_t::iterator iter = m_ModeNameMappingTable.begin(); iter != m_ModeNameMappingTable.end(); ++iter)
   {
-    ADSPModeInfos modeInfo;
+    ADSPModeInfo_t modeInfo;
     modeInfo.ModeName           = iter->first;
     modeInfo.ModeInfo.ModeID    = iter->second.ModeID;
     modeInfo.ModeInfo.ModeType  = iter->second.ModeType;
 
     ModeInfos.push_back(modeInfo);
   }
+
+  // Later modules will need a consecutive mode id order
+  sort(ModeInfos.begin(), ModeInfos.end(), ModeIDSort);
 
   return AE_DSP_ERROR_NO_ERROR;
 }

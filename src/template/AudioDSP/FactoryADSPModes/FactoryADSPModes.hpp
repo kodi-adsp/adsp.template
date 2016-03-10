@@ -22,7 +22,7 @@
 
 
 #include "IADSPMode.hpp"
-#include "TStatisticsADSPModes.hpp"
+#include "Addon/Utils/TCreationStatistics.hpp"
 #include <kodi/kodi_adsp_types.h>
 
 #include <map>
@@ -63,9 +63,9 @@ public:
   {
     std::string   ModeName;
     ADSPModeKey_t ModeInfo;
-  }ADSPModeInfos;
+  }ADSPModeInfo_t;
 
-  typedef std::vector<ADSPModeInfos> ADSPModeInfoVector_t;
+  typedef std::vector<ADSPModeInfo_t> ADSPModeInfoVector_t;
 
 private:
   typedef IADSPMode* (*ADSPModeCreateCallback)();
@@ -94,7 +94,7 @@ private:
 
 public:
   template<class TADSPMode, class TModeName, class TModeSettings, AE_DSP_MODE_TYPE TType>
-  class TRegisterADSPMode : public TStatisticsADSPModes<TADSPMode>
+  class TRegisterADSPMode : public TCreationStatistics<TADSPMode>
   {
     friend class CFactoryADSPModes;
 
@@ -133,7 +133,12 @@ private:
     return s_ADSPModes;
   }
 
-  static ADSPModeNameMap_t m_ModeNameMappingTable;
+  static bool ModeIDSort(ADSPModeInfo_t &Mode1, ADSPModeInfo_t &Mode2)
+  {
+    return (Mode1.ModeInfo.ModeID < Mode2.ModeInfo.ModeID);
+  }
+
+  static ADSPModeNameMap_t  m_ModeNameMappingTable;
 };
 
 
@@ -155,8 +160,8 @@ CFactoryADSPModes::ADSPModeCallbacks_t
 CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::m_Callbacks =
 {
   CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::Create,
-  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetActiveADSPMode,
-  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetCreatedADSPMode,
-  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetDestroyedADSPMode,
+  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetStatisticsActive,
+  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetStatisticsCreated,
+  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetStatisticsDestroyed,
   CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::GetADSPModeSettings
 };

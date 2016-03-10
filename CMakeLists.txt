@@ -133,9 +133,9 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               #src/template/Addon/UI/Model.hpp
                               #src/template/Addon/UI/Observer.hpp
                               #src/template/Addon/UI/View.hpp
+                              src/template/Addon/Utils/TCreationStatistics.hpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp
                               src/template/AudioDSP/FactoryADSPModes/IADSPMode.hpp
-                              src/template/AudioDSP/FactoryADSPModes/TStatisticsADSPModes.hpp
                               src/template/AudioDSP/Streams/ADSPStreamManager.hpp
                               src/template/AudioDSP/Streams/ADSPStream.hpp
                               src/template/AudioDSP/Streams/IADSPStreamBuilder.hpp
