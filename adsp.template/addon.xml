@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="adsp.template"
-  version="0.0.2"
+  version="1.0.0"
   name="Audio DSP Template"
   provider-name="Team KODI">
   <requires>
