@@ -37,6 +37,7 @@
 #include "include/ADSPAddonHandler.h"
 
 #include "AudioDSP/Streams/ADSPStreamManager.hpp"
+#include "Addon/Process/AddonProcessManager.hpp"
 
 // includes your DSP Processor class
 #include ADSP_PROCESSOR_HEADER_FILE
@@ -111,7 +112,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     SAFE_DELETE(KODI);
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
-  KODI->Log(LOG_DEBUG, "%s, %s, %i, - Creating the Audio DSP add-on template", __FILE__, __FUNCTION__, __LINE__);
+  KODI->Log(LOG_DEBUG, "%s, %i, - Creating the Audio DSP add-on template", __FUNCTION__, __LINE__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
   g_strUserPath   = adspprops->strUserPath;
@@ -123,6 +124,11 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   if (CADSPStreamManager::Create() != AE_DSP_ERROR_NO_ERROR)
   {
     m_CurStatus = ADDON_STATUS_PERMANENT_FAILURE;
+  }
+
+  if (CAddonProcessManager::CreateProcesses() != AE_DSP_ERROR_NO_ERROR)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create CAddonProcessManager!", __FUNCTION__, __LINE__);
   }
 
   m_bCreated = true;
@@ -142,7 +148,7 @@ void ADDON_Destroy()
 
   //g_AddonHandler.Destroy();
 
-  // TODO: why does Kodi crash, when g_StreamManager is deleted?
+  CAddonProcessManager::DestroyProcesses();
   CADSPStreamManager::Destroy();
 
   SAFE_DELETE(ADSP);

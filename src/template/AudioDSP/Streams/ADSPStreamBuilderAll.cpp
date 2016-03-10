@@ -60,18 +60,18 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
       }
       else
       {
-        KODI->Log(LOG_ERROR, "%s, %s, %i, Failed to create AudioDSP mode \"%s\"", __FILE__, __FUNCTION__, __LINE__, iter->ModeName.c_str());
+        KODI->Log(LOG_ERROR, "%s, %i, Failed to create AudioDSP mode \"%s\"", __FUNCTION__, __LINE__, iter->ModeName.c_str());
       }
     }
     else
     {
-      KODI->Log(LOG_ERROR, "%s, %s, %i, Failed to get AudioDSP mode \"%s\"", __FILE__, __FUNCTION__, __LINE__, iter->ModeName.c_str());
+      KODI->Log(LOG_ERROR, "%s, %i, Failed to get AudioDSP mode \"%s\"", __FUNCTION__, __LINE__, iter->ModeName.c_str());
     }
   }
 
   if (modeVector.size() <= 0)
   {
-    KODI->Log(LOG_ERROR, "%s, %s, %i, Failed to create entire Stream!", __FILE__, __FUNCTION__, __LINE__);
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create entire Stream!", __FUNCTION__, __LINE__);
     return AE_DSP_ERROR_FAILED;
   }
 
