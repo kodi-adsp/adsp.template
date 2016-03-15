@@ -26,20 +26,20 @@
 
 #include "ADSPModeInfos.h"
 
-class CPreProcessModeName
+class CPreProcessCpyModeName
 {
 public:
   static const std::string ModeName;
 };
 
-const std::string CPreProcessModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PREPROCESS_CPY];
+const std::string CPreProcessCpyModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PREPROCESS_CPY];
 
 
-class CPreProcessingCpy : REGISTER_ADSP_MODE_CLASS(CPreProcessingCpy, CPreProcessModeName, CPreProcessCpyModeSettings, AE_DSP_MODE_TYPE_PRE_PROCESS)
+class CPreProcessCpy : REGISTER_ADSP_MODE_CLASS(CPreProcessCpy, CPreProcessCpyModeName, CPreProcessCpyModeSettings, AE_DSP_MODE_TYPE_PRE_PROCESS)
 {
 public:
-  CPreProcessingCpy();
-  ~CPreProcessingCpy();
+  CPreProcessCpy();
+  ~CPreProcessCpy();
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
   virtual void ModeDestroy();

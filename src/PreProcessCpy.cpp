@@ -28,17 +28,17 @@
 using namespace ADDON;
 
 
-CPreProcessingCpy::CPreProcessingCpy()
+CPreProcessCpy::CPreProcessCpy()
 {
 }
 
 
-CPreProcessingCpy::~CPreProcessingCpy()
+CPreProcessCpy::~CPreProcessCpy()
 {
 }
 
 
-AE_DSP_ERROR CPreProcessingCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
+AE_DSP_ERROR CPreProcessCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
   m_InChannels            = Settings.iInChannels;
   m_InChannelPresentFlags = Settings.lInChannelPresentFlags;
@@ -71,13 +71,13 @@ AE_DSP_ERROR CPreProcessingCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, cons
 }
 
 
-void CPreProcessingCpy::ModeDestroy()
+void CPreProcessCpy::ModeDestroy()
 {
 }
 
 
 // Requiered Processing Methods
-unsigned int CPreProcessingCpy::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
+unsigned int CPreProcessCpy::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
   for (int ch = 0; ch < m_InChannels; ch++)
   { 
