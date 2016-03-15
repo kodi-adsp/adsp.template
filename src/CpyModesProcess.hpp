@@ -23,6 +23,8 @@
 
 #include "Addon/Process/AddonProcessManager.hpp"
 
+#include "PostProcessGain/PostProcessGainModel.hpp"
+
 
 class CCpyModesProcessName
 {
@@ -39,4 +41,8 @@ public:
 
   virtual AE_DSP_ERROR Create();
   virtual AE_DSP_ERROR Destroy();
+
+private:
+  int InitPostProcessGainModel();
+  CPostProcessGainModel m_PostProcessGainModel;
 };
