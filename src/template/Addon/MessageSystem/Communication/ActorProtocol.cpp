@@ -18,69 +18,13 @@
  *
  */
 
+
+
 #include "ActorProtocol.h"
+#include "Message.hpp"
 
-using namespace Actor;
 
-void Message::Release()
-{
-  bool skip;
-  origin->Lock();
-  skip = isSync ? !isSyncFini : false;
-  isSyncFini = true;
-  origin->Unlock();
-
-  if (skip)
-    return;
-
-  // free data buffer
-  if (data != buffer)
-    delete [] data;
-
-  // delete event in case of sync message
-  if (event)
-    delete event;
-
-  origin->ReturnMessage(this);
-}
-
-bool Message::Reply(int sig, void *data /* = NULL*/, int size /* = 0 */)
-{
-  if (!isSync)
-  {
-    if (isOut)
-      return origin->SendInMessage(sig, data, size);
-    else
-      return origin->SendOutMessage(sig, data, size);
-  }
-
-  origin->Lock();
-
-  if (!isSyncTimeout)
-  {
-    Message *msg = origin->GetMessage();
-    msg->signal = sig;
-    msg->isOut = !isOut;
-    replyMessage = msg;
-    if (data)
-    {
-      if (size > MSG_INTERNAL_BUFFER_SIZE)
-        msg->data = new uint8_t[size];
-      else
-        msg->data = msg->buffer;
-      memcpy(msg->data, data, size);
-    }
-  }
-
-  origin->Unlock();
-
-  if (event)
-    event->Set();
-
-  return true;
-}
-
-Protocol::~Protocol()
+CActorProtocol::~CActorProtocol()
 {
   Message *msg;
   Purge();
@@ -92,7 +36,7 @@ Protocol::~Protocol()
   }
 }
 
-Message *Protocol::GetMessage()
+Message *CActorProtocol::GetMessage()
 {
   Message *msg;
 
@@ -118,14 +62,14 @@ Message *Protocol::GetMessage()
   return msg;
 }
 
-void Protocol::ReturnMessage(Message *msg)
+void CActorProtocol::ReturnMessage(Message *msg)
 {
   CSingleLock lock(criticalSection);
 
   freeMessageQueue.push(msg);
 }
 
-bool Protocol::SendOutMessage(int signal, void *data /* = NULL */, int size /* = 0 */, Message *outMsg /* = NULL */)
+bool CActorProtocol::SendOutMessage(int signal, void *data /* = NULL */, int size /* = 0 */, Message *outMsg /* = NULL */)
 {
   Message *msg;
   if (outMsg)
@@ -153,7 +97,7 @@ bool Protocol::SendOutMessage(int signal, void *data /* = NULL */, int size /* =
   return true;
 }
 
-bool Protocol::SendInMessage(int signal, void *data /* = NULL */, int size /* = 0 */, Message *outMsg /* = NULL */)
+bool CActorProtocol::SendInMessage(int signal, void *data /* = NULL */, int size /* = 0 */, Message *outMsg /* = NULL */)
 {
   Message *msg;
   if (outMsg)
@@ -182,7 +126,7 @@ bool Protocol::SendInMessage(int signal, void *data /* = NULL */, int size /* = 
 }
 
 
-bool Protocol::SendOutMessageSync(int signal, Message **retMsg, int timeout, void *data /* = NULL */, int size /* = 0 */)
+bool CActorProtocol::SendOutMessageSync(int signal, Message **retMsg, int timeout, void *data /* = NULL */, int size /* = 0 */)
 {
   Message *msg = GetMessage();
   msg->isOut = true;
@@ -214,7 +158,7 @@ bool Protocol::SendOutMessageSync(int signal, Message **retMsg, int timeout, voi
     return false;
 }
 
-bool Protocol::ReceiveOutMessage(Message **msg)
+bool CActorProtocol::ReceiveOutMessage(Message **msg)
 {
   CSingleLock lock(criticalSection);
 
@@ -227,7 +171,7 @@ bool Protocol::ReceiveOutMessage(Message **msg)
   return true;
 }
 
-bool Protocol::ReceiveInMessage(Message **msg)
+bool CActorProtocol::ReceiveInMessage(Message **msg)
 {
   CSingleLock lock(criticalSection);
 
@@ -241,7 +185,7 @@ bool Protocol::ReceiveInMessage(Message **msg)
 }
 
 
-void Protocol::Purge()
+void CActorProtocol::Purge()
 {
   Message *msg;
 
@@ -252,7 +196,7 @@ void Protocol::Purge()
     msg->Release();
 }
 
-void Protocol::PurgeIn(int signal)
+void CActorProtocol::PurgeIn(int signal)
 {
   Message *msg;
   std::queue<Message*> msgs;
@@ -274,7 +218,7 @@ void Protocol::PurgeIn(int signal)
   }
 }
 
-void Protocol::PurgeOut(int signal)
+void CActorProtocol::PurgeOut(int signal)
 {
   Message *msg;
   std::queue<Message*> msgs;
