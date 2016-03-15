@@ -21,20 +21,14 @@
 
 
 
-class CADSPModeInfos
+#include "template/Addon/MVC/Interfaces/Model/IModel.hpp"
+
+class CPostProcessGainModel : public IModel
 {
 public:
-  typedef enum
-  {
-    ADSP_MODE_ID_INVALID = -1,
-    
-    ADSP_MODE_ID_PREPROCESS_CPY,
-    ADSP_MODE_ID_POSTPROCESS_CPY,
-    ADSP_MODE_ID_INPUTERESAMPLE_CPY,
-    ADSP_MODE_ID_PORTPROCESS_GAIN,
-    
-    ADSP_MODE_ID_MAX
-  }ADSP_MODE_IDS;
+  CPostProcessGainModel();
+  ~CPostProcessGainModel();
 
-  static const char* Strs[ADSP_MODE_ID_MAX];
+  virtual int Create();
+  virtual void Destroy();
 };

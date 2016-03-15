@@ -1,4 +1,3 @@
-#pragma once
 /*
  *      Copyright (C) 2005-2016 Team Kodi
  *      http://xbmc.org
@@ -21,20 +20,9 @@
 
 
 
-class CADSPModeInfos
-{
-public:
-  typedef enum
-  {
-    ADSP_MODE_ID_INVALID = -1,
-    
-    ADSP_MODE_ID_PREPROCESS_CPY,
-    ADSP_MODE_ID_POSTPROCESS_CPY,
-    ADSP_MODE_ID_INPUTERESAMPLE_CPY,
-    ADSP_MODE_ID_PORTPROCESS_GAIN,
-    
-    ADSP_MODE_ID_MAX
-  }ADSP_MODE_IDS;
+#include "PostProcessGain/PostProcessGainParameterIDs.hpp"
 
-  static const char* Strs[ADSP_MODE_ID_MAX];
+const char* CPostProcessGainParameterIDs::Strs[] =
+{
+  "Main Gain"
 };

@@ -20,12 +20,39 @@
 
 
 
+#include "Addon/MVC/Model/TParameter.hpp"
+#include "PostProcessGain/PostProcessGainModel.hpp"
+#include "PostProcessGain/PostProcessGainParameterIDs.hpp"
+
 #include "ADSPModeInfos.h"
 
-const char* CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_MAX] =
+#include "include/client.h"
+
+using namespace ADDON;
+
+
+CPostProcessGainModel::CPostProcessGainModel() :
+  IModel(CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN],
+         CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN)
 {
-  "Preprocess Copy Mode",
-  "Postprocess Copy Mode",
-  "Input Resample Copy Mode",
-  "Postprocess Gain"
-};
+}
+
+
+CPostProcessGainModel::~CPostProcessGainModel()
+{
+}
+
+
+int CPostProcessGainModel::Create()
+{
+  IModel::ParameterVector_t paramVector;
+
+  paramVector.push_back(CreateTParameter(float, CPostProcessGainParameterIDs, POST_PROCESS_GAIN_MAIN_GAIN));
+
+  return this->SetParameterVector(paramVector);
+}
+
+void CPostProcessGainModel::Destroy()
+{
+}
+
