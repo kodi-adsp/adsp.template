@@ -55,11 +55,19 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/template/IADDONOptional.cpp
                               src/template/IADSPProcessor.cpp
                               #src/template/Addon/Settings/SettingsPool.cpp
-                              #src/template/Addon/UI/BaseDialog.cpp
+                              src/template/Addon/MVC/Interfaces/Model/IModel.hpp
+                              src/template/Addon/MVC/Interfaces/Model/IParameter.hpp
+                              src/template/Addon/MVC/Model/TParameter.hpp
+                              src/template/Addon/MVC/Model/ParameterMessages.hpp
+                              src/template/Addon/MVC/Model/ParameterMessages.cpp
                               #src/template/Addon/UI/Controller.cpp
                               #src/template/Addon/UI/Model.cpp
                               #src/template/Addon/UI/Observer.cpp
                               #src/template/Addon/UI/View.cpp
+                              src/template/Addon/MessageSystem/Communication/Message.cpp
+                              src/template/Addon/MessageSystem/Communication/ActorProtocol.cpp
+                              #src/template/Addon/MessageSystem/Communication/ActorPort.cpp
+                              #src/template/Addon/MessageSystem/Interfaces/ISlot.cpp
                               src/template/Addon/Process/AddonProcessManager.cpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
                               src/template/AudioDSP/Streams/ADSPStreamManager.cpp
@@ -108,7 +116,14 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/KodiThreads/threads/platform/win/Win32Exception.h
                               src/template/ADSPHelpers.h
                               src/template/doxygenDocu.h
+                              src/template/Addon/MessageSystem/Interfaces/IProtocol.hpp
                               src/template/Addon/MessageSystem/Communication/ActorProtocol.h
+                              src/template/Addon/MessageSystem/Communication/Message.hpp
+                              #src/template/Addon/MessageSystem/Communication/ActorPort.hpp
+                              #src/template/Addon/MessageSystem/Interfaces/IPort.hpp
+                              #src/template/Addon/MessageSystem/Interfaces/IPortPool.hpp
+                              #src/template/Addon/MessageSystem/Interfaces/ISlot.hpp
+                              #src/template/Addon/MessageSystem/Slots/TSlotMemcpy.hpp
                               src/template/Addon/Process/AddonProcessManager.hpp
                               src/template/Addon/Process/IAddonProcess.hpp
                               src/template/AddonExceptions/IAddonException.h
@@ -160,6 +175,15 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/InputResampleCpyModeSettings.hpp
                               src/InputResampleCpy.cpp
                               src/InputResampleCpy.hpp
+                              
+                              src/PostProcessGain/PostProcessGainParameterIDs.cpp
+                              src/PostProcessGain/PostProcessGainParameterIDs.hpp
+                              src/PostProcessGain/PostProcessGainModel.cpp
+                              src/PostProcessGain/PostProcessGainModel.hpp
+                              src/PostProcessGain/PostProcessGainModeSettings.cpp
+                              src/PostProcessGain/PostProcessGainModeSettings.hpp
+                              src/PostProcessGain/PostProcessGain.cpp
+                              src/PostProcessGain/PostProcessGain.hpp                        
                               
                               src/CpyModesProcess.cpp
                               src/CpyModesProcess.hpp)
