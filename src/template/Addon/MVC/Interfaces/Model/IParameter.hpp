@@ -65,6 +65,7 @@ public:
     return Get(Data);
   }
 
+  virtual void* GetDataPtr() = 0;
 
 protected: // protected member methods
   virtual int Set(void *Data) = 0;

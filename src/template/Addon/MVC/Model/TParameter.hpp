@@ -37,6 +37,11 @@ public:
     memset(&m_Data, 0, this->Size);
   }
 
+  virtual void* GetDataPtr()
+  {
+    return (void*)&m_Data;
+  }
+
 
 protected: // protected member variables
   virtual int Set(void *Data)
