@@ -44,10 +44,14 @@ public:
   bool      isOut;
   bool      isSyncTimeout;
   int       payloadSize;
+  int       size;
   uint8_t   buffer[MSG_INTERNAL_BUFFER_SIZE];
   uint8_t   *data;
   Message   *replyMessage;
-  IProtocol *origin;
+  
+  IProtocol *origin;    // address to sender Protocol instance
+  IProtocol *destiny;   // address to receiver Protocol instance
+  
   CEvent    *event;
 
   void Release();
