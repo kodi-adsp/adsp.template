@@ -64,10 +64,9 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               #src/template/Addon/UI/View.cpp
                               src/template/Addon/MessageSystem/Communication/Message.cpp
                               src/template/Addon/MessageSystem/Communication/ActorProtocol.cpp
-                              #src/template/Addon/MessageSystem/Communication/ActorPort.cpp
 							  src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
-                              #src/template/Addon/MessageSystem/Interfaces/ISlot.cpp
+                              src/template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
                               src/template/Addon/Process/AddonProcessManager.cpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
                               src/template/AudioDSP/Streams/ADSPStreamManager.cpp
@@ -178,12 +177,14 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               
                               src/PostProcessGain/PostProcessGainParameterIDs.cpp
                               src/PostProcessGain/PostProcessGainParameterIDs.hpp
+							  src/PostProcessGain/PostProcessGainMessages.cpp
+							  src/PostProcessGain/PostProcessGainMessages.hpp
                               src/PostProcessGain/PostProcessGainModel.cpp
                               src/PostProcessGain/PostProcessGainModel.hpp
                               src/PostProcessGain/PostProcessGainModeSettings.cpp
                               src/PostProcessGain/PostProcessGainModeSettings.hpp
                               src/PostProcessGain/PostProcessGain.cpp
-                              src/PostProcessGain/PostProcessGain.hpp                        
+                              src/PostProcessGain/PostProcessGain.hpp
                               
                               src/CpyModesProcess.cpp
                               src/CpyModesProcess.hpp)
