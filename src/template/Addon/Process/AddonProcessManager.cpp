@@ -176,3 +176,23 @@ int CAddonProcessManager::GetDestroyedProcesses(std::string &ProcessName)
 
   return (*iterCB).second.GetDestroyedProcesses();
 }
+
+int CAddonProcessManager::ConnectDispatcher(CMessageDispatcher *Dispatcher)
+{
+  for (AddonProcessVector_t::iterator iter = m_AddonProcesses.begin(); iter != m_AddonProcesses.end(); ++iter)
+  {
+    (*iter)->ConnectDispatcher(Dispatcher);
+  }
+
+  return 0;
+}
+
+int CAddonProcessManager::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
+{
+  for (AddonProcessVector_t::iterator iter = m_AddonProcesses.begin(); iter != m_AddonProcesses.end(); ++iter)
+  {
+    (*iter)->DisconnectDispatcher(Dispatcher);
+  }
+
+  return 0;
+}

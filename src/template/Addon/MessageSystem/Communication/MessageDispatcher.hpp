@@ -43,21 +43,20 @@ public:
   bool RemoveSocket(int SocketID);
 
   bool ConnectDispatcher(CMessageDispatcher *Dispatcher);
+  //bool RemoveDispatcher(CMessageDispatcher *Dispatcher);
+  bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
   bool SendMsg(int SocketID, int DispatcherID = -1);
   bool ReceiveMsg(Message *Msg);
-  void DestroyMasterConnection();
 
   void ProcessMessage();
   void ProcessMessages();
 
-  const std::string Name;     // Custom name for this object
+  const std::string DispatcherName;     // Custom name for this object
   const int         ID;       // assigned unique member ID for message assignment
 
 private:
   void DestroySockets();
-
-  bool RemoveDispatcher(CMessageDispatcher *Dispatcher);
 
   inline int GetSocketID(int SocketID)
   {
@@ -82,6 +81,7 @@ private:
         {
           id = ii;
           SocketIDFound = true;
+
           break;
         }
       }
@@ -102,13 +102,24 @@ private:
     {
       CSingleLock lock(m_ConnectionLock);
       bool DispatcherFound = false;
-      for (int ii = 0; ii < m_MaxConnectedDispatchers && idx != -1; ii++)
+
+      if(m_DispatcherIDLUT)
       {
-        if (m_DispatcherIDLUT[ii] == DispatcherID)
+        for (int ii = 0; ii < m_MaxConnectedDispatchers; ii++)
         {
-          idx = ii;
-          DispatcherFound = true;
+          if (m_DispatcherIDLUT[ii] == DispatcherID)
+          {
+            idx = ii;
+            DispatcherFound = true;
+
+            break;
+          }
         }
+      }
+      else
+      {
+        DispatcherFound = true;
+        idx = DispatcherID;
       }
 
       if (!DispatcherFound)
@@ -144,10 +155,11 @@ private:
   
   // specific member variables for Socket processing
   CCriticalSection  m_SocketLock;
+  
   int               m_MaxSockets;
   int               *m_SocketIDLUT;
-
   ISocket           **m_SocketArray;
+
   std::vector<int>  m_SocketIDs;
   SocketVector_t    m_Sockets;
   CSocketSort       m_SocketSort;

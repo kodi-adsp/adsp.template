@@ -23,6 +23,10 @@
 #include "ADSPStream.hpp"
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+
+#include "Addon/Process/AddonProcessManager.hpp"
+
 #include "include/client.h"
 
 using namespace ADDON;
@@ -54,13 +58,28 @@ AE_DSP_ERROR CADSPStream::Destroy()
 {
   for (ADSPModeVector_t::iterator iter = m_ADSPModeVector.begin(); iter != m_ADSPModeVector.end(); ++iter)
   {
-    if (*iter)
+    IADSPMode *mode = *iter;
+    if (mode)
     {
-      (*iter)->ModeDestroy();
-      CFactoryADSPModes::Destroy(*iter);
+      CMessageDispatcher *messageDispatcher = dynamic_cast<CMessageDispatcher*>(*iter);
+      if (messageDispatcher)
+      { // when this mode can be casted to CMessageDispatcher
+        // notify all created addon processes about this new dispatcher
+        CAddonProcessManager::DisconnectDispatcher(messageDispatcher);
+      }
+
+      mode->ModeDestroy();
+      CFactoryADSPModes::Destroy(mode);
       *iter = NULL;
     }
   }
+
+  m_ADSPModeVector.clear();
+  m_MaxADSPModes              = 0;
+  m_ADSPModes                 = NULL;
+  m_CurrentMasterMode         = NULL;
+  m_CurrentInputResampleMode  = NULL;
+  m_CurrentOutputResampleMode = NULL;
 
   return AE_DSP_ERROR_NO_ERROR;
 }

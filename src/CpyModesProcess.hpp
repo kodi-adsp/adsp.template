@@ -41,6 +41,9 @@ public:
 
   virtual AE_DSP_ERROR Create();
   virtual AE_DSP_ERROR Destroy();
+  
+  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher);
+  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
 private:
   int InitPostProcessGainModel();

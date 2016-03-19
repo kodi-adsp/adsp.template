@@ -35,7 +35,7 @@ int CMessageDispatcher::m_UniqueIDCount = 0;
 
 CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, bool IsMaster/* = false*/) :
   ID(++m_UniqueIDCount),
-  Name(Name)
+  DispatcherName(Name)
 {
   if (!Protocol)
   {
@@ -45,8 +45,19 @@ CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, bo
   KODI->Log(LOG_DEBUG, "%s, %i, Creating message handler %s with unique ID %i", __FUNCTION__, __LINE__, Name.c_str(), ID);
 
   m_Protocol = Protocol;
+  
+  {
+    CSingleLock socketLock(m_SocketLock);
+    m_MaxSockets  = 0;
+    m_SocketIDLUT = NULL;
+    m_SocketArray = NULL;
+  }
 
   CSingleLock lock(m_ConnectionLock);
+  m_MaxConnectedDispatchers = 0;
+  m_DispatcherIDLUT         = NULL;
+  m_DispatcherArray         = NULL;
+
   if (IsMaster)
   {
     m_Master = this;
@@ -59,9 +70,15 @@ CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, bo
 
 CMessageDispatcher::~CMessageDispatcher()
 {
-  KODI->Log(LOG_DEBUG, "%s, %i, Destroying message handler %s with unique ID %i", __FUNCTION__, __LINE__, Name.c_str(), ID);
+  KODI->Log(LOG_DEBUG, "%s, %i, Destroying message handler %s with unique ID %i", __FUNCTION__, __LINE__, DispatcherName.c_str(), ID);
 
-  DestroyMasterConnection();
+  {
+    CSingleLock lock(m_ConnectionLock);
+    if (m_Master != this && m_Master)
+    {
+      DisconnectDispatcher(this);
+    }
+  }
 
   DestroySockets();
 
@@ -77,7 +94,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
 {
   if (SocketVector.size() <= 0)
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign an empty Socket vector to message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign an empty Socket vector to message handler %s!", __FUNCTION__, __LINE__, DispatcherName.c_str());
     return false;
   }
 
@@ -91,7 +108,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
 
     if (diff <= 0)
     {// Invalid input! Two equal Socket IDs, which is not supported!
-      KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign equal Sockets to the message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
+      KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign equal Sockets to the message handler %s!", __FUNCTION__, __LINE__, DispatcherName.c_str());
 
       for (size_t ii = 0; ii < SocketVector.size(); ii++)
       {
@@ -113,7 +130,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
 
   // if there is only one Socket or the first one has an ID > 0
   // always adjust IDDistance
-  if (SocketVector.size() == 1 || SocketVector[0]->ID > 0)
+  if ((SocketVector.size() == 1 && SocketVector[0]->ID > 0) || SocketVector[0]->ID)
   {
     IDDistance = SocketVector[0]->ID;
   }
@@ -127,20 +144,20 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
   // if IDDistance is greater 1, this object will need a LUT (Look Up Table) for its Socket IDs
   if (IDDistance != 1)
   {
-    KODI->Log(LOG_DEBUG, "%s, %i, The message handler %s will use a LUT for Socket assignment", __FUNCTION__, __LINE__, Name.c_str());
+    KODI->Log(LOG_DEBUG, "%s, %i, The message handler %s will use a LUT for Socket assignment", __FUNCTION__, __LINE__, DispatcherName.c_str());
     m_SocketIDs.reserve(SocketVector.size());
     for (unsigned int ii = 0; ii < SocketVector.size(); ii++)
     {
-      m_SocketIDs[ii] = SocketVector[ii]->ID;
+      m_SocketIDs.push_back(SocketVector[ii]->ID);
     }
   }
 
-  KODI->Log(LOG_DEBUG, "%s, %i, The message handler %s has the following Sockets: ", __FUNCTION__, __LINE__, Name.c_str());
+  KODI->Log(LOG_DEBUG, "%s, %i, The message handler %s has the following Sockets: ", __FUNCTION__, __LINE__, DispatcherName.c_str());
   m_Sockets.reserve(SocketVector.size());
   for (unsigned int ii = 0; ii < SocketVector.size(); ii++)
   {
     KODI->Log(LOG_DEBUG, "%s, %i,  Socket: %s ID: %i", __FUNCTION__, __LINE__, SocketVector[ii]->Name.c_str(), SocketVector[ii]->ID);
-    m_Sockets[ii] = SocketVector[ii];
+    m_Sockets.push_back(SocketVector[ii]);
   }
 
   m_SocketIDLUT  = m_SocketIDs.data();
@@ -154,14 +171,14 @@ bool CMessageDispatcher::AddSocket(ISocket *Socket)
 {
   if (!Socket)
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add an invalid socket to message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add an invalid socket to message handler %s!", __FUNCTION__, __LINE__, DispatcherName.c_str());
     return false;
   }
 
   int id = GetSocketID(Socket->ID);
   if (id != -1)
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add socket %s with ID %i, which is already available at message dispatcher %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add socket %s with ID %i, which is already available at message dispatcher %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, DispatcherName.c_str());
     return false;
   }
 
@@ -178,7 +195,7 @@ bool CMessageDispatcher::AddSocket(ISocket *Socket)
     m_SocketIDs[ii] = m_Sockets[ii]->ID;
   }
 
-  KODI->Log(LOG_DEBUG, "%s, %i, Added socket %s with ID %i to message handler %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
+  KODI->Log(LOG_DEBUG, "%s, %i, Added socket %s with ID %i to message handler %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, DispatcherName.c_str());
 
   m_SocketIDLUT = m_SocketIDs.data();
   m_MaxSockets  = m_Sockets.size();
@@ -192,7 +209,7 @@ bool CMessageDispatcher::RemoveSocket(int SocketID)
   int id = GetSocketID(SocketID);
   if (id < 0)
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to remove a negative SocketID from message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to remove a negative SocketID from message handler %s!", __FUNCTION__, __LINE__, DispatcherName.c_str());
     return false;
   }
 
@@ -285,26 +302,61 @@ bool CMessageDispatcher::ConnectDispatcher(CMessageDispatcher *Dispatcher)
     if (m_Master == this)
     {
       Dispatcher->m_Master = this;
-      KODI->Log(LOG_DEBUG, "%s, %i, Dispatcher %s connected to master dispatcher %s", __FUNCTION__, __LINE__, Dispatcher->Name.c_str(), Name.c_str());
+      KODI->Log(LOG_DEBUG, "%s, %i, Dispatcher %s connected to master dispatcher %s", __FUNCTION__, __LINE__, Dispatcher->DispatcherName.c_str(), DispatcherName.c_str());
     }
     else
     {
-      KODI->Log(LOG_NOTICE, "%s, %i, Dispatcher %s connected to non master dispatcher %s! The message system might not work correctly!", __FUNCTION__, __LINE__, Dispatcher->Name.c_str(), Name.c_str());
+      KODI->Log(LOG_NOTICE, "%s, %i, Dispatcher %s connected to non master dispatcher %s! The message system might not work correctly!", __FUNCTION__, __LINE__, Dispatcher->DispatcherName.c_str(), DispatcherName.c_str());
     }
   }
 
   return true;
 }
 
-void CMessageDispatcher::DestroyMasterConnection()
+bool CMessageDispatcher::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 {
-  CSingleLock lock(m_ConnectionLock);
-  if (m_Master != this)
+  if (!Dispatcher)
   {
-    m_Master->RemoveDispatcher(this);
-
-    m_Master = NULL;
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to disconnect invalid dispatcher at dispatcher %s", __FUNCTION__, __LINE__, DispatcherName.c_str());
+    return false;
   }
+
+  CSingleLock lock(m_ConnectionLock);
+  if (m_Dispatchers.size() <= 0)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Tried to disconnect dispatcher %s with ID %i from dispatcher %s without any connected dispatchers!", __FUNCTION__, __LINE__, Dispatcher->DispatcherName.c_str(), Dispatcher->ID, DispatcherName.c_str());
+    return false;
+  }
+
+  int dispatcherIdx = GetDispatcherIdx(Dispatcher->ID);
+  if (dispatcherIdx < 0)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! The dispatcher %s with ID %i was not connected to dispatcher %s", __FUNCTION__, __LINE__, Dispatcher->DispatcherName.c_str(), Dispatcher->ID, DispatcherName.c_str());
+    return false;
+  }
+
+  m_Dispatchers.erase(m_Dispatchers.begin() + dispatcherIdx);
+  m_DispatcherIDs.erase(m_DispatcherIDs.begin() + dispatcherIdx);
+
+  if(m_Dispatchers.size() > 0)
+  {
+    m_DispatcherIDLUT = m_DispatcherIDs.data();
+    m_DispatcherArray = m_Dispatchers.data();
+    m_MaxConnectedDispatchers = m_Dispatchers.size();
+  }
+  else
+  {
+    m_DispatcherIDLUT = NULL;
+    m_DispatcherArray = NULL;
+    m_MaxConnectedDispatchers = 0;
+  }
+
+  KODI->Log(LOG_DEBUG, "%s, %i, Disconnected dispatcher %s with ID %i from dispatcher %s", __FUNCTION__, __LINE__, Dispatcher->DispatcherName.c_str(), Dispatcher->ID, DispatcherName.c_str());
+
+  CSingleLock parterLock(Dispatcher->m_ConnectionLock);
+  Dispatcher->m_Master = NULL;
+
+  return true;
 }
 
 void CMessageDispatcher::ProcessMessage()
@@ -357,31 +409,31 @@ void CMessageDispatcher::ProcessMessages()
   }
 }
 
-bool CMessageDispatcher::RemoveDispatcher(CMessageDispatcher *Dispatcher)
-{
-  if (!Dispatcher)
-  {
-    return false;
-  }
-
-  int DispatcherID = GetDispatcherIdx(Dispatcher->ID);
-  if (DispatcherID < 0)
-  {
-    return false;
-  }
-
-  {
-    CSingleLock lock(m_ConnectionLock);
-    m_Dispatchers.erase(m_Dispatchers.begin() + DispatcherID);
-    m_DispatcherIDs.erase(m_DispatcherIDs.begin() + DispatcherID);
-
-    m_DispatcherIDLUT          = m_DispatcherIDs.data();
-    m_DispatcherArray          = m_Dispatchers.data();
-    m_MaxConnectedDispatchers  = m_Dispatchers.size();
-  }
-
-  return true;
-}
+//bool CMessageDispatcher::RemoveDispatcher(CMessageDispatcher *Dispatcher)
+//{
+//  if (!Dispatcher)
+//  {
+//    return false;
+//  }
+//
+//  int DispatcherID = GetDispatcherIdx(Dispatcher->ID);
+//  if (DispatcherID < 0)
+//  {
+//    return false;
+//  }
+//
+//  {
+//    CSingleLock lock(m_ConnectionLock);
+//    m_Dispatchers.erase(m_Dispatchers.begin() + DispatcherID);
+//    m_DispatcherIDs.erase(m_DispatcherIDs.begin() + DispatcherID);
+//
+//    m_DispatcherIDLUT          = m_DispatcherIDs.data();
+//    m_DispatcherArray          = m_Dispatchers.data();
+//    m_MaxConnectedDispatchers  = m_Dispatchers.size();
+//  }
+//
+//  return true;
+//}
 
 
 void CMessageDispatcher::DestroySockets()

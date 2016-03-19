@@ -331,7 +331,7 @@ AE_DSP_ERROR CADSPStreamManager::StreamCreate(const AE_DSP_SETTINGS *Settings, c
   }
 
   CADSPStream *adspStream = new CADSPStream;
-  AE_DSP_ERROR err = m_ADSPStreamBuilder->ConstructStream(*adspStream, Settings, pProperties); //m_ADSPStreams[iStreamID]->Create(Settings, pProperties);
+  AE_DSP_ERROR err = m_ADSPStreamBuilder->ConstructStream(*adspStream, Settings, pProperties);
   if (err != AE_DSP_ERROR_NO_ERROR)
   {
     delete adspStream;

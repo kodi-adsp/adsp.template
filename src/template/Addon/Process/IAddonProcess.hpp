@@ -22,6 +22,8 @@
 
 #include "kodi/kodi_adsp_types.h"
 
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+
 class CAddonProcessManager;
 
 
@@ -43,6 +45,9 @@ public:
 // Fixed public methods
   virtual AE_DSP_ERROR Create() = 0;
   virtual AE_DSP_ERROR Destroy() = 0;
+
+  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
+  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
 
 private:
   int m_ProcessID;

@@ -2,6 +2,8 @@
 
 #include "PostProcessGain/PostProcessGainParameterIDs.hpp"
 
+#include "ADSPModeInfos.h"
+
 #include "include/client.h"
 
 using namespace ADDON;
@@ -11,8 +13,8 @@ const std::string CCpyModesProcessName::ProcessName = "CCpyModesProcess";
 
 #define SET_MODEL_PARAM(ErrCnt, Model, ParameterClass, ParameterID, Data)                                             \
                                     if (Model.SetParameter(ParameterClass::ParameterID, &fVal, sizeof(fVal)) != 0) {  \
-                                    ErrCnt++;                                                                         \
-                                    KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::Strs[ParameterClass::ParameterID], Model.Name.c_str());}\
+                                      ErrCnt++;                                                                       \
+                                      KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::Strs[ParameterClass::ParameterID], Model.Name.c_str());}\
 
 
 CCpyModesProcess::CCpyModesProcess()
@@ -48,10 +50,31 @@ AE_DSP_ERROR CCpyModesProcess::Destroy()
 }
 
 
+bool CCpyModesProcess::ConnectDispatcher(CMessageDispatcher *Dispatcher)
+{
+  if(Dispatcher->DispatcherName == CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN])
+  {
+    return m_PostProcessGainModel.ConnectDispatcher(Dispatcher);
+  }
+
+  return false;
+}
+
+bool CCpyModesProcess::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
+{
+  if (Dispatcher->DispatcherName == CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN])
+  {
+    return m_PostProcessGainModel.DisconnectDispatcher(Dispatcher);
+  }
+
+  return false;
+}
+
+
 int CCpyModesProcess::InitPostProcessGainModel()
 {
   int errorCounter = 0;
-  // TODO: load settings from XML file
+  // TODO load settings from XML file
 
   // no XML file present. Consquently the model will be initialized with default parameters
   float fVal = 0.0f;

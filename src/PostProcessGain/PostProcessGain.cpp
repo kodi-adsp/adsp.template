@@ -72,7 +72,7 @@ AE_DSP_ERROR CPostProcessGain::ModeCreate(const AE_DSP_SETTINGS &Settings, const
 
   if (!CPostProcessGainMessages::Create(this))
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CPostProcessGainMessages::Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CPostProcessGainMessages::DispatcherName.c_str());
     return AE_DSP_ERROR_FAILED;
   }
   

@@ -25,6 +25,10 @@
 
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+
+#include "Addon/Process//AddonProcessManager.hpp"
+
 #include "include/client.h"
 
 using namespace ADDON;
@@ -61,6 +65,13 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
       else
       {
         KODI->Log(LOG_ERROR, "%s, %i, Failed to create AudioDSP mode \"%s\"", __FUNCTION__, __LINE__, iter->ModeName.c_str());
+      }
+
+      CMessageDispatcher *messageDispatcher = dynamic_cast<CMessageDispatcher*>(mode);
+      if (messageDispatcher)
+      { // when this mode can be casted to CMessageDispatcher
+        // notify all created addon processes about this new dispatcher
+        CAddonProcessManager::ConnectDispatcher(messageDispatcher);
       }
     }
     else

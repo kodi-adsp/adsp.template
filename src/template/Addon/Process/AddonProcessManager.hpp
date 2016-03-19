@@ -24,6 +24,7 @@
 #include "IAddonProcess.hpp"
 #include "Addon/Utils/TCreationStatistics.hpp"
 #include <kodi/kodi_adsp_types.h>
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
 
 #include <map>
 #include <vector>
@@ -117,6 +118,9 @@ public:
   static int GetActiveProcesses(std::string &ProcessName);
   static int GetCreatedProcesses(std::string &ProcessName);
   static int GetDestroyedProcesses(std::string &ProcessName);
+
+  static int ConnectDispatcher(CMessageDispatcher *Dispatcher);
+  static int DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
 private:
   // Force initialization and creation of product map by using a static method and a std::map
