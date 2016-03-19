@@ -21,25 +21,16 @@
 
 
 
-#include "template/Addon/MVC/Interfaces/Model/IModel.hpp"
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
 
-#include "PostProcessGainModelMessages.hpp"
-
-class CPostProcessGainModelMessages;
+class CPostProcessGainModel;
 
 
-class CPostProcessGainModel : public IModel,
-                              public CPostProcessGainModelMessages
+class CPostProcessGainModelMessages : public CMessageDispatcher
 {
-  friend class CPostProcessGainModelMessages;
-
 public:
-  CPostProcessGainModel();
-  ~CPostProcessGainModel();
+  CPostProcessGainModelMessages();
+  ~CPostProcessGainModelMessages();
 
-  virtual int Create();
-  virtual void Destroy();
-
-private:
-  float m_MainGain;
+  bool Create(CPostProcessGainModel *Mode);
 };

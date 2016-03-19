@@ -20,51 +20,32 @@
 
 
 
-#include "Addon/MVC/Model/TParameter.hpp"
+#include "PostProcessGain/PostProcessGainModelMessages.hpp"
 #include "PostProcessGain/PostProcessGainModel.hpp"
+#include "Addon/MessageSystem/Communication/ActorProtocol.h"
+#include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
 #include "PostProcessGain/PostProcessGainParameterIDs.hpp"
-
 #include "ADSPModeInfos.h"
 
-#include "include/client.h"
 
-using namespace ADDON;
-
-
-CPostProcessGainModel::CPostProcessGainModel() :
-  IModel(CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN],
-         CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN)
+CPostProcessGainModelMessages::CPostProcessGainModelMessages() :
+  CMessageDispatcher(new CActorProtocol(CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN]),
+                     CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN],
+                     true)
 {
 }
 
 
-CPostProcessGainModel::~CPostProcessGainModel()
+CPostProcessGainModelMessages::~CPostProcessGainModelMessages()
 {
 }
 
 
-int CPostProcessGainModel::Create()
+bool CPostProcessGainModelMessages::Create(CPostProcessGainModel *Model)
 {
-  IModel::ParameterVector_t paramVector;
+  SocketVector_t sockets;
+  
+  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CPostProcessGainParameterIDs, POST_PROCESS_GAIN_MAIN_GAIN));
 
-  paramVector.push_back(CreateTParameter(float, CPostProcessGainParameterIDs, POST_PROCESS_GAIN_MAIN_GAIN));
-
-  if (this->SetParameterVector(paramVector) <= 0)
-  {
-    // TODO error message
-    return 0;
-  }
-
-  if (!CPostProcessGainModelMessages::Create(this))
-  {
-    // TODO error message
-    return 0;
-  }
-
-  return 0;
+  return this->SetSockets(sockets);
 }
-
-void CPostProcessGainModel::Destroy()
-{
-}
-

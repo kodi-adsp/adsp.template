@@ -177,10 +177,12 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               
                               src/PostProcessGain/PostProcessGainParameterIDs.cpp
                               src/PostProcessGain/PostProcessGainParameterIDs.hpp
-							  src/PostProcessGain/PostProcessGainMessages.cpp
-							  src/PostProcessGain/PostProcessGainMessages.hpp
+                              src/PostProcessGain/PostProcessGainMessages.cpp
+                              src/PostProcessGain/PostProcessGainMessages.hpp
                               src/PostProcessGain/PostProcessGainModel.cpp
                               src/PostProcessGain/PostProcessGainModel.hpp
+                              src/PostProcessGain/PostProcessGainModelMessages.cpp
+                              src/PostProcessGain/PostProcessGainModelMessages.hpp
                               src/PostProcessGain/PostProcessGainModeSettings.cpp
                               src/PostProcessGain/PostProcessGainModeSettings.hpp
                               src/PostProcessGain/PostProcessGain.cpp

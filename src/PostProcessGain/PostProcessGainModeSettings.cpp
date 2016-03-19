@@ -33,10 +33,10 @@ CPostProcessGainModeSettings::CPostProcessGainModeSettings()
   this->bHasSettingsDialog    = false;
   this->bIsDisabled           = true;
 
-  this->iModeName         = 30004;
-  this->iModeSetupName    = 30005;
-  this->iModeDescription  = 30006;
-  this->iModeHelp         = 30007;
+  this->iModeName         = 30020;
+  this->iModeSetupName    = 30021;
+  this->iModeDescription  = 30022;
+  this->iModeHelp         = 30023;
 
   strcpy(this->strOwnModeImage,       "img1.jpg");
   strcpy(this->strOverrideModeImage,  "img1.jpg");

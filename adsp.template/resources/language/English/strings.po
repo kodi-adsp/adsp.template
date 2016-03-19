@@ -99,6 +99,22 @@ msgctxt "#30019"
 msgid "Here you can place your help for Output Resample Copy Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
+msgctxt "#30020"
+msgid "Postprocess Gain Mode"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Setup Postprocess Gain Mode"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Here you can place your description for PPostprocess Gain Mode (see help for more details)"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Here you can place your help for Postprocess Gain Mode. All strings are placed in resources/language/<Language>/strings.po"
+msgstr ""
+
 msgctxt "#30251"
 msgid "Preprocess"
 msgstr ""
