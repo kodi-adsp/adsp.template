@@ -104,7 +104,7 @@ public:
     }
 
     // TODO: sort parameter IDs
-    for (int ii = 0; ii < ParameterVector.size(); ii++)
+    for (size_t ii = 0; ii < ParameterVector.size(); ii++)
     {
       m_ParameterVector.push_back(ParameterVector[ii]);
     }
@@ -156,7 +156,7 @@ protected: // protected member methods
   {
     m_ParameterArray = NULL;
 
-    for (int ii = 0; ii < m_ParameterVector.size(); ii++)
+    for (size_t ii = 0; ii < m_ParameterVector.size(); ii++)
     {
       if (m_ParameterVector[ii])
       {
