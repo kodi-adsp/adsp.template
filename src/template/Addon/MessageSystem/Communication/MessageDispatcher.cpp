@@ -37,6 +37,11 @@ CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, bo
   ID(++m_UniqueIDCount),
   Name(Name)
 {
+  if (!Protocol)
+  {
+    // TODO throw exception!
+  }
+
   KODI->Log(LOG_DEBUG, "%s, %i, Creating message handler %s with unique ID %i", __FUNCTION__, __LINE__, Name.c_str(), ID);
 
   m_Protocol = Protocol;
@@ -57,6 +62,14 @@ CMessageDispatcher::~CMessageDispatcher()
   KODI->Log(LOG_DEBUG, "%s, %i, Destroying message handler %s with unique ID %i", __FUNCTION__, __LINE__, Name.c_str(), ID);
 
   DestroyMasterConnection();
+
+  DestroySockets();
+
+  if (m_Protocol)
+  {
+    delete m_Protocol;
+    m_Protocol = NULL;
+  }
 }
 
 
@@ -80,7 +93,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
     {// Invalid input! Two equal Socket IDs, which is not supported!
       KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign equal Sockets to the message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
 
-      for (int ii = 0; ii < SocketVector.size(); ii++)
+      for (size_t ii = 0; ii < SocketVector.size(); ii++)
       {
         if (SocketVector[ii])
         {
@@ -139,7 +152,38 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
 
 bool CMessageDispatcher::AddSocket(ISocket *Socket)
 {
-  // TODO: implement this method!
+  if (!Socket)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add an invalid socket to message handler %s!", __FUNCTION__, __LINE__, Name.c_str());
+    return false;
+  }
+
+  int id = GetSocketID(Socket->ID);
+  if (id != -1)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add socket %s with ID %i, which is already available at message dispatcher %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
+    return false;
+  }
+
+
+  CSingleLock lock(m_SocketLock);
+  m_Sockets.push_back(Socket);
+
+  // sort the Socket IDs in a ascending consecutive order
+  sort(m_Sockets.begin(), m_Sockets.end(), m_SocketSort);
+
+  m_SocketIDs.reserve(m_Sockets.size());
+  for (unsigned int ii = 0; ii < m_Sockets.size(); ii++)
+  {
+    m_SocketIDs[ii] = m_Sockets[ii]->ID;
+  }
+
+  KODI->Log(LOG_DEBUG, "%s, %i, Added socket %s with ID %i to message handler %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
+
+  m_SocketIDLUT = m_SocketIDs.data();
+  m_MaxSockets  = m_Sockets.size();
+  m_SocketArray = m_Sockets.data();
+
   return false;
 }
 
@@ -275,12 +319,12 @@ void CMessageDispatcher::ProcessMessage()
       int err = m_SocketArray[SocketID]->Set(*msg);
       if (err != 0)
       {
-        // TODO: reply with error
+        // TODO reply with error
       }
     }
     else
     {
-      // TODO: reply with error
+      // TODO reply with error
     }
 
     msg->Release();
@@ -300,12 +344,12 @@ void CMessageDispatcher::ProcessMessages()
       int err = m_SocketArray[socketID]->Set(*msg);
       if (err != 0)
       {
-        // TODO: reply with error
+        // TODO reply with error
       }
     }
     else
     {
-      // TODO: reply with error
+      // TODO reply with error
     }
 
     msg->Release();

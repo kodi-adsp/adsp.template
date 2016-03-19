@@ -36,7 +36,7 @@ class CMessageDispatcher
 
 public:
   CMessageDispatcher(IProtocol *Protocol, std::string Name, bool IsMaster = false);
-  ~CMessageDispatcher();
+  virtual ~CMessageDispatcher();
 
   bool SetSockets(SocketVector_t &SocketVector);
   bool AddSocket(ISocket *Socket);
