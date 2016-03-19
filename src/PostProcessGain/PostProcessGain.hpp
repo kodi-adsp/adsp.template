@@ -23,6 +23,7 @@
 
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 #include "PostProcessGainModeSettings.hpp"
+#include "PostProcessGainMessages.hpp"
 
 #include "ADSPModeInfos.h"
 
@@ -32,11 +33,12 @@ public:
   static const std::string ModeName;
 };
 
-const std::string CPostProcessGainModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN];
 
-
-class CPostProcessGain : REGISTER_ADSP_MODE_CLASS(CPostProcessGain, CPostProcessGainModeName, CPostProcessGainModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS)
+class CPostProcessGain :  REGISTER_ADSP_MODE_CLASS(CPostProcessGain, CPostProcessGainModeName, CPostProcessGainModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS),
+                          public CPostProcessGainMessages
 {
+  friend class CPostProcessGainMessages;
+
 public:
   CPostProcessGain();
   ~CPostProcessGain();
@@ -53,4 +55,7 @@ private:
   
   int           m_ChannelMappingIdx[AE_DSP_CH_MAX];
   unsigned long m_ChannelMappingFlags[AE_DSP_CH_MAX];
+
+  // Process parameters
+  float m_MainGain;
 };

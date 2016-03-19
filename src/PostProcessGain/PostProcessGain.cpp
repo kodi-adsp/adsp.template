@@ -28,8 +28,12 @@
 using namespace ADDON;
 
 
+const std::string CPostProcessGainModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN];
+
+
 CPostProcessGain::CPostProcessGain()
 {
+  m_MainGain = 1.0f;
 }
 
 
@@ -60,10 +64,16 @@ AE_DSP_ERROR CPostProcessGain::ModeCreate(const AE_DSP_SETTINGS &Settings, const
     m_ChannelMappingFlags[ch] = CADSPHelpers::Translate_ChID_TO_ChFlag((AE_DSP_CHANNEL)m_ChannelMappingIdx[ch]);
     if (m_ChannelMappingIdx[ch] == AE_DSP_CH_INVALID)
     {
-      KODI->Log(LOG_ERROR, "%s line %i: Tried to create invalid channel mappings!", __FUNCTION__, __LINE__);
+      KODI->Log(LOG_ERROR, "%s, %i, Tried to create invalid channel mappings!", __FUNCTION__, __LINE__);
       return AE_DSP_ERROR_FAILED;
     }
     lastAudioChannel = m_ChannelMappingIdx[ch] + 1;
+  }
+
+  if (!CPostProcessGainMessages::Create(this))
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CPostProcessGainMessages::Name.c_str());
+    return AE_DSP_ERROR_FAILED;
   }
   
 
@@ -79,9 +89,16 @@ void CPostProcessGain::ModeDestroy()
 // Requiered Processing Methods
 unsigned int CPostProcessGain::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
+  CPostProcessGainMessages::ProcessMessage();
+
   for (int ch = 0; ch < m_InChannels; ch++)
   { 
-    memcpy(ArrayOut[m_ChannelMappingIdx[ch]], ArrayIn[m_ChannelMappingIdx[ch]], sizeof(float)*Samples);
+    float *out = ArrayOut[m_ChannelMappingIdx[ch]];
+    const float *in  = ArrayIn[m_ChannelMappingIdx[ch]];
+    for (unsigned int ii = 0; ii < Samples; ii++)
+    {
+      out[ii] = m_MainGain*in[ii];
+    }
   }
 
   return Samples;
