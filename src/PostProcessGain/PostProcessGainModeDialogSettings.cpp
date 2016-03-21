@@ -20,24 +20,16 @@
 
 
 
-#include "PostProcessGain/PostProcessGainModeSettings.hpp"
+#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
 
 #include "ADSPModeInfos.h"
 
 
-CPostProcessGainModeSettings::CPostProcessGainModeSettings()
+CPostProcessGainModeDialogSettings::CPostProcessGainModeDialogSettings()
 {
-  strcpy(this->strModeName, CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN]);
-
-  this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
-  this->bHasSettingsDialog    = true;
-  this->bIsDisabled           = true;
-
-  this->iModeName         = 30020;
-  this->iModeSetupName    = 30021;
-  this->iModeDescription  = 30022;
-  this->iModeHelp         = 30023;
-
-  strcpy(this->strOwnModeImage,       "img1.jpg");
-  strcpy(this->strOverrideModeImage,  "img1.jpg");
+  this->iHookId              = CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN;
+  this->category             = AE_DSP_MENUHOOK_POST_PROCESS;
+  this->iLocalizedStringId   = 30021;
+  this->iRelevantModeId      = CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN;
+  this->bNeedPlayback        = false;
 }

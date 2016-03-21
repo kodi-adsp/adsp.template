@@ -70,6 +70,7 @@ CHelper_libKODI_guilib  *GUI        = NULL;
  */
 CADSPAddonHandler g_AddonHandler;
 
+#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
 
 extern "C" {
 
@@ -130,6 +131,9 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   {
     KODI->Log(LOG_ERROR, "%s, %i, Failed to create CAddonProcessManager!", __FUNCTION__, __LINE__);
   }
+
+  CPostProcessGainModeDialogSettings dialogSettings;
+  ADSP->AddMenuHook((&dialogSettings));
 
   m_bCreated = true;
   m_iStreamsPresent = 0;
@@ -270,13 +274,24 @@ const char* GetDSPVersion(void)
   return ADSP_ADDON_VERSION;
 }
 
+#include "ADSPModeInfos.h"
+#include "PostProcessGain/PostProcessGainModeDialog.hpp"
+
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)
 {
-#ifdef ADSP_ADDON_USE_MENUHOOK
-  return g_AddonHandler.CallMenuHook(Menuhook, Item);
-#else
-  return AE_DSP_ERROR_NOT_IMPLEMENTED;
-#endif
+  if (Menuhook.iHookId == CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
+  {
+    CPostProcessGainModeDialog dialog;
+    IView *view = dynamic_cast<IView*>(&dialog);
+    view->DoModal();
+    //view->Destroy();
+    return AE_DSP_ERROR_NO_ERROR;
+  }
+
+  KODI->Log(LOG_ERROR, "called unknown menu hook!");
+  return AE_DSP_ERROR_FAILED;
+
+  //return g_AddonHandler.CallMenuHook(Menuhook, Item);
 }
 
 
