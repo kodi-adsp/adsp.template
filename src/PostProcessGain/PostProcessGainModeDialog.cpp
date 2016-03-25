@@ -56,13 +56,20 @@ bool CPostProcessGainModeDialog::OnInit()
   m_MainGainSlider = GUI->Control_getSlider(this->m_window, SLIDER_MAIN_GAIN);
   if (!m_MainGainSlider)
   {
-    KODI->Log(ADDON::LOG_ERROR, "Slider with ID: %i (%s) not found!", SLIDER_MAIN_GAIN, "Main Gain");
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Slider with ID: %i (%s) not found!", __FUNCTION__, __LINE__, SLIDER_MAIN_GAIN, "Main Gain");
     return false;
   }
   m_MainGainSlider->SetFloatRange(MAIN_GAIN_MIN_DB, MAIN_GAIN_MAX_DB);
   m_MainGainSlider->SetFloatValue(m_MainGain);
   m_MainGainSlider->SetVisible(false);
   m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
+
+  AudioEngineFormat sinkFmt;
+  if (!AUDIOENGINE->GetCurrentSinkFormat(sinkFmt))
+  {
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to get sink data format!", __FUNCTION__, __LINE__);
+    return false;
+  }
 
   return true;
 }
