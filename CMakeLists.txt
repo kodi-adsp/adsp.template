@@ -64,7 +64,7 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               #src/template/Addon/UI/View.cpp
                               src/template/Addon/MessageSystem/Communication/Message.cpp
                               src/template/Addon/MessageSystem/Communication/ActorProtocol.cpp
-							  src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
+                              src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
                               src/template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
                               src/template/Addon/Process/AddonProcessManager.cpp
@@ -149,7 +149,8 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               #src/template/Addon/UI/Controller.hpp
                               #src/template/Addon/UI/Model.hpp
                               #src/template/Addon/UI/Observer.hpp
-                              #src/template/Addon/UI/View.hpp
+                              src/template/Addon/MVC/Interfaces/View/IView.hpp
+                              src/template/Addon/MVC/Interfaces/View/ActionIDs.hpp
                               src/template/Addon/Utils/TCreationStatistics.hpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp
                               src/template/AudioDSP/FactoryADSPModes/IADSPMode.hpp
@@ -187,6 +188,10 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/PostProcessGain/PostProcessGainModeSettings.hpp
                               src/PostProcessGain/PostProcessGain.cpp
                               src/PostProcessGain/PostProcessGain.hpp
+                              src/PostProcessGain/PostProcessGainModeDialogSettings.cpp
+                              src/PostProcessGain/PostProcessGainModeDialogSettings.hpp
+                              src/PostProcessGain/PostProcessGainModeDialog.cpp
+                              src/PostProcessGain/PostProcessGainModeDialog.hpp
                               
                               src/CpyModesProcess.cpp
                               src/CpyModesProcess.hpp)
