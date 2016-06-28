@@ -20,6 +20,8 @@
 
 
 
+#include <memory.h>
+
 #include "Message.hpp"
 #include "Addon/MessageSystem/Interfaces/IProtocol.hpp"
 

@@ -24,6 +24,8 @@
 
 #include "ADSPModeInfos.h"
 
+#include <string.h>
+
 
 CPostProcessCpyModeSettings::CPostProcessCpyModeSettings()
 {

@@ -24,6 +24,8 @@
 
 #include "template/ADSPHelpers.h"
 
+#include <memory.h>
+
 class CFactoryADSPModes;
 
 
