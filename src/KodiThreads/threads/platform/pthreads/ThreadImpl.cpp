@@ -18,7 +18,9 @@
  *
  */
 
-#include "config.h"
+#if defined(HAVE_CONFIG_H)
+  #include "config.h"
+#endif
 #include <limits.h>
 #if defined(TARGET_ANDROID)
 #include <unistd.h>
@@ -49,7 +51,7 @@ void CThread::SpawnThread(unsigned stacksize)
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
   if (pthread_create(&m_ThreadId, &attr, (void*(*)(void*))staticThread, this) != 0)
   {
-    if (logger) logger->Log(LOGNOTICE, "%s - fatal error creating thread",__FUNCTION__);
+    LOG(LOGNOTICE, "%s - fatal error creating thread",__FUNCTION__);
   }
   pthread_attr_destroy(&attr);
 }
@@ -107,7 +109,7 @@ void CThread::SetThreadInfo()
     // start thread with nice level of appication
     int appNice = getpriority(PRIO_PROCESS, getpid());
     if (setpriority(PRIO_PROCESS, m_ThreadOpaque.LwpId, appNice) != 0)
-      if (logger) logger->Log(LOGERROR, "%s: error %s", __FUNCTION__, strerror(errno));
+      LOG(LOGERROR, "%s: error %s", __FUNCTION__, strerror(errno));
   }
 #endif
 }
@@ -190,7 +192,7 @@ bool CThread::SetPriority(const int iPriority)
     if (setpriority(PRIO_PROCESS, m_ThreadOpaque.LwpId, prio) == 0)
       bReturn = true;
     else
-      if (logger) logger->Log(LOGERROR, "%s: error %s", __FUNCTION__, strerror(errno));
+      LOG(LOGERROR, "%s: error %s", __FUNCTION__, strerror(errno));
   }
 #endif
 
@@ -278,9 +280,7 @@ float CThread::GetRelativeUsage()
 
 void term_handler (int signum)
 {
-  XbmcCommons::ILogger* logger = CThread::GetLogger();
-  if (logger)
-    logger->Log(LOGERROR,"thread 0x%lx (%lu) got signal %d. calling OnException and terminating thread abnormally.", (long unsigned int)pthread_self(), (long unsigned int)pthread_self(), signum);
+  LOG(LOGERROR,"thread 0x%lx (%lu) got signal %d. calling OnException and terminating thread abnormally.", (long unsigned int)pthread_self(), (long unsigned int)pthread_self(), signum);
   CThread* curThread = CThread::GetCurrentThread();
   if (curThread)
   {

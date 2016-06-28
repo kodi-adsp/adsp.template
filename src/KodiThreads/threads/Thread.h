@@ -29,7 +29,6 @@
 #include "Event.h"
 #include "threads/ThreadImpl.h"
 #include "threads/ThreadLocal.h"
-#include "system.h"
 
 #ifdef TARGET_DARWIN
 #include <mach/mach.h>
