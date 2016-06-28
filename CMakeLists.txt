@@ -182,8 +182,8 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
-            ${p8-platform_LIBRARIES}
-            winmm.lib)
+            ${p8-platform_LIBRARIES})
+            #winmm.lib)#todo implement switches for Windows
 
 build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
 
