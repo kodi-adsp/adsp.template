@@ -20,27 +20,44 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/src/template
                     ${PROJECT_SOURCE_DIR}/src/KodiThreads)
                                           
-set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
+set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
+                              src/KodiThreads/threads/Event.cpp
+                              src/KodiThreads/threads/Thread.cpp
+                              src/KodiThreads/threads/Timer.cpp
+                              src/KodiThreads/threads/SystemClock.cpp
+
+                              src/KodiThreads/threads/platform/Implementation.cpp
+
+                              src/KodiThreads/threads/Atomics.h
+                              src/KodiThreads/threads/Condition.h
+                              src/KodiThreads/threads/CriticalSection.h
+                              src/KodiThreads/threads/Event.h
+                              src/KodiThreads/threads/Helpers.h
+                              src/KodiThreads/threads/Lockables.h
+                              src/KodiThreads/threads/MipsAtomics.h
+                              src/KodiThreads/threads/SharedSection.h
+                              src/KodiThreads/threads/SingleLock.h
+                              src/KodiThreads/threads/SystemClock.h
+                              src/KodiThreads/threads/Thread.h
+                              src/KodiThreads/threads/ThreadImpl.h
+                              src/KodiThreads/threads/ThreadLocal.h
+                              src/KodiThreads/threads/Timer.h
+                              src/KodiThreads/threads/platform/Condition.h
+                              src/KodiThreads/threads/platform/CriticalSection.h
+                              src/KodiThreads/threads/platform/ThreadImpl.h
+                              src/KodiThreads/threads/platform/ThreadLocal.h
+
+                              src/KodiThreads/commons/Exception.cpp
+                              src/KodiThreads/system.h
+                              src/KodiThreads/commons/Exception.h
+
+                              src/ADDONOptional.cpp
                               src/channelUpmixer.cpp
                               src/DSPProcessor.cpp
                               src/Dialogs/GUIDialogMasterProcess.cpp
                               src/Dialogs/GUIDialogOutputResample.cpp
                               src/Dialogs/GUIDialogPostProcess.cpp
                               src/Dialogs/GUIDialogPreProcess.cpp
-                              src/KodiThreads/commons/Exception.cpp
-                              src/KodiThreads/threads/Atomics.cpp
-                              src/KodiThreads/threads/Event.cpp
-                              src/KodiThreads/threads/SystemClock.cpp
-                              src/KodiThreads/threads/Thread.cpp
-                              src/KodiThreads/threads/Timer.cpp
-                              #src/KodiThreads/threads/platform/Implementation.cpp
-                              #src/KodiThreads/threads/platform/ThreadImpl.cpp
-                              #src/KodiThreads/threads/platform/darwin/ThreadSchedImpl.cpp
-                              #src/KodiThreads/threads/platform/linux/ThreadSchedImpl.cpp
-                              #src/KodiThreads/threads/platform/pthreads/Implementation.cpp
-                              #src/KodiThreads/threads/platform/pthreads/ThreadImpl.cpp
-                              #src/KodiThreads/threads/platform/win/ThreadImpl.cpp
-                              src/KodiThreads/threads/platform/win/Win32Exception.cpp
                               src/template/AddonHelpers.cpp
                               src/template/ADSPAddonHandler.cpp
                               src/template/ADSPHelpers.cpp
@@ -79,35 +96,6 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/Dialogs/GUIDialogOutputResample.h
                               src/Dialogs/GUIDialogPostProcess.h
                               src/Dialogs/GUIDialogPreProcess.h
-                              src/KodiThreads/system.h
-                              src/KodiThreads/commons/Exception.h
-                              src/KodiThreads/threads/Atomics.h
-                              src/KodiThreads/threads/Condition.h
-                              src/KodiThreads/threads/CriticalSection.h
-                              src/KodiThreads/threads/Event.h
-                              src/KodiThreads/threads/Helpers.h
-                              src/KodiThreads/threads/Lockables.h
-                              #src/KodiThreads/threads/MipsAtomics.h
-                              src/KodiThreads/threads/SharedSection.h
-                              src/KodiThreads/threads/SingleLock.h
-                              src/KodiThreads/threads/SystemClock.h
-                              src/KodiThreads/threads/Thread.h
-                              src/KodiThreads/threads/ThreadImpl.h
-                              src/KodiThreads/threads/ThreadLocal.h
-                              src/KodiThreads/threads/Timer.h
-                              src/KodiThreads/threads/platform/Condition.h
-                              src/KodiThreads/threads/platform/CriticalSection.h
-                              src/KodiThreads/threads/platform/ThreadImpl.h
-                              src/KodiThreads/threads/platform/ThreadLocal.h
-                              #src/KodiThreads/threads/platform/pthreads/Condition.h
-                              #src/KodiThreads/threads/platform/pthreads/CriticalSection.h
-                              #src/KodiThreads/threads/platform/pthreads/ThreadImpl.h
-                              #src/KodiThreads/threads/platform/pthreads/ThreadLocal.h
-                              #src/KodiThreads/threads/platform/win/Condition.h
-                              #src/KodiThreads/threads/platform/win/CriticalSection.h
-                              #src/KodiThreads/threads/platform/win/ThreadImpl.h
-                              #src/KodiThreads/threads/platform/win/ThreadLocal.h
-                              src/KodiThreads/threads/platform/win/Win32Exception.h
                               src/template/ADSPHelpers.h
                               src/template/doxygenDocu.h
                               src/template/Addon/MessageSystem/Interfaces/IProtocol.hpp
@@ -208,3 +196,4 @@ if(DOXYGEN_FOUND)
 endif()
 
 include(CPack)
+
