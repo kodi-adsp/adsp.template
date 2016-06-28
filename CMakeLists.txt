@@ -8,22 +8,17 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
 enable_language(CXX)
 
-find_package(kodi REQUIRED)
+find_package(Kodi REQUIRED)
 find_package(kodiplatform REQUIRED)
-find_package(platform REQUIRED)
+find_package(p8-platform REQUIRED)
 find_package(TinyXML REQUIRED)
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
-                    ${platform_INCLUDE_DIRS}
+                    ${p8-platform_INCLUDE_DIRS}
                     ${KODI_INCLUDE_DIR}
                     ${PROJECT_SOURCE_DIR}/src
                     ${PROJECT_SOURCE_DIR}/src/template
                     ${PROJECT_SOURCE_DIR}/src/KodiThreads)
-                    
-#file (GLOB_RECURSE ADSP_TEMPLATE_SOURCES  "src/*.c"
-                                          #"src/*.cpp"
-                                          #"src/*.h"
-                                          #"src/*.hpp")
                                           
 set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/channelUpmixer.cpp
@@ -199,7 +194,7 @@ set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
-            ${platform_LIBRARIES}
+            ${p8-platform_LIBRARIES}
             winmm.lib)
 
 build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
