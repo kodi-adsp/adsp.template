@@ -108,6 +108,7 @@ public:
   private:
     const  int                     m_HiddenID; // force initialization for m_HiddenID
     static AddonProcessCallbacks_t m_Callbacks;
+    static const AE_DSP_MODES::AE_DSP_MODE m_ModeSettings;
   };
 
   static AE_DSP_ERROR CreateProcesses();
@@ -164,7 +165,10 @@ const int CAddonProcessManager::TRegisterAddonProcess<TAddonProcess, TProcessNam
 CAddonProcessManager::RegisterAddonProcess(TProcessName::ProcessName, CAddonProcessManager::TRegisterAddonProcess<TAddonProcess, TProcessName>::m_Callbacks);
 
 template<class TAddonProcess, class TProcessName>
-const int  CAddonProcessManager::TRegisterAddonProcess<TAddonProcess, TProcessName>::ProcessName = TProcessName::ProcessName;
+const char* CAddonProcessManager::TRegisterAddonProcess<TAddonProcess, TProcessName>::ProcessName = TProcessName::ProcessName;
+
+template<class TAddonProcess, class TProcessName>
+const AE_DSP_MODES::AE_DSP_MODE CAddonProcessManager::TRegisterAddonProcess<TAddonProcess, TProcessName>::m_ModeSettings;
 
 template<class TAddonProcess, class TProcessName>
 CAddonProcessManager::AddonProcessCallbacks_t

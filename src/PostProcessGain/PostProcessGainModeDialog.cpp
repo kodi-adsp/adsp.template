@@ -27,6 +27,8 @@
 
 #include "utils/stdStringUtils.h"
 
+#include <math.h>
+
 
 #define BUTTON_OK                 10050
 #define BUTTON_CANCEL             10051

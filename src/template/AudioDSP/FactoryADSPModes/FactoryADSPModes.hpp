@@ -147,13 +147,13 @@ const int CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettin
 CFactoryADSPModes::RegisterADSPMode(TModeName::ModeName, TType, CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::m_Callbacks);
 
 template<class TADSPMode, class TModeName, class TModeSettings, AE_DSP_MODE_TYPE TType>
-const int  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::ModeType = TType;
+const AE_DSP_MODE_TYPE CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::ModeType = TType;
 
 template<class TADSPMode, class TModeName, class TModeSettings, AE_DSP_MODE_TYPE TType>
-const int  CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::ModeName = TModeName::ModeName;
+const char* CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::ModeName = TModeName::ModeName;
 
 template<class TADSPMode, class TModeName, class TModeSettings, AE_DSP_MODE_TYPE TType>
-typename const TModeSettings CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::m_ModeSettings;
+const TModeSettings CFactoryADSPModes::TRegisterADSPMode<TADSPMode, TModeName, TModeSettings, TType>::m_ModeSettings;
 
 template<class TADSPMode, class TModeName, class TModeSettings, AE_DSP_MODE_TYPE TType>
 CFactoryADSPModes::ADSPModeCallbacks_t

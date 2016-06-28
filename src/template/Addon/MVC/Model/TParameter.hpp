@@ -23,6 +23,8 @@
 
 #include "Addon/MVC/Interfaces/Model/IParameter.hpp"
 
+#include <memory.h>
+
 
 #define CreateTParameter(Type, StringClass, ID) dynamic_cast<IParameter*>(new TParameter<float>(StringClass::Strs[StringClass::ID], StringClass::ID))
 
