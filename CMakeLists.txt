@@ -178,13 +178,20 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               
                               src/CpyModesProcess.cpp
                               src/CpyModesProcess.hpp)
-                              
+                       
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES})
             #winmm.lib)#todo implement switches for Windows
 
+if(MSVC)
+  list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
+  list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
+  
+  list(APPEND DEPLIBS winmm.lib)
+endif()
+            
 build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
 
 # For generating the doxy

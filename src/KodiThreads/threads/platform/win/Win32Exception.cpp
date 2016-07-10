@@ -21,13 +21,12 @@
 #include "Win32Exception.h"
 #include <eh.h>
 #include <dbghelp.h>
-#include "Util.h"
-#include "WIN32Util.h"
-#include "utils/StringUtils.h"
-#include "utils/CharsetConverter.h"
-#include "utils/URIUtils.h"
-
-#define LOG if(logger) logger->Log
+//#include "Util.h"
+//#include "WIN32Util.h"
+//#include "utils/StringUtils.h"
+//#include "utils/CharsetConverter.h"
+//#include "utils/URIUtils.h"
+#include "system.h"
 
 typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
                                         CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
@@ -77,7 +76,7 @@ void win32_exception::translate(unsigned code, EXCEPTION_POINTERS* info)
   switch (code)
   {
     case EXCEPTION_ACCESS_VIOLATION:
-      throw access_violation(info);
+      //throw access_violation(info); // TODO: implement this
       break;
     default:
       throw win32_exception(info);
@@ -126,9 +125,10 @@ bool win32_exception::write_minidump(EXCEPTION_POINTERS* pEp)
                       stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay,
                       stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond);
 
-  dumpFileName = CWIN32Util::SmbToUnc(URIUtils::AddFileToFolder(CWIN32Util::GetProfilePath(), CUtil::MakeLegalFileName(dumpFileName)));
+  // TODO: implement this
+  //dumpFileName = CWIN32Util::SmbToUnc(URIUtils::AddFileToFolder(CWIN32Util::GetProfilePath(), CUtil::MakeLegalFileName(dumpFileName)));
 
-  g_charsetConverter.utf8ToW(dumpFileName, dumpFileNameW, false);
+  //g_charsetConverter.utf8ToW(dumpFileName, dumpFileNameW, false);
   HANDLE hDumpFile = CreateFileW(dumpFileNameW.c_str(), GENERIC_WRITE, 0, 0, CREATE_ALWAYS, 0, 0);
 
   if (hDumpFile == INVALID_HANDLE_VALUE)
@@ -229,9 +229,9 @@ bool win32_exception::write_stacktrace(EXCEPTION_POINTERS* pEp)
                                       stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay,
                                       stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond);
 
-  dumpFileName = CWIN32Util::SmbToUnc(URIUtils::AddFileToFolder(CWIN32Util::GetProfilePath(), CUtil::MakeLegalFileName(dumpFileName)));
+  //dumpFileName = CWIN32Util::SmbToUnc(URIUtils::AddFileToFolder(CWIN32Util::GetProfilePath(), CUtil::MakeLegalFileName(dumpFileName))); // TODO: implement this
 
-  g_charsetConverter.utf8ToW(dumpFileName, dumpFileNameW, false);
+  //g_charsetConverter.utf8ToW(dumpFileName, dumpFileNameW, false); // TODO: implement this
   hDumpFile = CreateFileW(dumpFileNameW.c_str(), GENERIC_WRITE, 0, 0, CREATE_ALWAYS, 0, 0);
 
   if (hDumpFile == INVALID_HANDLE_VALUE)
