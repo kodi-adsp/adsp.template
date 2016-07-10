@@ -71,8 +71,6 @@ CHelper_libKODI_audioengine *AUDIOENGINE  = NULL;
  */
 CADSPAddonHandler g_AddonHandler;
 
-#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
-
 extern "C" {
 
 void ADDON_ReadSettings(void)
@@ -144,9 +142,6 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   {
     KODI->Log(LOG_ERROR, "%s, %i, Failed to create CAddonProcessManager!", __FUNCTION__, __LINE__);
   }
-
-  CPostProcessGainModeDialogSettings dialogSettings;
-  ADSP->AddMenuHook((&dialogSettings));
 
   m_bCreated = true;
   m_iStreamsPresent = 0;

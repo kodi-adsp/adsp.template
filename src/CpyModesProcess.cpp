@@ -1,6 +1,7 @@
 #include "CpyModesProcess.hpp"
 
 #include "PostProcessGain/PostProcessGainParameterIDs.hpp"
+#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
 
 #include "ADSPModeInfos.h"
 
@@ -27,17 +28,14 @@ CCpyModesProcess::~CCpyModesProcess()
 
 
 AE_DSP_ERROR CCpyModesProcess::Create()
-{
-  if (m_PostProcessGainModel.Create() != 0)
-  {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to create %s model", __FUNCTION__, __LINE__, m_PostProcessGainModel.Name.c_str());
-    return AE_DSP_ERROR_FAILED;
-  }
-    
+{   
   if (InitPostProcessGainModel() != 0)
   {
     return AE_DSP_ERROR_FAILED;
   }
+
+  CPostProcessGainModeDialogSettings dialogSettings;
+  ADSP->AddMenuHook((&dialogSettings));
 
   return AE_DSP_ERROR_NO_ERROR;
 }
@@ -73,6 +71,12 @@ bool CCpyModesProcess::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 
 int CCpyModesProcess::InitPostProcessGainModel()
 {
+  if (m_PostProcessGainModel.Create() != 0)
+  {
+      KODI->Log(LOG_ERROR, "%s, %i, Failed to create %s model", __FUNCTION__, __LINE__, m_PostProcessGainModel.Name.c_str());
+      return AE_DSP_ERROR_FAILED;
+  }
+
   int errorCounter = 0;
   // TODO load settings from XML file
 
