@@ -39,8 +39,8 @@ private:
 
   void ProcessMainGainSlider();
 
+  CAddonGUISettingsSliderControl *m_MainGainSlider;
   
-  CAddonGUISliderControl  *m_MainGainSlider;
-  float                   m_MainGain;
-  float                   m_PageActionValue;
+  float m_MainGain;
+  float m_PageActionValue;
 };

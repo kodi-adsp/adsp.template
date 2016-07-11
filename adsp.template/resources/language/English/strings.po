@@ -1,6 +1,6 @@
 # KODI Media Center language file
 # Addon Name: AudioDSP Template
-# Addon id: pvr.hts
+# Addon id: adsp.template
 # Addon version: 1.0.0
 # Addon Provider: Achim Turan, Team KODI
 msgid ""
@@ -115,6 +115,91 @@ msgctxt "#30023"
 msgid "Here you can place your help for Postprocess Gain Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
-msgctxt "#30251"
-msgid "Preprocess"
+msgctxt "#30100"
+msgid "Post Processing Gain Settings"
+msgstr ""
+
+#msgctxt "#30251"
+#msgid "Preprocess"
+#msgstr ""
+
+# Speaker Channel Names
+msgctxt "#35000"
+msgid "Front left"
+msgstr ""
+
+msgctxt "#35001"
+msgid "Front right"
+msgstr ""
+
+msgctxt "#35002"
+msgid "Front center"
+msgstr ""
+
+msgctxt "#35003"
+msgid "Subwoofer"
+msgstr ""
+
+msgctxt "#35004"
+msgid "Back left"
+msgstr ""
+
+msgctxt "#35005"
+msgid "Back right"
+msgstr ""
+
+msgctxt "#35006"
+msgid "Front left over center"
+msgstr ""
+
+msgctxt "#35007"
+msgid "Front right over center"
+msgstr ""
+
+msgctxt "#35008"
+msgid "Back center"
+msgstr ""
+
+msgctxt "#35009"
+msgid "Side left"
+msgstr ""
+
+msgctxt "#35010"
+msgid "Side right"
+msgstr ""
+
+msgctxt "#35011"
+msgid "Top front left"
+msgstr ""
+
+msgctxt "#35012"
+msgid "Top front right"
+msgstr ""
+
+msgctxt "#35013"
+msgid "Top front center"
+msgstr ""
+
+msgctxt "#35014"
+msgid "Top center"
+msgstr ""
+
+msgctxt "#35015"
+msgid "Top back left"
+msgstr ""
+
+msgctxt "#35016"
+msgid "Top back right"
+msgstr ""
+
+msgctxt "#35017"
+msgid "Top back center"
+msgstr ""
+
+msgctxt "#35018"
+msgid "Back left over center"
+msgstr ""
+
+msgctxt "#35019"
+msgid "Back right over center"
 msgstr ""

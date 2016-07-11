@@ -37,7 +37,7 @@
 #define SLIDER_MAIN_GAIN          8000
 #define LABEL_MAIN_GAIN_DB_LEVEL  8200
 
-#define MAIN_GAIN_MAX_DB          0.0f
+#define MAIN_GAIN_MAX_DB          24.0f
 #define MAIN_GAIN_MIN_DB          -24.0f
 #define MAIN_GAIN_PAGE_STEP       1.0f
 
@@ -46,7 +46,7 @@ std::string float_dB_toString(float dB);
 
 
 CGainModeDialog::CGainModeDialog() :
-  IView("DialogMainGain.xml", false, true)
+  IView("DialogGainMode.xml", false, true)
 {
   m_MainGain = 0.0f;
   m_PageActionValue = 0.0f;
@@ -55,7 +55,7 @@ CGainModeDialog::CGainModeDialog() :
 
 bool CGainModeDialog::OnInit()
 {
-  m_MainGainSlider = GUI->Control_getSlider(this->m_window, SLIDER_MAIN_GAIN);
+  m_MainGainSlider = GUI->Control_getSettingsSlider(this->m_window, SLIDER_MAIN_GAIN);
   if (!m_MainGainSlider)
   {
     KODI->Log(ADDON::LOG_ERROR, "%s, %i, Slider with ID: %i (%s) not found!", __FUNCTION__, __LINE__, SLIDER_MAIN_GAIN, "Main Gain");
@@ -63,7 +63,7 @@ bool CGainModeDialog::OnInit()
   }
   m_MainGainSlider->SetFloatRange(MAIN_GAIN_MIN_DB, MAIN_GAIN_MAX_DB);
   m_MainGainSlider->SetFloatValue(m_MainGain);
-  m_MainGainSlider->SetVisible(false);
+  m_MainGainSlider->SetVisible(true);
   m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
 
   AudioEngineFormat sinkFmt;
@@ -142,7 +142,7 @@ bool CGainModeDialog::OnAction(int actionId)
 
 void CGainModeDialog::OnClose()
 {
-  GUI->Control_releaseSlider(m_MainGainSlider);
+  GUI->Control_releaseSettingsSlider(m_MainGainSlider);
 }
 
 void CGainModeDialog::ProcessMainGainSlider()
