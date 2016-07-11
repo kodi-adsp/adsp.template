@@ -21,44 +21,35 @@
 
 
 
-#include "Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "Addon/Process/AddonProcessManager.hpp"
 
-#include <memory.h>
-
-
-#define CreateTParameter(Type, StringClass, ID) dynamic_cast<IParameter*>(new TParameter<float>(StringClass::ToString(StringClass::ID), StringClass::ID))
+#include "GainMode/GainModeModel.hpp"
+#include "GainMode/GainModeController.hpp"
 
 
-template<class T>
-class TParameter : public IParameter
+class CGainModeEnvironmentName
 {
 public:
-  TParameter(std::string Name, int ID) :
-    IParameter(Name, ID, sizeof(T))
-  {
-    memset(&m_Data, 0, this->Size);
-  }
-
-  virtual void* GetDataPtr()
-  {
-    return (void*)&m_Data;
-  }
+  static const std::string ProcessName;
+};
 
 
-protected: // protected member variables
-  virtual int Set(void *Data)
-  {
-    memcpy(&this->m_Data, Data, this->Size);
-    
-    return 0;
-  }
+class CGainModeEnvironment : REGISTER_ADDON_PROCESS_CLASS(CGainModeEnvironment, CGainModeEnvironmentName)
+{
+public:
+  CGainModeEnvironment();
+  ~CGainModeEnvironment();
+
+  virtual AE_DSP_ERROR Create();
+  virtual AE_DSP_ERROR Destroy();
   
-  virtual int Get(void *Data)
-  {
-    memcpy(Data, &this->m_Data, this->Size);
+  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher);
+  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
-    return 0;
-  }
-
-  T m_Data;
+private: // private member methods
+  int InitGainModel();
+  
+private: // private member variables
+  CGainModeModel      m_GainModeModel;
+  CGainModeController m_GainModeController;
 };

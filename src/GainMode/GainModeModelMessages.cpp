@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -20,32 +20,32 @@
 
 
 
-#include "PostProcessGain/PostProcessGainModelMessages.hpp"
-#include "PostProcessGain/PostProcessGainModel.hpp"
+#include "GainMode/GainModeModelMessages.hpp"
+#include "GainMode/GainModeModel.hpp"
 #include "Addon/MessageSystem/Communication/ActorProtocol.h"
 #include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
-#include "PostProcessGain/PostProcessGainParameterIDs.hpp"
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
+#include "EnumStrIDs.hpp"
 
 
-CPostProcessGainModelMessages::CPostProcessGainModelMessages() :
-  CMessageDispatcher(new CActorProtocol(CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN]),
-                     CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN],
+CGainModeModelMessages::CGainModeModelMessages() :
+  CMessageDispatcher(new CActorProtocol(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain)),
+                     CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
                      true)
 {
 }
 
 
-CPostProcessGainModelMessages::~CPostProcessGainModelMessages()
+CGainModeModelMessages::~CGainModeModelMessages()
 {
 }
 
 
-bool CPostProcessGainModelMessages::Create(CPostProcessGainModel *Model)
+bool CGainModeModelMessages::Create(CGainModeModel *Model)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CPostProcessGainParameterIDs, POST_PROCESS_GAIN_MAIN_GAIN));
+  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CSocketGainModeIDs, MainGain));
 
   return this->SetSockets(sockets);
 }

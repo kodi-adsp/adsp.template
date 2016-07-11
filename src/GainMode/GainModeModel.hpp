@@ -5,7 +5,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -23,19 +23,19 @@
 
 #include "template/Addon/MVC/Interfaces/Model/IModel.hpp"
 
-#include "PostProcessGainModelMessages.hpp"
+#include "GainModeModelMessages.hpp"
 
-class CPostProcessGainModelMessages;
+class CGainModeModelMessages;
 
 
-class CPostProcessGainModel : public IModel,
-                              public CPostProcessGainModelMessages
+class CGainModeModel : public IModel,
+                       public CGainModeModelMessages
 {
-  friend class CPostProcessGainModelMessages;
+  friend class CGainModeModelMessages;
 
 public:
-  CPostProcessGainModel();
-  ~CPostProcessGainModel();
+  CGainModeModel();
+  ~CGainModeModel();
 
   virtual int Create();
   virtual void Destroy();

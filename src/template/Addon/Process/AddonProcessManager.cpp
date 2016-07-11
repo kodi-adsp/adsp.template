@@ -81,7 +81,7 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
 
 void CAddonProcessManager::DestroyProcesses()
 {
-  for (int ii = 0; ii < m_AddonProcesses.size(); ii++)
+  for (unsigned int ii = 0; ii < m_AddonProcesses.size(); ii++)
   {
     if (m_AddonProcesses[ii])
     {

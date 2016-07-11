@@ -83,7 +83,7 @@ private:
   class CADSPModeKeyCmp
   {
   public:
-    bool operator()(const ADSPModeKey_t &Obj1, const ADSPModeKey_t &Obj2)
+    bool operator()(const ADSPModeKey_t &Obj1, const ADSPModeKey_t &Obj2) const
     {
       return  Obj1.ModeID < Obj2.ModeID || (Obj1.ModeID == Obj2.ModeID  && Obj1.ModeType < Obj2.ModeType);
     }

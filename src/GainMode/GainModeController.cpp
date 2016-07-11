@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -20,16 +20,40 @@
 
 
 
-#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
+#include "Addon/MVC/Model/TParameter.hpp"
+#include "GainMode/GainModeController.hpp"
+#include "EnumStrIDs.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
+
+#include "include/client.h"
+
+using namespace ADDON;
 
 
-CPostProcessGainModeDialogSettings::CPostProcessGainModeDialogSettings()
+CGainModeController::CGainModeController() :
+  IController("GainModeController", 0) // TODO: create ID list
 {
-  this->iHookId              = CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN;
-  this->category             = AE_DSP_MENUHOOK_POST_PROCESS;
-  this->iLocalizedStringId   = 30021;
-  this->iRelevantModeId      = CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN;
-  this->bNeedPlayback        = false;
 }
+
+
+CGainModeController::~CGainModeController()
+{
+}
+
+
+int CGainModeController::Create()
+{
+  if (!CGainModeControllerMessages::Create(this))
+  {
+    // TODO error message
+    return 0;
+  }
+
+  return 0;
+}
+
+void CGainModeController::Destroy()
+{
+}
+

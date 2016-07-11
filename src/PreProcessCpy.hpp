@@ -24,7 +24,7 @@
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 #include "PreProcessCpyModeSettings.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 class CPreProcessCpyModeName
 {
@@ -32,7 +32,7 @@ public:
   static const std::string ModeName;
 };
 
-const std::string CPreProcessCpyModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PREPROCESS_CPY];
+const std::string CPreProcessCpyModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PreProcessingModeCopy);
 
 
 class CPreProcessCpy : REGISTER_ADSP_MODE_CLASS(CPreProcessCpy, CPreProcessCpyModeName, CPreProcessCpyModeSettings, AE_DSP_MODE_TYPE_PRE_PROCESS)

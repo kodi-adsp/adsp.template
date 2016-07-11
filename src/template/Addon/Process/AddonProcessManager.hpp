@@ -81,7 +81,7 @@ private:
   class CPAddonProcessKeyCmp
   {
   public:
-    bool operator()(const AddonProcessKey_t &Obj1, const AddonProcessKey_t &Obj2)
+    bool operator()(const AddonProcessKey_t &Obj1, const AddonProcessKey_t &Obj2) const
     {
       return  Obj1.ProcessID < Obj2.ProcessID;
     }

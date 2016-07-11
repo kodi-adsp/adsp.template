@@ -22,14 +22,14 @@
 
 #include "InputResampleCpyModeSettings.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 #include <string.h>
 
 
 CInputResampleCpyModeSettings::CInputResampleCpyModeSettings()
 {
-  strcpy(this->strModeName, CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_INPUTERESAMPLE_CPY]);
+  strcpy(this->strModeName, CADSPModeIDs::ToString(CADSPModeIDs::InputResamplingModeCopy));
 
   this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
   this->bHasSettingsDialog    = false;

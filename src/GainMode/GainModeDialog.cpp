@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -20,10 +20,10 @@
 
 
 
-#include "PostProcessGain/PostProcessGainModeDialogSettings.hpp"
+#include "GainMode/GainModeDialogSettings.hpp"
+#include "GainMode/GainModeDialog.hpp"
 
-#include "ADSPModeInfos.h"
- #include "PostProcessGainModeDialog.hpp"
+#include "EnumStrIDs.hpp"
 
 #include "utils/stdStringUtils.h"
 
@@ -45,7 +45,7 @@
 std::string float_dB_toString(float dB);
 
 
-CPostProcessGainModeDialog::CPostProcessGainModeDialog() :
+CGainModeDialog::CGainModeDialog() :
   IView("DialogMainGain.xml", false, true)
 {
   m_MainGain = 0.0f;
@@ -53,7 +53,7 @@ CPostProcessGainModeDialog::CPostProcessGainModeDialog() :
 }
 
 
-bool CPostProcessGainModeDialog::OnInit()
+bool CGainModeDialog::OnInit()
 {
   m_MainGainSlider = GUI->Control_getSlider(this->m_window, SLIDER_MAIN_GAIN);
   if (!m_MainGainSlider)
@@ -76,7 +76,7 @@ bool CPostProcessGainModeDialog::OnInit()
   return true;
 }
 
-bool CPostProcessGainModeDialog::OnClick(int controlId)
+bool CGainModeDialog::OnClick(int controlId)
 {
   switch (controlId)
   {
@@ -111,12 +111,12 @@ bool CPostProcessGainModeDialog::OnClick(int controlId)
   return true;
 }
 
-bool CPostProcessGainModeDialog::OnFocus(int controlId)
+bool CGainModeDialog::OnFocus(int controlId)
 {
   return false;
 }
 
-bool CPostProcessGainModeDialog::OnAction(int actionId)
+bool CGainModeDialog::OnAction(int actionId)
 {
   if (actionId == ADDON_ACTION_CLOSE_DIALOG ||
       actionId == ADDON_ACTION_PREVIOUS_MENU ||
@@ -140,12 +140,12 @@ bool CPostProcessGainModeDialog::OnAction(int actionId)
   return false;
 }
 
-void CPostProcessGainModeDialog::OnClose()
+void CGainModeDialog::OnClose()
 {
   GUI->Control_releaseSlider(m_MainGainSlider);
 }
 
-void CPostProcessGainModeDialog::ProcessMainGainSlider()
+void CGainModeDialog::ProcessMainGainSlider()
 {
   if (m_PageActionValue != 0.0f)
   {

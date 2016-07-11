@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -20,7 +20,7 @@
 
 
 
-#include "PostProcessGain/PostProcessGain.hpp"
+#include "GainMode/GainMode.hpp"
 
 #include "ADSPHelpers.h"
 #include "include/client.h"
@@ -28,21 +28,21 @@
 using namespace ADDON;
 
 
-const std::string CPostProcessGainModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN];
+const std::string CGainModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain);
 
 
-CPostProcessGain::CPostProcessGain()
+CGainMode::CGainMode()
 {
   m_MainGain = 1.0f;
 }
 
 
-CPostProcessGain::~CPostProcessGain()
+CGainMode::~CGainMode()
 {
 }
 
 
-AE_DSP_ERROR CPostProcessGain::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
+AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
   m_InChannels            = Settings.iInChannels;
   m_InChannelPresentFlags = Settings.lInChannelPresentFlags;
@@ -70,26 +70,25 @@ AE_DSP_ERROR CPostProcessGain::ModeCreate(const AE_DSP_SETTINGS &Settings, const
     lastAudioChannel = m_ChannelMappingIdx[ch] + 1;
   }
 
-  if (!CPostProcessGainMessages::Create(this))
+  if (!CGainModeMessages::Create(this))
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CPostProcessGainMessages::DispatcherName.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeMessages::DispatcherName.c_str());
     return AE_DSP_ERROR_FAILED;
   }
-  
 
   return AE_DSP_ERROR_NO_ERROR;
 }
 
 
-void CPostProcessGain::ModeDestroy()
+void CGainMode::ModeDestroy()
 {
 }
 
 
 // Requiered Processing Methods
-unsigned int CPostProcessGain::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
+unsigned int CGainMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
-  CPostProcessGainMessages::ProcessMessage();
+  CGainModeMessages::ProcessMessages();
 
   for (int ch = 0; ch < m_InChannels; ch++)
   { 

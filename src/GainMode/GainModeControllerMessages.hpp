@@ -5,7 +5,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -23,14 +23,13 @@
 
 #include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
 
-class CPostProcessGain;
+class CGainModeController;
 
-
-class CPostProcessGainMessages : public CMessageDispatcher
+class CGainModeControllerMessages : public CMessageDispatcher
 {
 public:
-  CPostProcessGainMessages();
-  ~CPostProcessGainMessages();
+  CGainModeControllerMessages();
+  ~CGainModeControllerMessages();
 
-  bool Create(CPostProcessGain *Mode);
+  bool Create(CGainModeController *Mode);
 };

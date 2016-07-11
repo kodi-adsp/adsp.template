@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -20,16 +20,16 @@
 
 
 
-#include "PostProcessGain/PostProcessGainModeSettings.hpp"
+#include "GainMode/GainModeSettings.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 #include <string.h>
 
 
-CPostProcessGainModeSettings::CPostProcessGainModeSettings()
+CGainModeSettings::CGainModeSettings()
 {
-  strcpy(this->strModeName, CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN]);
+  strcpy(this->strModeName, CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain));
 
   this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
   this->bHasSettingsDialog    = true;

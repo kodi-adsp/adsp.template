@@ -1,35 +1,35 @@
-#include "CpyModesProcess.hpp"
+#include "GainModeEnvironment.hpp"
 
-#include "PostProcessGain/GainModeParameterIDs.hpp"
-#include "PostProcessGain/GainModeDialogSettings.hpp"
+#include "EnumStrIDs.hpp"
+#include "GainMode/GainModeDialogSettings.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 #include "include/client.h"
 
 using namespace ADDON;
 
 
-const std::string CCpyModesProcessName::ProcessName = "CCpyModesProcess";
+const std::string CGainModeEnvironmentName::ProcessName = CModeEnvironmentIDs::ToString(CModeEnvironmentIDs::GainMode);
 
 #define SET_MODEL_FLOAT_PARAM(ErrCnt, Model, ParameterClass, ParameterID, Data)                                             \
                                     if (Model.SetParameter(ParameterClass::ParameterID, &fVal, sizeof(fVal)) != 0) {  \
                                       ErrCnt++;                                                                       \
-                                      KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::Strs[ParameterClass::ParameterID], Model.Name.c_str());}\
+                                      KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::ToString(ParameterClass::ParameterID), Model.Name.c_str());}\
 
 
-CCpyModesProcess::CCpyModesProcess()
+CGainModeEnvironment::CGainModeEnvironment()
 {
 }
 
-CCpyModesProcess::~CCpyModesProcess()
+CGainModeEnvironment::~CGainModeEnvironment()
 {
 }
 
 
-AE_DSP_ERROR CCpyModesProcess::Create()
+AE_DSP_ERROR CGainModeEnvironment::Create()
 {   
-  if (InitPostProcessGainModel() != 0)
+  if (InitGainModel() != 0)
   {
     return AE_DSP_ERROR_FAILED;
   }
@@ -40,7 +40,7 @@ AE_DSP_ERROR CCpyModesProcess::Create()
   return AE_DSP_ERROR_NO_ERROR;
 }
 
-AE_DSP_ERROR CCpyModesProcess::Destroy()
+AE_DSP_ERROR CGainModeEnvironment::Destroy()
 {
   m_GainModeModel.Destroy();
 
@@ -48,9 +48,9 @@ AE_DSP_ERROR CCpyModesProcess::Destroy()
 }
 
 
-bool CCpyModesProcess::ConnectDispatcher(CMessageDispatcher *Dispatcher)
+bool CGainModeEnvironment::ConnectDispatcher(CMessageDispatcher *Dispatcher)
 {
-  if(Dispatcher->DispatcherName == CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN])
+  if(Dispatcher->DispatcherName == CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
   {
     return m_GainModeModel.ConnectDispatcher(Dispatcher);
   }
@@ -58,9 +58,9 @@ bool CCpyModesProcess::ConnectDispatcher(CMessageDispatcher *Dispatcher)
   return false;
 }
 
-bool CCpyModesProcess::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
+bool CGainModeEnvironment::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 {
-  if (Dispatcher->DispatcherName == CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN])
+  if (Dispatcher->DispatcherName == CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
   {
     return m_GainModeModel.DisconnectDispatcher(Dispatcher);
   }
@@ -69,7 +69,7 @@ bool CCpyModesProcess::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 }
 
 
-int CCpyModesProcess::InitPostProcessGainModel()
+int CGainModeEnvironment::InitGainModel()
 {
   if (m_GainModeModel.Create() != 0)
   {
@@ -82,7 +82,7 @@ int CCpyModesProcess::InitPostProcessGainModel()
 
   // no XML file present. Consquently the model will be initialized with default parameters
   float fVal = 0.0f;
-  SET_MODEL_FLOAT_PARAM(errorCounter, m_GainModeModel, CGainModeParameterIDs, MainGain, fVal);
+  SET_MODEL_FLOAT_PARAM(errorCounter, m_GainModeModel, CSocketGainModeIDs, MainGain, fVal);
 
   if (errorCounter > 0)
   {

@@ -67,6 +67,7 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/template/IADDONOptional.cpp
                               src/template/IADSPProcessor.cpp
                               #src/template/Addon/Settings/SettingsPool.cpp
+							  src/template/Addon/MVC/Interfaces/Controller/IController.hpp
                               src/template/Addon/MVC/Interfaces/Model/IModel.hpp
                               src/template/Addon/MVC/Interfaces/Model/IParameter.hpp
                               src/template/Addon/MVC/Model/TParameter.hpp
@@ -79,6 +80,7 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
                               src/template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
+							  src/template/Addon/Utils/EnumIDsToString.hpp
                               src/template/Addon/Process/AddonProcessManager.cpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
                               src/template/AudioDSP/Streams/ADSPStreamManager.cpp
@@ -143,9 +145,6 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/template/AudioDSP/Streams/ADSPStreamBuilderAll.hpp
                               
                               # Processing Modes
-                              src/ADSPModeInfos.h
-                              src/ADSPModeInfos.cpp
-                              
                               src/PreProcessCpyModeSettings.cpp
                               src/PreProcessCpyModeSettings.hpp
                               src/PreProcessCpy.cpp
@@ -159,27 +158,33 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/InputResampleCpy.cpp
                               src/InputResampleCpy.hpp
                               
-                              src/PostProcessGain/PostProcessGainParameterIDs.cpp
-                              src/PostProcessGain/PostProcessGainParameterIDs.hpp
-                              src/PostProcessGain/PostProcessGainMessages.cpp
-                              src/PostProcessGain/PostProcessGainMessages.hpp
-                              src/PostProcessGain/PostProcessGainModel.cpp
-                              src/PostProcessGain/PostProcessGainModel.hpp
-                              src/PostProcessGain/PostProcessGainModelMessages.cpp
-                              src/PostProcessGain/PostProcessGainModelMessages.hpp
-                              src/PostProcessGain/PostProcessGainModeSettings.cpp
-                              src/PostProcessGain/PostProcessGainModeSettings.hpp
-                              src/PostProcessGain/PostProcessGain.cpp
-                              src/PostProcessGain/PostProcessGain.hpp
-                              src/PostProcessGain/PostProcessGainModeDialogSettings.cpp
-                              src/PostProcessGain/PostProcessGainModeDialogSettings.hpp
-                              src/PostProcessGain/PostProcessGainModeDialog.cpp
-                              src/PostProcessGain/PostProcessGainModeDialog.hpp
+                              src/GainMode/GainModeMessages.cpp
+                              src/GainMode/GainModeMessages.hpp
+                              src/GainMode/GainModeModel.cpp
+                              src/GainMode/GainModeModel.hpp
+                              src/GainMode/GainModeModelMessages.cpp
+                              src/GainMode/GainModeModelMessages.hpp
+                              src/GainMode/GainModeSettings.cpp
+                              src/GainMode/GainModeSettings.hpp
+                              src/GainMode/GainMode.cpp
+                              src/GainMode/GainMode.hpp
+                              src/GainMode/GainModeDialogSettings.cpp
+                              src/GainMode/GainModeDialogSettings.hpp
+                              src/GainMode/GainModeDialog.cpp
+                              src/GainMode/GainModeDialog.hpp
+							  src/GainMode/GainModeController.cpp
+                              src/GainMode/GainModeController.hpp
+							  src/GainMode/GainModeControllerMessages.cpp
+                              src/GainMode/GainModeControllerMessages.hpp
+							  src/GainModeEnvironment.cpp
+							  src/GainModeEnvironment.hpp
+							  
+							  src/EnumStrIDs.cpp
+							  src/EnumStrIDs.hpp)
                               
-                              src/CpyModesProcess.cpp
-                              src/CpyModesProcess.hpp)
+                              #src/CpyModesProcess.cpp
+                              #src/CpyModesProcess.hpp)
                        
-addon_source_group("${ADSP_TEMPLATE_SOURCES}")
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES})
@@ -191,6 +196,8 @@ if(MSVC)
   
   list(APPEND DEPLIBS winmm.lib)
 endif()
+
+addon_source_group("${ADSP_TEMPLATE_SOURCES}")
             
 build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
 

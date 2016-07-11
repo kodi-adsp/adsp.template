@@ -24,7 +24,7 @@
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 #include "InputResampleCpyModeSettings.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 class CInputResampleCpyModeName
 {
@@ -32,7 +32,7 @@ public:
   static const std::string ModeName;
 };
 
-const std::string CInputResampleCpyModeName::ModeName = CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_INPUTERESAMPLE_CPY];
+const std::string CInputResampleCpyModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::InputResamplingModeCopy);
 
 
 class CInputResampleCpy : REGISTER_ADSP_MODE_CLASS(CInputResampleCpy, CInputResampleCpyModeName, CInputResampleCpyModeSettings, AE_DSP_MODE_TYPE_INPUT_RESAMPLE)

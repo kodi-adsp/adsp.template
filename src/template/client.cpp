@@ -78,6 +78,7 @@ void ADDON_ReadSettings(void)
 #ifdef ADSP_ADDON_USE_READSETTINGS
   g_AddonHandler.ReadSettings();
 #endif
+
 }
 
 ADDON_STATUS ADDON_Create(void* hdl, void* props)
@@ -283,14 +284,14 @@ const char* GetDSPVersion(void)
   return ADSP_ADDON_VERSION;
 }
 
-#include "ADSPModeInfos.h"
-#include "PostProcessGain/PostProcessGainModeDialog.hpp"
+#include "EnumStrIDs.hpp"
+#include "GainMode/GainModeDialog.hpp"
 
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)
 {
-  if (Menuhook.iHookId == CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
+  if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeGain/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
   {
-    CPostProcessGainModeDialog dialog;
+    CGainModeDialog dialog;
     IView *view = dynamic_cast<IView*>(&dialog);
     view->DoModal();
     //view->Destroy();
@@ -423,7 +424,7 @@ float OutputResampleGetDelay(const ADDON_HANDLE Handle)
  */
 bool InputProcess(const ADDON_HANDLE Handle, const float **Array_in, unsigned int Samples)
 {
-  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_MAX, Array_in, Samples);
+  return CADSPStreamManager::ProcessMode(Handle, AE_DSP_MODE_TYPE_MAX, Array_in, Samples) > 0;
 }
 
 unsigned int InputResampleProcess(const ADDON_HANDLE Handle, float **Array_in, float **Array_out, unsigned int Samples)

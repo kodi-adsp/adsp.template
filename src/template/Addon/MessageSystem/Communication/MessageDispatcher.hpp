@@ -43,7 +43,6 @@ public:
   bool RemoveSocket(int SocketID);
 
   bool ConnectDispatcher(CMessageDispatcher *Dispatcher);
-  //bool RemoveDispatcher(CMessageDispatcher *Dispatcher);
   bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
   bool SendMsg(int SocketID, int DispatcherID = -1);

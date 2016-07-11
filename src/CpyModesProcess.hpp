@@ -23,7 +23,7 @@
 
 #include "Addon/Process/AddonProcessManager.hpp"
 
-#include "PostProcessGain/PostProcessGainModel.hpp"
+#include "PostProcessGain/GainModeModel.hpp"
 
 
 class CCpyModesProcessName
@@ -47,5 +47,5 @@ public:
 
 private:
   int InitPostProcessGainModel();
-  CPostProcessGainModel m_PostProcessGainModel;
+  CGainModeModel m_GainModeModel;
 };

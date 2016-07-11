@@ -5,7 +5,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -24,13 +24,13 @@
 #include "Addon/MVC/Interfaces/View/IView.hpp"
 
 
-class CPostProcessGainModeDialog : public IView
+class CGainModeDialog : public IView
 {
 public:
-  CPostProcessGainModeDialog();
+  CGainModeDialog();
 
 private:
-  // Geerbt über IView
+  // Derived from IView
   virtual bool OnInit();
   virtual bool OnClick(int controlId);
   virtual bool OnFocus(int controlId);

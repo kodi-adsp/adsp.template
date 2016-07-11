@@ -5,7 +5,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -22,26 +22,26 @@
 
 
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
-#include "PostProcessGainModeSettings.hpp"
-#include "PostProcessGainMessages.hpp"
+#include "GainModeSettings.hpp"
+#include "GainModeMessages.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
-class CPostProcessGainModeName
+class CGainModeName
 {
 public:
   static const std::string ModeName;
 };
 
 
-class CPostProcessGain :  REGISTER_ADSP_MODE_CLASS(CPostProcessGain, CPostProcessGainModeName, CPostProcessGainModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS),
-                          public CPostProcessGainMessages
+class CGainMode : REGISTER_ADSP_MODE_CLASS(CGainMode, CGainModeName, CGainModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS),
+                  public CGainModeMessages
 {
-  friend class CPostProcessGainMessages;
+  friend class CGainModeMessages;
 
 public:
-  CPostProcessGain();
-  ~CPostProcessGain();
+  CGainMode();
+  ~CGainMode();
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
   virtual void ModeDestroy();

@@ -4,7 +4,7 @@
  *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2, or (at your option)
+ *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
  *
  *  This Program is distributed in the hope that it will be useful,
@@ -21,33 +21,33 @@
 
 
 #include "Addon/MVC/Model/TParameter.hpp"
-#include "PostProcessGain/PostProcessGainModel.hpp"
-#include "PostProcessGain/PostProcessGainParameterIDs.hpp"
+#include "GainMode/GainModeModel.hpp"
+#include "EnumStrIDs.hpp"
 
-#include "ADSPModeInfos.h"
+#include "EnumStrIDs.hpp"
 
 #include "include/client.h"
 
 using namespace ADDON;
 
 
-CPostProcessGainModel::CPostProcessGainModel() :
-  IModel(CADSPModeInfos::Strs[CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN],
-         CADSPModeInfos::ADSP_MODE_ID_PORTPROCESS_GAIN)
+CGainModeModel::CGainModeModel() :
+  IModel(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
+         CADSPModeIDs::PostProcessingModeGain)
 {
 }
 
 
-CPostProcessGainModel::~CPostProcessGainModel()
+CGainModeModel::~CGainModeModel()
 {
 }
 
 
-int CPostProcessGainModel::Create()
+int CGainModeModel::Create()
 {
   IModel::ParameterVector_t paramVector;
 
-  paramVector.push_back(CreateTParameter(float, CPostProcessGainParameterIDs, POST_PROCESS_GAIN_MAIN_GAIN));
+  paramVector.push_back(CreateTParameter(float, CSocketGainModeIDs, MainGain));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {
@@ -55,7 +55,7 @@ int CPostProcessGainModel::Create()
     return 0;
   }
 
-  if (!CPostProcessGainModelMessages::Create(this))
+  if (!CGainModeModelMessages::Create(this))
   {
     // TODO error message
     return 0;
@@ -64,7 +64,7 @@ int CPostProcessGainModel::Create()
   return 0;
 }
 
-void CPostProcessGainModel::Destroy()
+void CGainModeModel::Destroy()
 {
 }
 

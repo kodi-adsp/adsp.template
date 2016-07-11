@@ -20,26 +20,31 @@
 
 
 
-#include "PostProcessCpyModeSettings.hpp"
-
+#include "GainMode/GainModeMessages.hpp"
+#include "GainMode/GainMode.hpp"
+#include "Addon/MessageSystem/Communication/ActorProtocol.h"
+#include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
+#include "EnumStrIDs.hpp"
 #include "EnumStrIDs.hpp"
 
-#include <string.h>
 
-
-CPostProcessCpyModeSettings::CPostProcessCpyModeSettings()
+CGainModeMessages::CGainModeMessages() :
+  CMessageDispatcher(new CActorProtocol(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain)),
+                     CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
 {
-  strcpy(this->strModeName, CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeCopy));
+}
 
-  this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
-  this->bHasSettingsDialog    = false;
-  this->bIsDisabled           = true;
 
-  this->iModeName         = 30012;
-  this->iModeSetupName    = 30013;
-  this->iModeDescription  = 30014;
-  this->iModeHelp         = 30015;
+CGainModeMessages::~CGainModeMessages()
+{
+}
 
-  strcpy(this->strOwnModeImage,       "img1.jpg");
-  strcpy(this->strOverrideModeImage,  "img1.jpg");
+
+bool CGainModeMessages::Create(CGainMode *Mode)
+{
+  SocketVector_t sockets;
+  
+  sockets.push_back(CreateTSocketMemcpy(float, &(Mode->m_MainGain), CSocketGainModeIDs, MainGain));
+
+  return this->SetSockets(sockets);
 }
