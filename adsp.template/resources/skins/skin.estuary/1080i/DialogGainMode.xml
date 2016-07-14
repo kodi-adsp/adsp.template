@@ -33,7 +33,7 @@
 				<onright>9000</onright>
 				<pagecontrol>60</pagecontrol>
         <orientation>horizontal</orientation>
-				<control type="spinctrolex" id="10">
+<!-- 				<control type="spinctrolex" id="10">
 					<description>Speaker Gain Test</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.template 30022]</label>
@@ -51,7 +51,7 @@
 					<visible>!Control.IsVisible(11)</visible>
 					<label></label>
 					<include>DefaultSettingButton</include>
-				</control>
+				</control> -->
 <!-- 				<control type="image" id="101">
 					<description>Default Seperator</description>
 					<height>3</height>
@@ -59,124 +59,202 @@
 				</control> -->
 				<control type="sliderex" id="8000"><!--    AE_DSP_CH_FL-->
 					<description>Speaker Distance FL</description>
-					<width>1160</width>
-          <sliderwidth>500</sliderwidth>
-          <!-- <sliderheight>20</sliderheight> -->
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35000]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8001"><!--    AE_DSP_CH_FR-->
 					<description>Speaker Distance FR</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35001]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8002"><!--    AE_DSP_CH_FC-->
 					<description>Speaker Distance Center</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35002]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8003"><!--    AE_DSP_CH_LFE-->
 					<description>Speaker Distance Sub</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35003]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8004"><!--    AE_DSP_CH_BL-->
 					<description>Speaker Distance BL</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35004]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8005"><!--    AE_DSP_CH_BR-->
 					<description>Speaker Distance BR</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35005]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8006"><!--    AE_DSP_CH_FLOC-->
 					<description>Speaker Distance FLOC</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35006]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8007"><!--    AE_DSP_CH_FROC-->
 					<description>Speaker Distance FLOC</description>
-					<width>1160</width>
+          <height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35007]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8008"><!--    AE_DSP_CH_BC-->
 					<description>Speaker Distance BC</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35008]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8009"><!--    AE_DSP_CH_SL-->
 					<description>Speaker Distance SL</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35009]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="35010"><!--    AE_DSP_CH_SR-->
 					<description>Speaker Distance SR</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35010]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8011"><!--    AE_DSP_CH_TFL-->
 					<description>Speaker Distance TFL</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35011]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8012"><!--    AE_DSP_CH_TFR-->
 					<description>Speaker Distance TFR</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35012]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8013"><!--    AE_DSP_CH_TFC-->
 					<description>Speaker Distance TFC</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35013]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8014"><!--    AE_DSP_CH_TC-->
 					<description>Speaker Distance Top Center</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35014]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8015"><!--    AE_DSP_CH_TBL-->
 					<description>Speaker Distance TBL</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35015]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8016"><!--    AE_DSP_CH_TBR-->
 					<description>Speaker Distance TBL</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35016]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8017"><!--    AE_DSP_CH_TBC-->
 					<description>Speaker Distance TBC</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35017]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8018"><!--    AE_DSP_CH_BLOC-->
 					<description>Speaker Distance BLOC</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35018]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 				<control type="sliderex" id="8019"><!--    AE_DSP_CH_BROC-->
 					<description>Speaker Distance BROC</description>
-					<width>1160</width>
+					<height>750</height>
+					<width>250</width>
+          <sliderwidth>28</sliderwidth>
+          <sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.template 35019]</label>
+          <orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 			</control>
@@ -225,13 +303,13 @@
 				<include>DefaultSettingLabel</include>
 			</control>
 			<control type="scrollbar" id="60">
-				<left>1190</left>
-				<top>100</top>
-				<width>12</width>
-				<height>750</height>
+				<left>29</left>
+				<top>850</top>
+				<width>1160</width>
+				<height>12</height>
 				<onleft>9000</onleft>
 				<onright>9001</onright>
-				<orientation>vertical</orientation>
+				<orientation>horizontal</orientation>
 			</control>
 		</control>
 	</controls>
