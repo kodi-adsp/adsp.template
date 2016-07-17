@@ -80,6 +80,7 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
                               src/template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
                               src/template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
+							  src/template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
 							  src/template/Addon/Utils/EnumIDsToString.hpp
                               src/template/Addon/Process/AddonProcessManager.cpp
                               src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
@@ -172,6 +173,8 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/GainMode/GainModeDialogSettings.hpp
                               src/GainMode/GainModeDialog.cpp
                               src/GainMode/GainModeDialog.hpp
+							  src/GainMode/GainModeDialogMessages.cpp
+							  src/GainMode/GainModeDialogMessages.hpp
 							  src/GainMode/GainModeController.cpp
                               src/GainMode/GainModeController.hpp
 							  src/GainMode/GainModeControllerMessages.cpp
