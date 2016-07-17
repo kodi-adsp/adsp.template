@@ -28,7 +28,8 @@
 
 
 CGainModeControllerMessages::CGainModeControllerMessages() :
-  CMessageDispatcher(new CActorProtocol("GainModeControllerProtocol"), "GainModeController")
+  CMessageDispatcher(new CActorProtocol(CControllerIDs::ToString(CControllerIDs::GainModeController)),
+                     CControllerIDs::ToString(CControllerIDs::GainModeController))
 {
 }
 

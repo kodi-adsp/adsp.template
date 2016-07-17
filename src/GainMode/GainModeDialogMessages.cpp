@@ -29,8 +29,8 @@
 
 
 CGainModeDialogMessages::CGainModeDialogMessages() :
-  CMessageDispatcher(new CActorProtocol(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain)),
-                     CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
+  CMessageDispatcher(new CActorProtocol(CViewIDs::ToString(CViewIDs::GainModeDialog)),
+                     CViewIDs::ToString(CViewIDs::GainModeDialog),
                      true)
 {
 }

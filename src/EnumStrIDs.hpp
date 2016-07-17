@@ -43,6 +43,19 @@ BEGIN_ENUM_ID_CLASS(ADSPModeIDs)
 END_ENUM_ID_CLASS(ADSPModeIDs)
 
 
+// Add-On AudioDSP Mode IDs
+BEGIN_ENUM_ID_CLASS(ControllerIDs)
+  ADD_ENUM_ID(GainModeController)
+END_ENUM_ID_CLASS(ControllerIDs)
+
+
+// Add-On AudioDSP Mode IDs
+BEGIN_ENUM_ID_CLASS(ViewIDs)
+  ADD_ENUM_ID(GainModeDialog)
+  ADD_ENUM_ID(GainModeController)
+END_ENUM_ID_CLASS(ViewIDs)
+
+
 // Add-On Mode Environment IDs
 BEGIN_ENUM_ID_CLASS(ModeEnvironmentIDs)
   ADD_ENUM_ID(GainMode)
