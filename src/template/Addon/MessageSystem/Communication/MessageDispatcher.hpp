@@ -53,7 +53,7 @@ public:
   void ProcessMessages();
 
   const std::string DispatcherName;     // Custom name for this object
-  const int         ID;       // assigned unique member ID for message assignment
+  const int         ID;                 // assigned unique member ID for message assignment
 
 private:
   void DestroySockets();
