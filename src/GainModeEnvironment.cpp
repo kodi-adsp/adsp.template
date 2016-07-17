@@ -29,8 +29,21 @@ CGainModeEnvironment::~CGainModeEnvironment()
 
 AE_DSP_ERROR CGainModeEnvironment::Create()
 {   
+  if (m_GainModeController.Create() != 0)
+  {
+    // TODO: log error
+    return AE_DSP_ERROR_FAILED;
+  }
+
   if (InitGainModel() != 0)
   {
+    // TODO: log error
+    return AE_DSP_ERROR_FAILED;
+  }
+
+  if (!m_GainModeController.ConnectDispatcher(&m_GainModeModel) || !m_GainModeModel.ConnectDispatcher(&m_GainModeController))
+  {
+    // TODO: log error
     return AE_DSP_ERROR_FAILED;
   }
 
@@ -52,7 +65,10 @@ bool CGainModeEnvironment::ConnectDispatcher(CMessageDispatcher *Dispatcher)
 {
   if(Dispatcher->DispatcherName == CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
   {
-    return m_GainModeModel.ConnectDispatcher(Dispatcher);
+    if (!m_GainModeModel.ConnectDispatcher(Dispatcher)) return false;
+    if (!m_GainModeController.ConnectDispatcher(Dispatcher)) return false;
+
+    return true;
   }
 
   return false;
@@ -62,7 +78,10 @@ bool CGainModeEnvironment::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 {
   if (Dispatcher->DispatcherName == CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
   {
-    return m_GainModeModel.DisconnectDispatcher(Dispatcher);
+    if (!m_GainModeModel.DisconnectDispatcher(Dispatcher)) return false;
+    if (!m_GainModeController.DisconnectDispatcher(Dispatcher)) return false;
+
+    return true;
   }
 
   return false;
