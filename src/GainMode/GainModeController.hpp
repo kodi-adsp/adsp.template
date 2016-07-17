@@ -41,5 +41,8 @@ public:
   virtual void Destroy();
 
 private:
+  int SetMainGain(Message &Msg);
+
+private:
   float m_MainGain;
 };

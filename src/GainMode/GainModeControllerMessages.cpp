@@ -23,8 +23,7 @@
 #include "GainMode/GainModeControllerMessages.hpp"
 #include "GainMode/GainModeController.hpp"
 #include "Addon/MessageSystem/Communication/ActorProtocol.h"
-#include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
-#include "EnumStrIDs.hpp"
+#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
 
 
@@ -38,12 +37,11 @@ CGainModeControllerMessages::~CGainModeControllerMessages()
 {
 }
 
-
 bool CGainModeControllerMessages::Create(CGainModeController *Controller)
 {
   SocketVector_t sockets;
-  
-  sockets.push_back(CreateTSocketMemcpy(float, &(Controller->m_MainGain), CSocketGainModeIDs, MainGain));
+
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeController, Controller, &CGainModeController::SetMainGain, CSocketGainModeIDs, MainGain));
 
   return this->SetSockets(sockets);
 }

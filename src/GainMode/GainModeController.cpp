@@ -24,12 +24,7 @@
 #include "GainMode/GainModeController.hpp"
 #include "EnumStrIDs.hpp"
 
-#include "EnumStrIDs.hpp"
-
-#include "include/client.h"
-
-using namespace ADDON;
-
+#define MAX_GAIN 24.0f
 
 CGainModeController::CGainModeController() :
   IController("GainModeController", 0) // TODO: create ID list
@@ -55,5 +50,25 @@ int CGainModeController::Create()
 
 void CGainModeController::Destroy()
 {
+}
+
+int CGainModeController::SetMainGain(Message &Msg)
+{
+  float gain = *((float*)(Msg.data));
+
+  if (gain >= MAX_GAIN || gain <= -MAX_GAIN)
+  {
+    // TODO: error code
+    return -1;
+  }
+
+  m_MainGain = gain;
+  if (!this->SendMsg(&m_MainGain, sizeof(float), CSocketGainModeIDs::MainGain))
+  {
+    // TODO: error code
+    return -1;
+  }
+
+  return 0;
 }
 
