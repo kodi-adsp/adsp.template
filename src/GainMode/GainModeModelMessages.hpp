@@ -32,5 +32,5 @@ public:
   CGainModeModelMessages();
   ~CGainModeModelMessages();
 
-  bool Create(CGainModeModel *Mode);
+  bool Create(CGainModeModel *Model);
 };
