@@ -24,12 +24,6 @@
 #include "GainMode/GainModeModel.hpp"
 #include "EnumStrIDs.hpp"
 
-#include "EnumStrIDs.hpp"
-
-#include "include/client.h"
-
-using namespace ADDON;
-
 
 CGainModeModel::CGainModeModel() :
   IModel(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
@@ -66,5 +60,11 @@ int CGainModeModel::Create()
 
 void CGainModeModel::Destroy()
 {
+}
+
+int CGainModeModel::RequestMainGain(Message &Msg)
+{
+  // TODO: implement request properly
+  return 0;
 }
 

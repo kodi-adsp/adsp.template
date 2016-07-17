@@ -25,7 +25,6 @@
 #include "Addon/MessageSystem/Communication/ActorProtocol.h"
 #include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
 #include "EnumStrIDs.hpp"
-#include "EnumStrIDs.hpp"
 
 
 CGainModeMessages::CGainModeMessages() :

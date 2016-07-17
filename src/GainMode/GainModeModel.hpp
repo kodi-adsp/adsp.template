@@ -41,5 +41,8 @@ public:
   virtual void Destroy();
 
 private:
+  int RequestMainGain(Message &Msg);
+
+private:
   float m_MainGain;
 };
