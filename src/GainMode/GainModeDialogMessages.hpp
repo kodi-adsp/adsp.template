@@ -21,34 +21,16 @@
 
 
 
-#include "Addon/MVC/Interfaces/View/IView.hpp"
-#include "GainMode/GainModeDialogMessages.hpp"
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+
+class CGainModeDialog;
 
 
-class CGainModeDialog : public IView,
-                        public CGainModeDialogMessages
+class CGainModeDialogMessages : public CMessageDispatcher
 {
-  friend class CGainModeDialogMessages;
-
 public:
-  CGainModeDialog();
+  CGainModeDialogMessages();
+  ~CGainModeDialogMessages();
 
-private:
-  // Derived from IView
-  virtual bool OnInit();
-  virtual bool OnClick(int controlId);
-  virtual bool OnFocus(int controlId);
-  virtual bool OnAction(int actionId);
-  virtual void OnClose();
-
-  void ProcessMainGainSlider();
-
-  CAddonGUISettingsSliderControl *m_MainGainSlider;
-  
-private: // MC methods
-  int UpdateMainGain(Message &Msg);
-
-private: // private member variables
-  float m_MainGain;
-  float m_PageActionValue;
+  bool Create(CGainModeDialog *Dialog);
 };

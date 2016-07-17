@@ -22,6 +22,8 @@
 
 #include "GainMode/GainModeDialogSettings.hpp"
 #include "GainMode/GainModeDialog.hpp"
+#include "GainModeEnvironment.hpp"
+#include "template/Addon/Process/AddonProcessManager.hpp"
 
 #include "EnumStrIDs.hpp"
 
@@ -66,10 +68,17 @@ bool CGainModeDialog::OnInit()
   m_MainGainSlider->SetVisible(true);
   m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
 
-  AudioEngineFormat sinkFmt;
-  if (!AUDIOENGINE->GetCurrentSinkFormat(sinkFmt))
+  // TODO: why does GetCurrentSinkFormat fail?
+  //AudioEngineFormat sinkFmt;
+  //if (!AUDIOENGINE->GetCurrentSinkFormat(sinkFmt))
+  //{
+  //  KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to get sink data format!", __FUNCTION__, __LINE__);
+  //  return false;
+  //}
+
+  if (!CGainModeDialogMessages::Create(this) || !CAddonProcessManager::ConnectDispatcher(this))
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to get sink data format!", __FUNCTION__, __LINE__);
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeDialogMessages::DispatcherName.c_str());
     return false;
   }
 
@@ -142,6 +151,7 @@ bool CGainModeDialog::OnAction(int actionId)
 
 void CGainModeDialog::OnClose()
 {
+  CAddonProcessManager::DisconnectDispatcher(this);
   GUI->Control_releaseSettingsSlider(m_MainGainSlider);
 }
 
@@ -159,6 +169,17 @@ void CGainModeDialog::ProcessMainGainSlider()
   }
 
   m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
+  this->SendMsg(static_cast<void*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::MainGain);
+}
+
+// private MC callback methods
+int CGainModeDialog::UpdateMainGain(Message &Msg)
+{
+  m_MainGain = *(float*)(Msg.data);
+  m_MainGainSlider->SetFloatValue(m_MainGain);
+  m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
+
+  return 0;
 }
 
 
