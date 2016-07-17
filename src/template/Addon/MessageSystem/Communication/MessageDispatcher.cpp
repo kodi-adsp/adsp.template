@@ -280,6 +280,20 @@ bool CMessageDispatcher::SendMsg(int SocketID, int DispatcherID/* = -1*/)
   return true;
 }
 
+bool CMessageDispatcher::SendMsg(void *Data, size_t Size, int SocketID, int DispatcherID/* = -1*/)
+{
+  CSingleLock SocketLock(m_SocketLock);
+
+  CSingleLock lock(m_ConnectionLock);
+  int DispatcherIdx = GetDispatcherIdx(DispatcherID);
+  if (DispatcherIdx < 0)
+  {
+    return false;
+  }
+
+  return m_DispatcherArray[DispatcherIdx]->m_Protocol->SendInMessage(SocketID, Data, Size);
+}
+
 
 bool CMessageDispatcher::ConnectDispatcher(CMessageDispatcher *Dispatcher)
 {

@@ -46,6 +46,7 @@ public:
   bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
 
   bool SendMsg(int SocketID, int DispatcherID = -1);
+  bool SendMsg(void *Data, size_t Size, int SocketID, int DispatcherID = -1);
   bool ReceiveMsg(Message *Msg);
 
   void ProcessMessage();
