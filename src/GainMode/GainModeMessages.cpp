@@ -43,7 +43,7 @@ bool CGainModeMessages::Create(CGainMode *Mode)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketMemcpy(float, &(Mode->m_MainGain), CSocketGainModeIDs, MainGain));
+  sockets.push_back(CreateTSocketMemcpy(float, &(Mode->m_MainGain), CSocketGainModeIDs, UpdateMainGain));
 
   return this->SetSockets(sockets);
 }

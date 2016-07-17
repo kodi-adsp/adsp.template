@@ -169,7 +169,7 @@ void CGainModeDialog::ProcessMainGainSlider()
   }
 
   m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
-  this->SendMsg(static_cast<void*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::MainGain);
+  this->SendMsg(static_cast<void*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::UpdateMainGain);
 }
 
 // private MC callback methods

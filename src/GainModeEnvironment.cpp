@@ -95,13 +95,10 @@ int CGainModeEnvironment::InitGainModel()
       KODI->Log(LOG_ERROR, "%s, %i, Failed to create %s model", __FUNCTION__, __LINE__, m_GainModeModel.Name.c_str());
       return AE_DSP_ERROR_FAILED;
   }
-
   int errorCounter = 0;
-  // TODO load settings from XML file
-
-  // no XML file present. Consquently the model will be initialized with default parameters
+  // Consquently the model will be initialized with default parameters
   float fVal = 0.0f;
-  SET_MODEL_FLOAT_PARAM(errorCounter, m_GainModeModel, CSocketGainModeIDs, MainGain, fVal);
+  SET_MODEL_FLOAT_PARAM(errorCounter, m_GainModeModel, CSocketGainModeIDs, UpdateMainGain, fVal);
 
   if (errorCounter > 0)
   {

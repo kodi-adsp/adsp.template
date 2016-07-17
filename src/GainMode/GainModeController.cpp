@@ -63,7 +63,7 @@ int CGainModeController::SetMainGain(Message &Msg)
   }
 
   m_MainGain = gain;
-  if (!this->SendMsg(&m_MainGain, sizeof(float), CSocketGainModeIDs::MainGain))
+  if (!this->SendMsg(&m_MainGain, sizeof(float), CSocketGainModeIDs::UpdateMainGain))
   {
     // TODO: error code
     return -1;

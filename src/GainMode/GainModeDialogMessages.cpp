@@ -45,7 +45,7 @@ bool CGainModeDialogMessages::Create(CGainModeDialog *Dialog)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateMainGain, CSocketGainModeIDs, MainGain));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateMainGain, CSocketGainModeIDs, UpdateMainGain));
 
   return this->SetSockets(sockets);
 }

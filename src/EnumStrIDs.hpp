@@ -29,7 +29,7 @@
 
 // Gain Mode Socket IDs
 BEGIN_ENUM_ID_CLASS(SocketGainModeIDs)
-  ADD_ENUM_ID(MainGain)
+  ADD_ENUM_ID(UpdateMainGain)
   ADD_ENUM_ID(RequestMainGain)
 END_ENUM_ID_CLASS(SocketGainModeIDs)
 

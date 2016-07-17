@@ -46,7 +46,7 @@ bool CGainModeModelMessages::Create(CGainModeModel *Model)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CSocketGainModeIDs, MainGain));
+  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CSocketGainModeIDs, UpdateMainGain));
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestMainGain, CSocketGainModeIDs, RequestMainGain));
 
   return this->SetSockets(sockets);

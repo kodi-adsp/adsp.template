@@ -41,7 +41,7 @@ bool CGainModeControllerMessages::Create(CGainModeController *Controller)
 {
   SocketVector_t sockets;
 
-  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeController, Controller, &CGainModeController::SetMainGain, CSocketGainModeIDs, MainGain));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeController, Controller, &CGainModeController::SetMainGain, CSocketGainModeIDs, UpdateMainGain));
 
   return this->SetSockets(sockets);
 }

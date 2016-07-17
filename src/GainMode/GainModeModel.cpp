@@ -41,7 +41,7 @@ int CGainModeModel::Create()
 {
   IModel::ParameterVector_t paramVector;
 
-  paramVector.push_back(CreateTParameter(float, CSocketGainModeIDs, MainGain));
+  paramVector.push_back(CreateTParameter(float, CSocketGainModeIDs, UpdateMainGain));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {
@@ -64,7 +64,11 @@ void CGainModeModel::Destroy()
 
 int CGainModeModel::RequestMainGain(Message &Msg)
 {
-  // TODO: implement request properly
+  if (!this->SendMsg(static_cast<float*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::UpdateMainGain))
+  {
+    return -1;
+  }
+
   return 0;
 }
 
