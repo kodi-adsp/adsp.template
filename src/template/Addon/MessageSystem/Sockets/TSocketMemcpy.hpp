@@ -48,11 +48,12 @@ public:
   {
   }
 
-  virtual bool Set(Message &Msg)
+  virtual int Set(Message &Msg)
   {
     if (!Msg.data || Msg.signal != this->ID || Msg.size != this->Size)
     {
-      return false;
+      // TODO: error code
+      return -1;
     }
 
     CSingleLock lock(this->Lock);
@@ -60,7 +61,7 @@ public:
     memcpy(&m_CurrenVal, Msg.data, this->Size);
     memcpy(this->m_SocketPtr, &m_CurrenVal, this->Size);
 
-    return true;
+    return 0;
   }
   
   virtual void* Get()

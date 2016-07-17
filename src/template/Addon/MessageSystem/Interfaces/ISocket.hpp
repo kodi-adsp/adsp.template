@@ -48,7 +48,7 @@ public:
   CCriticalSection Lock;
   bool HasUpdated;
 
-  virtual bool Set(Message &Msg) = 0;
+  virtual int Set(Message &Msg) = 0;
   virtual void* Get() = 0;
 };
 
