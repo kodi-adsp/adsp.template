@@ -20,9 +20,7 @@
  *
  */
 
-#ifndef ADSP_PROCESSOR_CLASS_NAME
-#error ADSP_PROCESSOR_CLASS_NAME was not defined! Please define the name of your class in <Your Directory>/template/configuration/templateConfiguration.h
-#endif
+
 
 #ifndef ADSP_PROCESSOR_HEADER_FILE
 #error "ADSP_PROCESSOR_HEADER_FILE was not defined! Please define the name of your include file in <Your Directory>/template/configuration/templateConfiguration.h"

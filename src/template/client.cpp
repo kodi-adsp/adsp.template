@@ -22,27 +22,22 @@
 #include <vector>
 #include <string>
 
-// include template configuration header files
-#include "configuration/templateConfiguration.h"
-#include "../template/include/MACROHelper.h"
-#include "include/checkTemplateConfig.h"
-
 // include kodi platform header files
 #include <kodi/kodi_adsp_dll.h>
 #include <p8-platform/util/util.h>
 
+// include template configuration header files
+#include "configuration/templateConfiguration.h"
+#include "template/include/MACROHelper.h"
+#include "include/checkTemplateConfig.h"
+
 // include adsp template specific header files
 #include "include/client.h"
-#include "include/ADSPProcessorHandle.h"
-#include "include/ADSPAddonHandler.h"
 
 #include "AudioDSP/Streams/ADSPStreamManager.hpp"
 #include "Addon/Process/AddonProcessManager.hpp"
 
 #include "KodiThreads/system.h"
-
-// includes your DSP Processor class
-#include ADSP_PROCESSOR_HEADER_FILE
 
 using namespace std;
 using namespace ADDON;
@@ -68,11 +63,6 @@ CHelper_libKODI_adsp        *ADSP         = NULL;
 CHelper_libKODI_guilib      *GUI          = NULL;
 CHelper_libKODI_audioengine *AUDIOENGINE  = NULL;
 
-/*
- *  ADSP Addon handling class
- */
-CADSPAddonHandler g_AddonHandler;
-
 static void loc_KodiLoggerCallback(int LogLevel, const char *format, ...)
 {
 }
@@ -81,10 +71,6 @@ extern "C" {
 
 void ADDON_ReadSettings(void)
 {
-#ifdef ADSP_ADDON_USE_READSETTINGS
-  g_AddonHandler.ReadSettings();
-#endif
-
 }
 
 ADDON_STATUS ADDON_Create(void* hdl, void* props)
@@ -166,8 +152,6 @@ void ADDON_Destroy()
   m_bCreated = false;
   m_iStreamsPresent = 0;
 
-  //g_AddonHandler.Destroy();
-
   CAddonProcessManager::DestroyProcesses();
   CADSPStreamManager::Destroy();
 
@@ -192,12 +176,8 @@ bool ADDON_HasSettings()
 
 unsigned int ADDON_GetSettings(ADDON_StructSetting ***sSet)
 {
-#ifdef ADSP_ADDON_USE_GETSETTINGS
-  return g_AddonHandler.GetSettings(sSet);
-#else
   (void) sSet; // Remove compiler warning
   return 0;
-#endif
 }
 
 ADDON_STATUS ADDON_SetSetting(const char *SettingName, const void *SettingValue)
@@ -208,38 +188,24 @@ ADDON_STATUS ADDON_SetSetting(const char *SettingName, const void *SettingValue)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-#ifdef ADSP_ADDON_USE_SETTINGS
-  return g_AddonHandler.SetSetting( string(SettingName), SettingValue );
-#else
   return ADDON_STATUS_OK;
-#endif
 }
 
 void ADDON_Stop()
 {
-#ifdef ADSP_ADDON_USE_STOP
-  g_AddonHandler.Stop();
-#endif
 }
 
 void ADDON_FreeSettings()
 {
-#ifdef ADSP_ADDON_USE_FREESETTINGS
-  g_AddonHandler.FreeSettings();
-#endif
 }
 
 void ADDON_Announce(const char *Flag, const char *Sender, const char *Message, const void *Data)
 {
-#ifdef ADSP_ADDON_USE_ANNOUNCE
-  g_AddonHandler.Announce( string(Flag), string(Sender), string(Message), Data );
-#else
   // Remove compiler warnings
   (void) Flag;
   (void) Sender; 
   (void) Message; 
   (void) Data;
-#endif
 }
 
 
@@ -309,8 +275,6 @@ AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK
 
   KODI->Log(LOG_ERROR, "called unknown menu hook!");
   return AE_DSP_ERROR_FAILED;
-
-  //return g_AddonHandler.CallMenuHook(Menuhook, Item);
 }
 
 

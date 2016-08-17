@@ -2,15 +2,9 @@ project(adsp_template)
 
 #find_package(p8-platform REQUIRED)
 
-set(SOURCES AddonHelpers.cpp
-            ADSPAddonHandler.cpp
-            ADSPHelpers.cpp
-            ADSPProcessorHandle.cpp
+set(SOURCES ADSPHelpers.cpp
             client.cpp
             GUIDialogBase.cpp
-            IADDONOptional.cpp
-            IADSPProcessor.cpp
-            #Addon/Settings/SettingsPool.cpp
             Addon/MVC/Interfaces/Controller/IController.hpp
             Addon/MVC/Interfaces/Model/IModel.hpp
             Addon/MVC/Interfaces/Model/IParameter.hpp
@@ -31,8 +25,6 @@ set(SOURCES AddonHelpers.cpp
             AudioDSP/Streams/ADSPStreamManager.cpp
             AudioDSP/Streams/ADSPStream.cpp
             AudioDSP/Streams/ADSPStreamBuilderAll.cpp
-            configuration/templateConfiguration.cpp
-            Messages/ADSPModeMessage.cpp
             Settings/SettingsHelpers.cpp
             Settings/SettingsManager.cpp)
 
@@ -51,14 +43,9 @@ set(HEADERS ADSPHelpers.h
             AddonExceptions/IAddonException.h
             AddonExceptions/TAddonException.h
             configuration/templateConfiguration.h
-            include/ADSPAddonHandler.h
-            include/ADSPModeMessage.h
-            include/ADSPProcessorHandle.h
             include/checkTemplateConfig.h
             include/client.h
             include/GUIDialogBase.h
-            include/IADDONOptional.h
-            include/IADSPProcessor.h
             include/MACROHelper.h
             include/typedefs.h
             Settings/ISettingsElement.h

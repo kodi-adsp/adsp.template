@@ -27,8 +27,6 @@
  */
 #include "../include/typedefs.h"
 
-//! Here you mus define the name of your processing class.
-#define ADSP_PROCESSOR_CLASS_NAME    CDSPProcessor
 //! Here you must define the name of the header file from your processing class.
 #define ADSP_PROCESSOR_HEADER_FILE    "DSPProcessor.h"
 //! Here you must define the name of your ADSP addon.
@@ -42,9 +40,6 @@
 //! If you define this, then your ADSP addon can use optional functions for example 
 //! a settings GUI.
 #define  ADSP_ADDON_OPTIONAL_HEADER_FILE  "ADDONOptional.h"
-//! If have defined a optional header file, then you must define the name of your 
-//! optional class.
-#define ADSP_ADDON_OPTIONAL_CLASS_NAME  CADDONOptional
 //! If you define this, then your ADSP addon can use settings.
 #define ADSP_ADDON_USE_SETTINGS
 //! This is optional and can be used to have configuration file.

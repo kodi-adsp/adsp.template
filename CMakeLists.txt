@@ -28,17 +28,17 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
                     #${PROJECT_SOURCE_DIR}/src/template)
                     #${PROJECT_SOURCE_DIR}/src/KodiThreads)
                                           
-set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
-                              src/channelUpmixer.cpp
-                              src/DSPProcessor.cpp
+set(ADSP_TEMPLATE_SOURCES     #src/ADDONOptional.cpp
+                              #src/channelUpmixer.cpp
+                              #src/DSPProcessor.cpp
                               src/Dialogs/GUIDialogMasterProcess.cpp
                               src/Dialogs/GUIDialogOutputResample.cpp
                               src/Dialogs/GUIDialogPostProcess.cpp
                               src/Dialogs/GUIDialogPreProcess.cpp
                               
-                              src/ADDONOptional.h
-                              src/channelUpmixer.h
-                              src/DSPProcessor.h
+                              #src/ADDONOptional.h
+                              #src/channelUpmixer.h
+                              #src/DSPProcessor.h
                               src/Dialogs/GUIDialogMasterProcess.h
                               src/Dialogs/GUIDialogOutputResample.h
                               src/Dialogs/GUIDialogPostProcess.h
