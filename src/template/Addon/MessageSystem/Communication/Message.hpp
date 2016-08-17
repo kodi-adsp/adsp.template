@@ -21,7 +21,7 @@
 
 
 
-#include "threads/Thread.h"
+#include "KodiThreads/threads/Thread.h"
 #include "Addon/MessageSystem/Interfaces/IProtocol.hpp"
 
 

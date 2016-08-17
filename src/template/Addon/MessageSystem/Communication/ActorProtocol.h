@@ -21,7 +21,7 @@
 
 
 
-#include "threads/Thread.h"
+#include "KodiThreads/threads/Thread.h"
 #include <queue>
 #include "memory.h"
 

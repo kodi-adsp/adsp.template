@@ -24,7 +24,7 @@
 #include <string>
 #include <queue>
 
-#include "threads/Thread.h"
+#include "KodiThreads/threads/Thread.h"
 
 class Message;
 
