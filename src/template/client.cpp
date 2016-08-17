@@ -39,6 +39,8 @@
 #include "AudioDSP/Streams/ADSPStreamManager.hpp"
 #include "Addon/Process/AddonProcessManager.hpp"
 
+#include "KodiThreads/system.h"
+
 // includes your DSP Processor class
 #include ADSP_PROCESSOR_HEADER_FILE
 
@@ -70,6 +72,10 @@ CHelper_libKODI_audioengine *AUDIOENGINE  = NULL;
  *  ADSP Addon handling class
  */
 CADSPAddonHandler g_AddonHandler;
+
+static void loc_KodiLoggerCallback(int LogLevel, const char *format, ...)
+{
+}
 
 extern "C" {
 
@@ -126,6 +132,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   }
 
   KODI->Log(LOG_DEBUG, "%s, %i, - Creating the Audio DSP add-on template", __FUNCTION__, __LINE__);
+  SetKodiThreadsLogger(loc_KodiLoggerCallback);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
   g_strUserPath   = adspprops->strUserPath;
@@ -163,6 +170,8 @@ void ADDON_Destroy()
 
   CAddonProcessManager::DestroyProcesses();
   CADSPStreamManager::Destroy();
+
+  ReleaseKodiThreadsLogger();
 
   SAFE_DELETE(ADSP);
   SAFE_DELETE(GUI);
