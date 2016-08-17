@@ -13,84 +13,28 @@ find_package(kodiplatform REQUIRED)
 find_package(p8-platform REQUIRED)
 find_package(TinyXML REQUIRED)
 
+add_subdirectory(src/KodiThreads)
+set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
+#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
+
+add_subdirectory(src/template)
+set_property(TARGET adsp_template PROPERTY FOLDER "depends")
+#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
+
 include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${p8-platform_INCLUDE_DIRS}
                     ${KODI_INCLUDE_DIR}
-                    ${PROJECT_SOURCE_DIR}/src
-                    ${PROJECT_SOURCE_DIR}/src/template
-                    ${PROJECT_SOURCE_DIR}/src/KodiThreads)
+                    ${PROJECT_SOURCE_DIR}/src)
+                    #${PROJECT_SOURCE_DIR}/src/template)
+                    #${PROJECT_SOURCE_DIR}/src/KodiThreads)
                                           
-set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
-                              src/KodiThreads/threads/Event.cpp
-                              src/KodiThreads/threads/Thread.cpp
-                              src/KodiThreads/threads/Timer.cpp
-                              src/KodiThreads/threads/SystemClock.cpp
-
-                              src/KodiThreads/threads/platform/Implementation.cpp
-
-                              src/KodiThreads/threads/Atomics.h
-                              src/KodiThreads/threads/Condition.h
-                              src/KodiThreads/threads/CriticalSection.h
-                              src/KodiThreads/threads/Event.h
-                              src/KodiThreads/threads/Helpers.h
-                              src/KodiThreads/threads/Lockables.h
-                              src/KodiThreads/threads/MipsAtomics.h
-                              src/KodiThreads/threads/SharedSection.h
-                              src/KodiThreads/threads/SingleLock.h
-                              src/KodiThreads/threads/SystemClock.h
-                              src/KodiThreads/threads/Thread.h
-                              src/KodiThreads/threads/ThreadImpl.h
-                              src/KodiThreads/threads/ThreadLocal.h
-                              src/KodiThreads/threads/Timer.h
-                              src/KodiThreads/threads/platform/Condition.h
-                              src/KodiThreads/threads/platform/CriticalSection.h
-                              src/KodiThreads/threads/platform/ThreadImpl.h
-                              src/KodiThreads/threads/platform/ThreadLocal.h
-
-                              src/KodiThreads/commons/Exception.cpp
-                              src/KodiThreads/system.h
-                              src/KodiThreads/commons/Exception.h
-
-                              src/ADDONOptional.cpp
+set(ADSP_TEMPLATE_SOURCES     src/ADDONOptional.cpp
                               src/channelUpmixer.cpp
                               src/DSPProcessor.cpp
                               src/Dialogs/GUIDialogMasterProcess.cpp
                               src/Dialogs/GUIDialogOutputResample.cpp
                               src/Dialogs/GUIDialogPostProcess.cpp
                               src/Dialogs/GUIDialogPreProcess.cpp
-                              src/template/AddonHelpers.cpp
-                              src/template/ADSPAddonHandler.cpp
-                              src/template/ADSPHelpers.cpp
-                              src/template/ADSPProcessorHandle.cpp
-                              src/template/client.cpp
-                              src/template/GUIDialogBase.cpp
-                              src/template/IADDONOptional.cpp
-                              src/template/IADSPProcessor.cpp
-                              #src/template/Addon/Settings/SettingsPool.cpp
-							  src/template/Addon/MVC/Interfaces/Controller/IController.hpp
-                              src/template/Addon/MVC/Interfaces/Model/IModel.hpp
-                              src/template/Addon/MVC/Interfaces/Model/IParameter.hpp
-                              src/template/Addon/MVC/Model/TParameter.hpp
-                              #src/template/Addon/UI/Controller.cpp
-                              #src/template/Addon/UI/Model.cpp
-                              #src/template/Addon/UI/Observer.cpp
-                              #src/template/Addon/UI/View.cpp
-                              src/template/Addon/MessageSystem/Communication/Message.cpp
-                              src/template/Addon/MessageSystem/Communication/ActorProtocol.cpp
-                              src/template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
-                              src/template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
-                              src/template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
-							  src/template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
-							  src/template/Addon/Utils/EnumIDsToString.hpp
-                              src/template/Addon/Process/AddonProcessManager.cpp
-                              src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
-                              src/template/AudioDSP/Streams/ADSPStreamManager.cpp
-                              src/template/AudioDSP/Streams/ADSPStream.cpp
-                              src/template/AudioDSP/Streams/ADSPStreamBuilderAll.cpp
-                              src/template/configuration/templateConfiguration.cpp
-                              src/template/Messages/ADSPModeMessage.cpp
-                              src/template/Settings/SettingsHelpers.cpp
-                              src/template/Settings/SettingsManager.cpp
                               
                               src/ADDONOptional.h
                               src/channelUpmixer.h
@@ -99,52 +43,7 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/Dialogs/GUIDialogOutputResample.h
                               src/Dialogs/GUIDialogPostProcess.h
                               src/Dialogs/GUIDialogPreProcess.h
-                              src/template/ADSPHelpers.h
-                              src/template/doxygenDocu.h
-                              src/template/Addon/MessageSystem/Interfaces/IProtocol.hpp
-                              src/template/Addon/MessageSystem/Communication/ActorProtocol.h
-                              src/template/Addon/MessageSystem/Communication/Message.hpp
-                              #src/template/Addon/MessageSystem/Communication/ActorPort.hpp
-                              #src/template/Addon/MessageSystem/Interfaces/IPort.hpp
-                              #src/template/Addon/MessageSystem/Interfaces/IPortPool.hpp
-                              src/template/Addon/MessageSystem/Interfaces/ISocket.hpp
-                              #src/template/Addon/MessageSystem/Slots/TSlotMemcpy.hpp
-                              src/template/Addon/Process/AddonProcessManager.hpp
-                              src/template/Addon/Process/IAddonProcess.hpp
-                              src/template/AddonExceptions/IAddonException.h
-                              src/template/AddonExceptions/TAddonException.h
-                              src/template/configuration/templateConfiguration.h
-                              src/template/include/ADSPAddonHandler.h
-                              src/template/include/ADSPModeMessage.h
-                              src/template/include/ADSPProcessorHandle.h
-                              src/template/include/checkTemplateConfig.h
-                              src/template/include/client.h
-                              src/template/include/GUIDialogBase.h
-                              src/template/include/IADDONOptional.h
-                              src/template/include/IADSPProcessor.h
-                              src/template/include/MACROHelper.h
-                              src/template/include/typedefs.h
-                              src/template/Settings/ISettingsElement.h
-                              src/template/Settings/SettingsHelpers.h
-                              src/template/Settings/SettingsManager.h
-                              src/template/Settings/TSettingsElement.h
-                              src/utils/stdStringUtils.h
-                              
-                              #src/template/Addon/Settings/SettingsPool.hpp
-                              #src/template/Addon/UI/BaseDialog.hpp
-                              #src/template/Addon/UI/Controller.hpp
-                              #src/template/Addon/UI/Model.hpp
-                              #src/template/Addon/UI/Observer.hpp
-                              src/template/Addon/MVC/Interfaces/View/IView.hpp
-                              src/template/Addon/MVC/Interfaces/View/ActionIDs.hpp
-                              src/template/Addon/Utils/TCreationStatistics.hpp
-                              src/template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp
-                              src/template/AudioDSP/FactoryADSPModes/IADSPMode.hpp
-                              src/template/AudioDSP/Streams/ADSPStreamManager.hpp
-                              src/template/AudioDSP/Streams/ADSPStream.hpp
-                              src/template/AudioDSP/Streams/IADSPStreamBuilder.hpp
-                              src/template/AudioDSP/Streams/ADSPStreamBuilderAll.hpp
-                              
+
                               # Processing Modes
                               src/PreProcessCpyModeSettings.cpp
                               src/PreProcessCpyModeSettings.hpp
@@ -173,32 +72,34 @@ set(ADSP_TEMPLATE_SOURCES     src/KodiThreads/threads/Atomics.cpp
                               src/GainMode/GainModeDialogSettings.hpp
                               src/GainMode/GainModeDialog.cpp
                               src/GainMode/GainModeDialog.hpp
-							  src/GainMode/GainModeDialogMessages.cpp
-							  src/GainMode/GainModeDialogMessages.hpp
-							  src/GainMode/GainModeController.cpp
+                              src/GainMode/GainModeDialogMessages.cpp
+                              src/GainMode/GainModeDialogMessages.hpp
+                              src/GainMode/GainModeController.cpp
                               src/GainMode/GainModeController.hpp
-							  src/GainMode/GainModeControllerMessages.cpp
+                              src/GainMode/GainModeControllerMessages.cpp
                               src/GainMode/GainModeControllerMessages.hpp
-							  src/GainModeEnvironment.cpp
-							  src/GainModeEnvironment.hpp
-							  
-							  src/EnumStrIDs.cpp
-							  src/EnumStrIDs.hpp)
+                              src/GainModeEnvironment.cpp
+                              src/GainModeEnvironment.hpp
+
+                              src/EnumStrIDs.cpp
+                              src/EnumStrIDs.hpp)
                               
                               #src/CpyModesProcess.cpp
                               #src/CpyModesProcess.hpp)
                        
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
-            ${p8-platform_LIBRARIES})
+            ${p8-platform_LIBRARIES}
+            kodi::KodiThreads
+            adsp::adsp_template)
             #winmm.lib)#todo implement switches for Windows
 
-if(MSVC)
-  list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
-  list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
+# if(MSVC)
+  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
+  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
   
-  list(APPEND DEPLIBS winmm.lib)
-endif()
+  # list(APPEND DEPLIBS winmm.lib)
+# endif()
 
 addon_source_group("${ADSP_TEMPLATE_SOURCES}")
             
