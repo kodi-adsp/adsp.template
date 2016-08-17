@@ -1,5 +1,3 @@
-#pragma once
-
 /*
  *      Copyright (C) 2005-2016 Team KODI
  *      http://kodi.tv
@@ -22,19 +20,33 @@
 
 
 
-extern int g_LOGERROR;
-extern int g_LOGDEBUG;
-extern int g_LOGINFO;
-extern int g_LOGNOTICE;
+#include "system.h"
+#include "threads/CriticalSection.h"
+#include "threads/SingleLock.h"
 
-typedef void (*LogCallback_t)(int loglevel, const char *format, ...);
+static CCriticalSection loc_CriticalSection;
+static LogCallback_t loc_LoggerCallback;
 
-void KodiThreadsLogger(int LogLevel, const char *format, ...);
-void SetKodiThreadsLogger(LogCallback_t LoggerCallback);
-void ReleaseKodiThreadsLogger();
 
-#define LOG         KodiThreadsLogger
-#define LOGERROR    g_LOGERROR
-#define LOGDEBUG    g_LOGDEBUG
-#define LOGINFO     g_LOGINFO
-#define LOGNOTICE   g_LOGNOTICE
+void KodiThreadsLogger(int LogLevel, const char *format, ...)
+{
+  CSingleLock lock(loc_CriticalSection);
+
+  if (loc_LoggerCallback)
+  {
+  }
+}
+
+void SetKodiThreadsLogger(LogCallback_t LoggerCallback)
+{
+  CSingleLock lock(loc_CriticalSection);
+
+  loc_LoggerCallback = LoggerCallback;
+}
+
+void ReleaseKodiThreadsLogger()
+{
+  CSingleLock lock(loc_CriticalSection);
+
+  loc_LoggerCallback = nullptr;
+}

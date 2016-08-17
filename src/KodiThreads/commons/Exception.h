@@ -22,7 +22,6 @@
 
 #include <string>
 #include <stdarg.h>
-#include "include/client.h"
 #include "util/StringUtils.h"
 #include "system.h"
 
