@@ -27,9 +27,6 @@
 using namespace std;
 
 
-// static member variables
-CFactoryADSPModes::ADSPModeNameMap_t CFactoryADSPModes::m_ModeNameMappingTable;
-
 AE_DSP_ERROR CFactoryADSPModes::Create(int ModeID, AE_DSP_MODE_TYPE ModeType, IADSPMode *&InterfacePtr)
 {
   ADSPModeKey_t ADSPModeKey(ModeID, ModeType);
@@ -68,11 +65,11 @@ int CFactoryADSPModes::RegisterADSPMode(const std::string ModeName, AE_DSP_MODE_
 
     const AE_DSP_MODES::AE_DSP_MODE& modeSettings = Callbacks.GetADSPModeSettings();
     ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iUniqueDBModeId  = -1;
-    ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iModeType = ModeType;
+    ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iModeType        = ModeType;
     ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iModeNumber      = modeID;
   }
 
-  m_ModeNameMappingTable[ModeName] = ADSPModeKey;
+  GetADSPModeNameMap()[ModeName] = ADSPModeKey;
 
   return modeID++;
 }
@@ -82,12 +79,13 @@ AE_DSP_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfo
 {
   ModeInfos.clear();
 
-  if (m_ModeNameMappingTable.size() <= 0)
+  ADSPModeNameMap_t &modeNameMap = GetADSPModeNameMap();
+  if (modeNameMap.size() <= 0)
   {
     return AE_DSP_ERROR_FAILED;
   }
 
-  for (ADSPModeNameMap_t::iterator iter = m_ModeNameMappingTable.begin(); iter != m_ModeNameMappingTable.end(); ++iter)
+  for (ADSPModeNameMap_t::iterator iter = modeNameMap.begin(); iter != modeNameMap.end(); ++iter)
   {
     ADSPModeInfo_t modeInfo;
     modeInfo.ModeName           = iter->first;
@@ -122,8 +120,9 @@ AE_DSP_ERROR CFactoryADSPModes::GetADSPModeSettings(int ModeID, AE_DSP_MODE_TYPE
 
 int CFactoryADSPModes::GetActiveADSPMode(std::string &ModeName)
 {
-  ADSPModeNameMap_t::iterator iterModeKey = m_ModeNameMappingTable.find(ModeName);
-  if (iterModeKey == m_ModeNameMappingTable.end())
+  ADSPModeNameMap_t &modeNameMap = GetADSPModeNameMap();
+  ADSPModeNameMap_t::iterator iterModeKey = modeNameMap.find(ModeName);
+  if (iterModeKey == modeNameMap.end())
   {
     return -1;
   }
@@ -140,8 +139,9 @@ int CFactoryADSPModes::GetActiveADSPMode(std::string &ModeName)
 
 int CFactoryADSPModes::GetCreatedADSPMode(std::string &ModeName)
 {
-  ADSPModeNameMap_t::iterator iterModeKey = m_ModeNameMappingTable.find(ModeName);
-  if (iterModeKey == m_ModeNameMappingTable.end())
+  ADSPModeNameMap_t &modeNameMap = GetADSPModeNameMap();
+  ADSPModeNameMap_t::iterator iterModeKey = modeNameMap.find(ModeName);
+  if (iterModeKey == modeNameMap.end())
   {
     return -1;
   }
@@ -157,8 +157,9 @@ int CFactoryADSPModes::GetCreatedADSPMode(std::string &ModeName)
 
 int CFactoryADSPModes::GetDestroyedADSPMode(std::string &ModeName)
 {
-  ADSPModeNameMap_t::iterator iterModeKey = m_ModeNameMappingTable.find(ModeName);
-  if (iterModeKey == m_ModeNameMappingTable.end())
+  ADSPModeNameMap_t &modeNameMap = GetADSPModeNameMap();
+  ADSPModeNameMap_t::iterator iterModeKey = modeNameMap.find(ModeName);
+  if (iterModeKey == modeNameMap.end())
   {
     return -1;
   }

@@ -138,7 +138,12 @@ private:
     return (Mode1.ModeInfo.ModeID < Mode2.ModeInfo.ModeID);
   }
 
-  static ADSPModeNameMap_t  m_ModeNameMappingTable;
+  inline static ADSPModeNameMap_t& GetADSPModeNameMap()
+  {
+    static ADSPModeNameMap_t  s_ModeNameMappingTable;
+
+    return s_ModeNameMappingTable;
+  }
 };
 
 
