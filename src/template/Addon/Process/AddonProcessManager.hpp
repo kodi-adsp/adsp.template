@@ -141,7 +141,7 @@ private:
   {
     std::string processStr = "";
 
-    for (AddonProcessNameMap_t::iterator iter = m_ProcessNameMappingTable.begin(); iter != m_ProcessNameMappingTable.end(); ++iter)
+    for (AddonProcessNameMap_t::iterator iter = GetAddonProcessNameMap().begin(); iter != GetAddonProcessNameMap().end(); ++iter)
     {
       if (ProcessID == iter->second.ProcessID)
       {
@@ -153,9 +153,20 @@ private:
     return processStr;
   }
 
-  static AddonProcessNameMap_t  m_ProcessNameMappingTable;
+  inline static AddonProcessNameMap_t& GetAddonProcessNameMap()
+  {
+    static AddonProcessNameMap_t  s_ProcessNameMappingTable;
+
+    return s_ProcessNameMappingTable;
+  }
   
-  static AddonProcessVector_t m_AddonProcesses;
+  inline static AddonProcessVector_t& GetAddonProcessVector()
+  {
+    static AddonProcessVector_t s_AddonProcesses;
+
+    return s_AddonProcesses;
+  }
+
   static bool m_IsCreated;
 };
 

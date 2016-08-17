@@ -31,8 +31,6 @@ using namespace ADDON;
 
 
 // static member variables
-CAddonProcessManager::AddonProcessNameMap_t CAddonProcessManager::m_ProcessNameMappingTable;
-CAddonProcessManager::AddonProcessVector_t CAddonProcessManager::m_AddonProcesses;
 bool CAddonProcessManager::m_IsCreated = false;
 
 
@@ -45,6 +43,7 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
     return AE_DSP_ERROR_IGNORE_ME;
   }
 
+  AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
   AddonProcessMap_t &processMap = GetProcessMap();
   for (AddonProcessMap_t::iterator iter = processMap.begin(); iter != processMap.end(); ++iter)
   {
@@ -67,11 +66,11 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
     if (process)
     {
       KODI->Log(LOG_DEBUG, "%s, %i, Successful created AddonProcess %s with ID: %i", __FUNCTION__, __LINE__, processStr.c_str(), iter->first.ProcessID);
-      m_AddonProcesses.push_back(process);
+      addonProcesses.push_back(process);
     }
   }
 
-  KODI->Log(LOG_DEBUG, "%s, %i, Successful created %i from %i AddonProcesses, %i failed", __FUNCTION__, __LINE__, m_AddonProcesses.size(), processMap.size(), processMap.size() - m_AddonProcesses.size());
+  KODI->Log(LOG_DEBUG, "%s, %i, Successful created %i from %i AddonProcesses, %i failed", __FUNCTION__, __LINE__, addonProcesses.size(), processMap.size(), processMap.size() - addonProcesses.size());
 
   m_IsCreated = true;
 
@@ -81,23 +80,24 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
 
 void CAddonProcessManager::DestroyProcesses()
 {
-  for (unsigned int ii = 0; ii < m_AddonProcesses.size(); ii++)
+  AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
+  for (unsigned int ii = 0; ii < addonProcesses.size(); ii++)
   {
-    if (m_AddonProcesses[ii])
+    if (addonProcesses[ii])
     {
-      AE_DSP_ERROR err = m_AddonProcesses[ii]->Destroy();
+      AE_DSP_ERROR err = addonProcesses[ii]->Destroy();
       if (err != AE_DSP_ERROR_NO_ERROR)
       {
         KODI->Log(LOG_ERROR, "%s, %i, An error occured during AddonProcess destruction! Please contact the author of this add-on with this log file.", __FUNCTION__, __LINE__);
       }
 
-      delete m_AddonProcesses[ii];
+      delete addonProcesses[ii];
     }
 
-    m_AddonProcesses[ii] = NULL;
+    addonProcesses[ii] = NULL;
   }
 
-  m_AddonProcesses.clear();
+  addonProcesses.clear();
   m_IsCreated = false;
 }
 
@@ -119,7 +119,7 @@ int CAddonProcessManager::RegisterAddonProcess(const std::string ProcessName, Ad
     GetProcessMap()[processKey] = Callbacks;
   }
 
-  m_ProcessNameMappingTable[ProcessName] = processKey;
+  GetAddonProcessNameMap()[ProcessName] = processKey;
 
   return processID++;
 }
@@ -127,8 +127,9 @@ int CAddonProcessManager::RegisterAddonProcess(const std::string ProcessName, Ad
 
 int CAddonProcessManager::GetActiveProcesses(std::string &ProcessName)
 {
-  AddonProcessNameMap_t::iterator iterModeKey = m_ProcessNameMappingTable.find(ProcessName);
-  if (iterModeKey == m_ProcessNameMappingTable.end())
+  AddonProcessNameMap_t &addonProcessNameMappingTable = GetAddonProcessNameMap();
+  AddonProcessNameMap_t::iterator iterModeKey = addonProcessNameMappingTable.find(ProcessName);
+  if (iterModeKey == addonProcessNameMappingTable.end())
   {
     return -1;
   }
@@ -145,8 +146,9 @@ int CAddonProcessManager::GetActiveProcesses(std::string &ProcessName)
 
 int CAddonProcessManager::GetCreatedProcesses(std::string &ProcessName)
 {
-  AddonProcessNameMap_t::iterator iterModeKey = m_ProcessNameMappingTable.find(ProcessName);
-  if (iterModeKey == m_ProcessNameMappingTable.end())
+  AddonProcessNameMap_t &addonProcessNameMappingTable = GetAddonProcessNameMap();
+  AddonProcessNameMap_t::iterator iterModeKey = addonProcessNameMappingTable.find(ProcessName);
+  if (iterModeKey == addonProcessNameMappingTable.end())
   {
     return -1;
   }
@@ -162,8 +164,9 @@ int CAddonProcessManager::GetCreatedProcesses(std::string &ProcessName)
 
 int CAddonProcessManager::GetDestroyedProcesses(std::string &ProcessName)
 {
-  AddonProcessNameMap_t::iterator iterModeKey = m_ProcessNameMappingTable.find(ProcessName);
-  if (iterModeKey == m_ProcessNameMappingTable.end())
+  AddonProcessNameMap_t &addonProcessNameMappingTable = GetAddonProcessNameMap();
+  AddonProcessNameMap_t::iterator iterModeKey = addonProcessNameMappingTable.find(ProcessName);
+  if (iterModeKey == addonProcessNameMappingTable.end())
   {
     return -1;
   }
@@ -179,7 +182,8 @@ int CAddonProcessManager::GetDestroyedProcesses(std::string &ProcessName)
 
 int CAddonProcessManager::ConnectDispatcher(CMessageDispatcher *Dispatcher)
 {
-  for (AddonProcessVector_t::iterator iter = m_AddonProcesses.begin(); iter != m_AddonProcesses.end(); ++iter)
+  AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
+  for (AddonProcessVector_t::iterator iter = addonProcesses.begin(); iter != addonProcesses.end(); ++iter)
   {
     (*iter)->ConnectDispatcher(Dispatcher);
   }
@@ -189,7 +193,8 @@ int CAddonProcessManager::ConnectDispatcher(CMessageDispatcher *Dispatcher)
 
 int CAddonProcessManager::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
 {
-  for (AddonProcessVector_t::iterator iter = m_AddonProcesses.begin(); iter != m_AddonProcesses.end(); ++iter)
+  AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
+  for (AddonProcessVector_t::iterator iter = addonProcesses.begin(); iter != addonProcesses.end(); ++iter)
   {
     (*iter)->DisconnectDispatcher(Dispatcher);
   }
