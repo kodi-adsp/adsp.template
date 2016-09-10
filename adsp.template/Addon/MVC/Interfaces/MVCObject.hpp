@@ -21,16 +21,41 @@
 
 
 
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "Addon/MessageSystem/Communication/ActorProtocol.h"
 
-#include "include/client.h"
+#include <KodiThreads/threads/Event.h>
 
 
-class IView : public MVCObject
+class MVCObject : public CMessageDispatcher
 {
 public:
-  IView(std::string Name, int ID, int ConnectionID) :
-    MVCObject(MVCObject::VIEW_OBJECT, Name, ID, ConnectionID)
+  typedef enum {
+    INVALID_OBJECT = -1,
+
+    MODEL_OBJECT,
+    VIEW_OBJECT,
+    CONTROLLER_OBJECT,
+
+    MAX
+  }eMVCObjectType_t;
+
+  MVCObject(eMVCObjectType_t Type, std::string Name, int ID, int ConnectionID) :
+    CMessageDispatcher(new CActorProtocol(Name, &m_InEvent, &m_OutEvent), Name, ID),
+    Type(Type),
+    ID(ID),
+    ConnectionID(ConnectionID)
   {
   }
+
+  const int ID;
+  const int ConnectionID;
+  const eMVCObjectType_t Type;
+
+  virtual int Create() = 0;
+  virtual void Destroy() = 0;
+
+protected:
+  CEvent m_InEvent;
+  CEvent m_OutEvent;
 };

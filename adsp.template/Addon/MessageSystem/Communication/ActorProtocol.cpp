@@ -82,6 +82,7 @@ bool CActorProtocol::SendOutMessage(int signal, void *data /* = NULL */, int siz
 
   if (data)
   {
+    msg->size = size;
     if (size > MSG_INTERNAL_BUFFER_SIZE)
       msg->data = new uint8_t[size];
     else
@@ -110,12 +111,18 @@ bool CActorProtocol::SendInMessage(int signal, void *data /* = NULL */, int size
 
   if (data)
   {
+    msg->size = size;
     if (size > MSG_INTERNAL_BUFFER_SIZE)
+    {
       msg->data = new uint8_t[size];
+    }
     else
+    {
       msg->data = msg->buffer;
+    }
     memcpy(msg->data, data, size);
   }
+
 
   { CSingleLock lock(criticalSection);
     inMessages.push(msg);

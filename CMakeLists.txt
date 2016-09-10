@@ -1,117 +1,78 @@
-include(cmake/addon-template-helpers.cmake)
+project(adsp_template)
 
-project(adsp.template C CXX)
+#find_package(p8-platform REQUIRED)
 
-cmake_minimum_required(VERSION 2.6)
+set(SOURCES adsp.template/ADSPHelpers.cpp
+            adsp.template/client.cpp
+            adsp.template/GUIDialogBase.cpp
+            adsp.template/Addon/MVC/Interfaces/Controller/IController.hpp
+            adsp.template/Addon/MVC/Interfaces/Model/IModel.hpp
+            adsp.template/Addon/MVC/Interfaces/Model/IParameter.hpp
+            adsp.template/Addon/MVC/Model/TParameter.hpp
+            adsp.template/Addon/MessageSystem/Communication/Message.cpp
+            adsp.template/Addon/MessageSystem/Communication/ActorProtocol.cpp
+            adsp.template/Addon/MessageSystem/Communication/MessageDispatcher.hpp
+            adsp.template/Addon/MessageSystem/Communication/MessageDispatcher.cpp
+            adsp.template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
+            adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
+            adsp.template/Addon/Utils/EnumIDsToString.hpp
+            adsp.template/Addon/Process/AddonProcessManager.cpp
+            adsp.template/AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
+            adsp.template/AudioDSP/Streams/ADSPStreamManager.cpp
+            adsp.template/AudioDSP/Streams/ADSPStream.cpp
+            adsp.template/AudioDSP/Streams/ADSPStreamBuilderAll.cpp
+            adsp.template/Settings/SettingsHelpers.cpp
+            adsp.template/Settings/SettingsManager.cpp)
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
-
-enable_language(CXX)
-
-find_package(Kodi REQUIRED)
-find_package(kodiplatform REQUIRED)
-find_package(p8-platform REQUIRED)
-find_package(TinyXML REQUIRED)
-
-add_subdirectory(src/KodiThreads)
-set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
-#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
-
-add_subdirectory(src/template)
-set_property(TARGET adsp_template PROPERTY FOLDER "depends")
-#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
+set(HEADERS adsp.template/ADSPHelpers.h
+            adsp.template/doxygenDocu.h
+            adsp.template/Addon/MessageSystem/Interfaces/IProtocol.hpp
+            adsp.template/Addon/MessageSystem/Communication/ActorProtocol.h
+            adsp.template/Addon/MessageSystem/Communication/Message.hpp
+            adsp.template/Addon/MessageSystem/Interfaces/ISocket.hpp
+            adsp.template/Addon/Process/AddonProcessManager.hpp
+            adsp.template/Addon/Process/IAddonProcess.hpp
+            adsp.template/AddonExceptions/IAddonException.h
+            adsp.template/AddonExceptions/TAddonException.h
+            adsp.template/configuration/templateConfiguration.h
+            adsp.template/include/checkTemplateConfig.h
+            adsp.template/include/client.h
+            adsp.template/include/GUIDialogBase.h
+            adsp.template/include/MACROHelper.h
+            adsp.template/include/typedefs.h
+            adsp.template/Settings/ISettingsElement.h
+            adsp.template/Settings/SettingsHelpers.h
+            adsp.template/Settings/SettingsManager.h
+            adsp.template/Settings/TSettingsElement.h
+            
+            adsp.template/Addon/MVC/Interfaces/View/IView.hpp
+            adsp.template/Addon/MVC/Interfaces/View/ActionIDs.hpp
+            adsp.template/Addon/Utils/TCreationStatistics.hpp
+            adsp.template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp
+            adsp.template/AudioDSP/FactoryADSPModes/IADSPMode.hpp
+            adsp.template/AudioDSP/Streams/ADSPStreamManager.hpp
+            adsp.template/AudioDSP/Streams/ADSPStream.hpp
+            adsp.template/AudioDSP/Streams/IADSPStreamBuilder.hpp
+            adsp.template/AudioDSP/Streams/ADSPStreamBuilderAll.hpp
+            
+            adsp.template/utils/stdStringUtils.h)
+          
+addon_source_group("${SOURCES}")
+addon_source_group("${HEADERS}")
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${p8-platform_INCLUDE_DIRS}
-                    ${KODI_INCLUDE_DIR}
-                    ${PROJECT_SOURCE_DIR}/src)
-                    #${PROJECT_SOURCE_DIR}/src/template)
-                    #${PROJECT_SOURCE_DIR}/src/KodiThreads)
-                                          
-set(ADSP_TEMPLATE_SOURCES     #src/ADDONOptional.cpp
-                              #src/channelUpmixer.cpp
-                              #src/DSPProcessor.cpp
-                              src/Dialogs/GUIDialogMasterProcess.cpp
-                              src/Dialogs/GUIDialogOutputResample.cpp
-                              src/Dialogs/GUIDialogPostProcess.cpp
-                              src/Dialogs/GUIDialogPreProcess.cpp
-                              
-                              #src/ADDONOptional.h
-                              #src/channelUpmixer.h
-                              #src/DSPProcessor.h
-                              src/Dialogs/GUIDialogMasterProcess.h
-                              src/Dialogs/GUIDialogOutputResample.h
-                              src/Dialogs/GUIDialogPostProcess.h
-                              src/Dialogs/GUIDialogPreProcess.h
+                    ${KODI_INCLUDE_DIR})
 
-                              # Processing Modes
-                              src/PreProcessCpyModeSettings.cpp
-                              src/PreProcessCpyModeSettings.hpp
-                              src/PreProcessCpy.cpp
-                              src/PreProcessCpy.hpp
-                              src/PostProcessCpyModeSettings.cpp
-                              src/PostProcessCpyModeSettings.hpp
-                              src/PostProcessCpy.cpp
-                              src/PostProcessCpy.hpp
-                              src/InputResampleCpyModeSettings.cpp
-                              src/InputResampleCpyModeSettings.hpp
-                              src/InputResampleCpy.cpp
-                              src/InputResampleCpy.hpp
-                              
-                              src/GainMode/GainModeMessages.cpp
-                              src/GainMode/GainModeMessages.hpp
-                              src/GainMode/GainModeModel.cpp
-                              src/GainMode/GainModeModel.hpp
-                              src/GainMode/GainModeModelMessages.cpp
-                              src/GainMode/GainModeModelMessages.hpp
-                              src/GainMode/GainModeSettings.cpp
-                              src/GainMode/GainModeSettings.hpp
-                              src/GainMode/GainMode.cpp
-                              src/GainMode/GainMode.hpp
-                              src/GainMode/GainModeDialogSettings.cpp
-                              src/GainMode/GainModeDialogSettings.hpp
-                              src/GainMode/GainModeDialog.cpp
-                              src/GainMode/GainModeDialog.hpp
-                              src/GainMode/GainModeDialogMessages.cpp
-                              src/GainMode/GainModeDialogMessages.hpp
-                              src/GainMode/GainModeController.cpp
-                              src/GainMode/GainModeController.hpp
-                              src/GainMode/GainModeControllerMessages.cpp
-                              src/GainMode/GainModeControllerMessages.hpp
-                              src/GainModeEnvironment.cpp
-                              src/GainModeEnvironment.hpp
+add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
+add_library(adsp::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME}
+                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
+                           
+target_link_libraries(${PROJECT_NAME} kodi::KodiThreads)
 
-                              src/EnumStrIDs.cpp
-                              src/EnumStrIDs.hpp)
-                              
-                              #src/CpyModesProcess.cpp
-                              #src/CpyModesProcess.hpp)
-                       
-
-set(DEPLIBS ${kodiplatform_LIBRARIES}
-            ${p8-platform_LIBRARIES}
-            kodi::KodiThreads
-            adsp::adsp_template)
-            #winmm.lib)#todo implement switches for Windows
-
-# if(MSVC)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
-  
-  # list(APPEND DEPLIBS winmm.lib)
-# endif()
-
-addon_source_group("${ADSP_TEMPLATE_SOURCES}")
-            
-build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
-
-# For generating the doxy
-find_package(Doxygen QUIET)
-if(DOXYGEN_FOUND)
-  add_custom_target(doc ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/doxygen_resources/Doxyfile
-                    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-                    COMMENT "Generating API documentation" VERBATIM)
-endif()
-
-include(CPack)
-
+# install all specific module files
+#asplib_install_module(${PROJECT_NAME} "${HEADERS}" ${CMAKE_INSTALL_PREFIX}/include)
+install(TARGETS ${PROJECT_NAME} EXPORT adsp DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

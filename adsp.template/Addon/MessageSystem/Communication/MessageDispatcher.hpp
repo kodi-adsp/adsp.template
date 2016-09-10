@@ -35,7 +35,7 @@ class CMessageDispatcher
   friend class CMessageDispatcher;
 
 public:
-  CMessageDispatcher(IProtocol *Protocol, std::string Name, bool IsMaster = false);
+  CMessageDispatcher(IProtocol *Protocol, std::string Name, int ID = -1, bool IsMaster = false);
   virtual ~CMessageDispatcher();
 
   bool SetSockets(SocketVector_t &SocketVector);
@@ -51,9 +51,11 @@ public:
 
   void ProcessMessage();
   void ProcessMessages();
+  void ProcessConnectedMessage();
+  void ProcessConnectedMessages();
 
-  const std::string DispatcherName;     // Custom name for this object
-  const int         ID;                 // assigned unique member ID for message assignment
+  const std::string Name;     // Custom name for this object
+  const int         ID;       // assigned unique member ID for message assignment
 
 private:
   void DestroySockets();
@@ -66,7 +68,7 @@ private:
     }
 
     CSingleLock lock(m_SocketLock);
-    if (SocketID >= m_MaxSockets || m_MaxSockets == 0)
+    if (m_MaxSockets == 0)
     {
       return -1;
     }

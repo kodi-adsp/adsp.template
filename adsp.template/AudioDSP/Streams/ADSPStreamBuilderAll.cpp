@@ -61,17 +61,17 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
       if (err == AE_DSP_ERROR_NO_ERROR)
       {
         modeVector.push_back(mode);
+        // TODO implement functionality to send messages before dispatcher gets connected to other dispatchers
+        //MVCObject *object = dynamic_cast<MVCObject*>(mode);
+        //if (object)
+        //{ // when this mode can be casted to CMessageDispatcher
+        //  // notify all created addon processes about this new dispatcher
+        //  CAddonProcessManager::ConnectObject(object); // TODO: check return value
+        //}
       }
       else
       {
         KODI->Log(LOG_ERROR, "%s, %i, Failed to create AudioDSP mode \"%s\"", __FUNCTION__, __LINE__, iter->ModeName.c_str());
-      }
-
-      CMessageDispatcher *messageDispatcher = dynamic_cast<CMessageDispatcher*>(mode);
-      if (messageDispatcher)
-      { // when this mode can be casted to CMessageDispatcher
-        // notify all created addon processes about this new dispatcher
-        CAddonProcessManager::ConnectDispatcher(messageDispatcher);
       }
     }
     else

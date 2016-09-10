@@ -85,6 +85,7 @@ void CAddonProcessManager::DestroyProcesses()
   {
     if (addonProcesses[ii])
     {
+      addonProcesses[ii]->DisconnectAll();
       AE_DSP_ERROR err = addonProcesses[ii]->Destroy();
       if (err != AE_DSP_ERROR_NO_ERROR)
       {
@@ -180,23 +181,23 @@ int CAddonProcessManager::GetDestroyedProcesses(std::string &ProcessName)
   return (*iterCB).second.GetDestroyedProcesses();
 }
 
-int CAddonProcessManager::ConnectDispatcher(CMessageDispatcher *Dispatcher)
+int CAddonProcessManager::ConnectObject(MVCObject *Object)
 {
   AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
   for (AddonProcessVector_t::iterator iter = addonProcesses.begin(); iter != addonProcesses.end(); ++iter)
   {
-    (*iter)->ConnectDispatcher(Dispatcher);
+    (*iter)->ConnectObject(Object);
   }
 
-  return 0;
+  return 0; // TODO return value
 }
 
-int CAddonProcessManager::DisconnectDispatcher(CMessageDispatcher *Dispatcher)
+int CAddonProcessManager::DisconnectObject(MVCObject *Object)
 {
   AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
   for (AddonProcessVector_t::iterator iter = addonProcesses.begin(); iter != addonProcesses.end(); ++iter)
   {
-    (*iter)->DisconnectDispatcher(Dispatcher);
+    (*iter)->DisconnectObject(Object);
   }
 
   return 0;

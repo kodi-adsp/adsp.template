@@ -28,7 +28,7 @@
 
 // include template configuration header files
 #include "configuration/templateConfiguration.h"
-#include "template/include/MACROHelper.h"
+#include "adsp.template/include/MACROHelper.h"
 #include "include/checkTemplateConfig.h"
 
 // include adsp template specific header files
@@ -36,6 +36,9 @@
 
 #include "AudioDSP/Streams/ADSPStreamManager.hpp"
 #include "Addon/Process/AddonProcessManager.hpp"
+#include "EnumStrIDs.hpp"
+#include "GainMode/GainModeDialog.hpp"
+#include "CompressorMode/CompressorModeDialog.hpp"
 
 #include "KodiThreads/system.h"
 
@@ -117,7 +120,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  KODI->Log(LOG_DEBUG, "%s, %i, - Creating the Audio DSP add-on template", __FUNCTION__, __LINE__);
+  KODI->Log(LOG_DEBUG, "%s, %i, - Creating Audio DSP template", __FUNCTION__, __LINE__);
   SetKodiThreadsLogger(loc_KodiLoggerCallback);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
@@ -259,15 +262,22 @@ const char* GetDSPVersion(void)
   return ADSP_ADDON_VERSION;
 }
 
-#include "EnumStrIDs.hpp"
-#include "GainMode/GainModeDialog.hpp"
-
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)
 {
+  // TODO implement an generic interface to open any kind of dialogs
   if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeGain/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
   {
     CGainModeDialog dialog;
-    IView *view = dynamic_cast<IView*>(&dialog);
+    IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
+    view->DoModal();
+    //view->Destroy();
+    return AE_DSP_ERROR_NO_ERROR;
+  }
+
+  if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeCompressor/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
+  {
+    CCompressorModeDialog dialog;
+    IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
     view->DoModal();
     //view->Destroy();
     return AE_DSP_ERROR_NO_ERROR;

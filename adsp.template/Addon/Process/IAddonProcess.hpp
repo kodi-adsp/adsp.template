@@ -22,7 +22,9 @@
 
 #include "kodi/kodi_adsp_types.h"
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
+
+#include <list>
 
 class CAddonProcessManager;
 
@@ -30,25 +32,184 @@ class CAddonProcessManager;
 class IAddonProcess
 {
   friend class CAddonProcessManager;
-
+  typedef std::list<MVCObject*> MVCObjectList_t;
 public:
-  IAddonProcess()
+  IAddonProcess(int ConnectionID) :
+    ConnectionID(ConnectionID)
   {
-    m_ProcessID = -1;
+    m_Controller  = nullptr;
+    m_Model       = nullptr;
+    m_Views.clear();
   }
 
   virtual ~IAddonProcess()
   {
   }
 
+  const int ConnectionID;
 
 // Fixed public methods
   virtual AE_DSP_ERROR Create() = 0;
   virtual AE_DSP_ERROR Destroy() = 0;
 
-  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
-  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
+  virtual bool ConnectObject(MVCObject *Object)
+  {
+    if (Object->ConnectionID != this->ConnectionID)
+    {
+      return false;
+    }
+
+    switch (Object->Type)
+    {
+      case MVCObject::MODEL_OBJECT:
+        if (m_Model && m_Controller)
+        {// disconnect this model
+          m_Model->DisconnectDispatcher(m_Controller);
+          m_Controller->DisconnectDispatcher(m_Model);
+          m_Model = nullptr;
+        }
+
+        m_Model = Object;
+      break;
+
+      case MVCObject::VIEW_OBJECT:
+      {// register view only once
+        bool found = false;
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {
+          if (*iter == Object)
+          {
+            found = true;
+            break;
+          }
+        }
+        
+        if (!found)
+        {
+          m_Views.push_back(Object);
+        }
+      }
+      break;
+
+      case MVCObject::CONTROLLER_OBJECT:
+        if (m_Controller)
+        {
+          for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+          {// disconnect all views
+            (*iter)->DisconnectDispatcher(m_Controller);
+          }
+
+          if (m_Model)
+          {// disconnect model
+            m_Model->DisconnectDispatcher(m_Controller);
+          }
+        }
+
+        m_Controller = Object;
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {// connect all registered views
+          (*iter)->ConnectDispatcher(m_Controller);
+        }
+
+        if (m_Model)
+        {// connect registered model
+          m_Model->ConnectDispatcher(m_Controller);
+        }
+      break;
+
+      default:
+        return false;
+    }
+
+    if (Object->Type != MVCObject::CONTROLLER_OBJECT && m_Controller)
+    {
+      Object->ConnectDispatcher(m_Controller);
+      m_Controller->ConnectDispatcher(Object);
+    }
+
+    return true;
+  }
+
+  virtual bool DisconnectObject(MVCObject *Object)
+  {
+    if (Object->ConnectionID != this->ConnectionID)
+    {
+      return false;
+    }
+
+    switch (Object->Type)
+    {
+      case MVCObject::MODEL_OBJECT:
+        if (m_Model == Object && m_Controller)
+        {
+          m_Controller->DisconnectDispatcher(m_Model);
+          m_Model->DisconnectDispatcher(m_Controller);
+        }
+        m_Model = nullptr;
+      break;
+
+      case MVCObject::VIEW_OBJECT:
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {
+          if (*iter == Object)
+          {
+            if (m_Controller)
+            {
+              m_Controller->DisconnectDispatcher(*iter);
+              (*iter)->DisconnectDispatcher(m_Controller);
+            }
+
+            m_Views.erase(iter);
+            break;
+          }
+        }
+      break;
+
+      case MVCObject::CONTROLLER_OBJECT:
+        if (m_Controller == Object)
+        {
+          for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+          {
+            (*iter)->DisconnectDispatcher(m_Controller);
+            m_Controller->DisconnectDispatcher(*iter);
+          }
+
+          if (m_Model)
+          {
+            m_Model->DisconnectDispatcher(m_Controller);
+            m_Controller->DisconnectDispatcher(m_Model);
+          }
+
+          m_Controller = nullptr;
+        }
+      break;
+
+      default:
+        return false;
+    }
+
+    return true;
+  }
+
+  void DisconnectAll()
+  {
+    if (m_Controller)
+    {
+      for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+      {
+        (*iter)->DisconnectDispatcher(m_Controller);
+      }
+
+      if (m_Model)
+      {
+        m_Model->DisconnectDispatcher(m_Controller);
+      }
+    }
+    m_Views.clear();
+  }
 
 private:
-  int m_ProcessID;
+  MVCObject *m_Controller;
+  MVCObject *m_Model;
+  MVCObjectList_t m_Views;
 };

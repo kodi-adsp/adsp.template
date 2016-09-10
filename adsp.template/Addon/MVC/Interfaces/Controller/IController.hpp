@@ -22,29 +22,17 @@
  
 
 #include "Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <vector>
 #include <string>
 
 
-class IController
+class IController : public MVCObject
 {
 public:
-  typedef std::vector<IParameter*> ParameterVector_t;
-
-  IController(std::string Name, int ID) :
-    Name(Name),
-    ID(ID)
+  IController(std::string Name, int ID, int ConnectionID) :
+    MVCObject(MVCObject::CONTROLLER_OBJECT, Name, ID, ConnectionID)
   {
   }
-
-  virtual ~IController()
-  {
-  }
- 
-  const std::string Name;
-  const int ID;
-   
-  virtual int Create() = 0;
-  virtual void Destroy() = 0;
 };

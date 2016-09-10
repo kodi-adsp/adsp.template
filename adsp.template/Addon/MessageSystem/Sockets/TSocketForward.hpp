@@ -25,23 +25,16 @@
 #include "Addon/MessageSystem/Communication/Message.hpp"
 
 
-#define CreateTSocketClassMethodCallback(ObjType, Obj, Callback, StringClass, ID) dynamic_cast<ISocket*>(new TSocketClassMethodCallback<ObjType>(Obj, Callback, StringClass::ToString(StringClass::ID), StringClass::ID))
+#define CreateTSocketForward(ObjType, Obj, StringClass, ID) dynamic_cast<ISocket*>(new TSocketForward<ObjType>(Obj, StringClass::ToString(StringClass::ID), StringClass::ID))
 
 
 template<class T>
-class TSocketClassMethodCallback : public ISocket
+class TSocketForward : public ISocket
 {
 public:
-  typedef int (T::*SocketCallback)(Message &Msg);
-  TSocketClassMethodCallback(T *Obj, SocketCallback Callback, std::string Name, int Signal) : ISocket(Name, Signal, sizeof(SocketCallback))
+  TSocketForward(T *Dispatcher, std::string Name, int Signal) : ISocket(Name, Signal, sizeof(TSocketForward<T>))
   {
-    if (!Callback || !Obj)
-    {
-      // TODO throw exception
-    }
-
-    m_Callback = Callback;
-    m_Obj      = Obj;
+    m_Dispatcher = Dispatcher;
   }
 
   virtual int Set(Message &Msg)
@@ -55,16 +48,14 @@ public:
     CSingleLock lock(this->Lock);
     this->HasUpdated = true;
     
-    return (m_Obj->*m_Callback)(Msg);
+    return m_Dispatcher->SendMsg(nullptr, 0, ISocket::ID);
   }
 
   virtual void* Get()
   {
-    return &m_Callback;
+    return nullptr;
   }
 
-
-protected:
-  SocketCallback m_Callback;
-  T              *m_Obj;
+private:
+  T *m_Dispatcher;
 };
