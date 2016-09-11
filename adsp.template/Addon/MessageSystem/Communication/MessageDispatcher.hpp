@@ -26,8 +26,8 @@
 #include "KodiThreads/threads/CriticalSection.h"
 #include "KodiThreads/threads/SingleLock.h"
 
-#include "Addon/MessageSystem/Interfaces/IProtocol.hpp"
-#include "Addon/MessageSystem/Interfaces/ISocket.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/IProtocol.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/ISocket.hpp"
 
 
 class CMessageDispatcher

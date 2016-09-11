@@ -21,8 +21,8 @@
  
  
 
-#include "Addon/MVC/Interfaces/Model/IParameter.hpp"
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <vector>
 #include <string>

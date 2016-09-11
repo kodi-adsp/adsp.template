@@ -22,7 +22,7 @@
 
 
 #include "KodiThreads/threads/Thread.h"
-#include "Addon/MessageSystem/Interfaces/IProtocol.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/IProtocol.hpp"
 
 
 #define MSG_INTERNAL_BUFFER_SIZE 32

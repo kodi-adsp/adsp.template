@@ -21,11 +21,11 @@
  
  
 
-#include "Addon/MVC/Interfaces/Model/IParameter.hpp"
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/MVCObject.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
-#include "include/client.h"
+#include "adsp.template/include/client.h"
 
 #include <vector>
 #include <string>

@@ -22,9 +22,9 @@
 
 
 #include "IAddonProcess.hpp"
-#include "Addon/Utils/TCreationStatistics.hpp"
+#include "adsp.template/Addon/Utils/TCreationStatistics.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/MVCObject.hpp"
 #include <kodi/kodi_adsp_types.h>
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <map>
 #include <vector>

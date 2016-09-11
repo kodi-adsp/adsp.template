@@ -1,4 +1,4 @@
-project(adsp_template)
+project(adsp_base)
 
 #find_package(p8-platform REQUIRED)
 
@@ -67,9 +67,10 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 add_library(adsp::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
-                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
+                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/adsp.template
+                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/adsp.template>
+                                     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
                            
 target_link_libraries(${PROJECT_NAME} kodi::KodiThreads)
 

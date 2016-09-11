@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/Model/IParameter.hpp"
 
 #include <memory.h>
 

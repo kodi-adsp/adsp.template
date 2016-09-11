@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
 
 #define CreateTSocketRangeCheck(DispatcherClass, RangeType, DispatcherObj, Min, Max, StringClass, ID) dynamic_cast<ISocket*>(new TSocketRangeCheck<DispatcherClass, RangeType>(DispatcherObj, Min, Max, StringClass::ToString(StringClass::ID), StringClass::ID))

@@ -21,8 +21,8 @@
 
 
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
+#include "adsp.template/Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/ActorProtocol.h"
 
 #include <KodiThreads/threads/Event.h>
 

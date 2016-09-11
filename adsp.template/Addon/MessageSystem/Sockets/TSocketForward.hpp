@@ -21,8 +21,8 @@
 
 
 
-#include "Addon/MessageSystem/Interfaces/ISocket.hpp"
-#include "Addon/MessageSystem/Communication/Message.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/ISocket.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/Message.hpp"
 
 
 #define CreateTSocketForward(ObjType, Obj, StringClass, ID) dynamic_cast<ISocket*>(new TSocketForward<ObjType>(Obj, StringClass::ToString(StringClass::ID), StringClass::ID))

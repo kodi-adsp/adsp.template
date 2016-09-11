@@ -22,7 +22,7 @@
 
 #include "kodi/kodi_adsp_types.h"
 
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <list>
 

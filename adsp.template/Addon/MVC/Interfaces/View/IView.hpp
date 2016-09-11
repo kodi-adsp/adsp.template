@@ -21,9 +21,9 @@
 
 
 
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/MVCObject.hpp"
 
-#include "include/client.h"
+#include "adsp.template/include/client.h"
 
 
 class IView : public MVCObject

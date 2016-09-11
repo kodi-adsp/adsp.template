@@ -21,8 +21,8 @@
 
 
 
-#include "Addon/MessageSystem/Interfaces/ISocket.hpp"
-#include "Addon/MessageSystem/Communication/Message.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/ISocket.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/Message.hpp"
 
 
 #define CreateTSocketMemcpy(Type, ControlledMember, StringClass, ID) dynamic_cast<ISocket*>(new TSocketMemcpy<Type>(ControlledMember, StringClass::ToString(StringClass::ID), StringClass::ID))

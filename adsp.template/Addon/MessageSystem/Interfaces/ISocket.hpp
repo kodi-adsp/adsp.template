@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/MessageSystem/Communication/Message.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/Message.hpp"
 #include "KodiThreads/threads/CriticalSection.h"
 
 

@@ -25,7 +25,7 @@
 #include <queue>
 #include "memory.h"
 
-#include "Addon/MessageSystem/Interfaces/IProtocol.hpp"
+#include "adsp.template/Addon/MessageSystem/Interfaces/IProtocol.hpp"
 
 
 class CActorProtocol : public IProtocol

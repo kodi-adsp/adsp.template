@@ -21,12 +21,12 @@
 
 
 
-#include "Addon/MVC/Interfaces/View/IView.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/View/IView.hpp"
+#include "adsp.template/include/client.h"
+#include "adsp.template/Addon/MVC/Interfaces/View/ActionIDs.hpp"
 
 #include <kodi/libKODI_guilib.h>
-#include "ActionIDs.hpp"
 
-#include "include/client.h"
 
 
 class IKodiGUIView : public IView

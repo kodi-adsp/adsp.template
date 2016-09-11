@@ -22,7 +22,7 @@
 
 
 #include "IADSPMode.hpp"
-#include "Addon/Utils/TCreationStatistics.hpp"
+#include "adsp.template/Addon/Utils/TCreationStatistics.hpp"
 #include <kodi/kodi_adsp_types.h>
 
 #include <map>
