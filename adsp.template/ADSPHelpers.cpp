@@ -435,12 +435,12 @@ string CADSPHelpers::Translate_ChID_TO_String(AE_DSP_CHANNEL ChID)
 
 bool CADSPHelpers::IsChannelFlag_Present(AE_DSP_CHANNEL_FLAGS AvailableFlags, AE_DSP_CHANNEL_PRESENT ChFlag)
 {
-  return (bool)(AvailableFlags & (ChFlag));
+  return (AvailableFlags & (ChFlag)) > 0;
 }
 
 bool CADSPHelpers::IsChannelID_Present(AE_DSP_CHANNEL_FLAGS AvailableFlags, AE_DSP_CHANNEL ChID)
 {
-  return (bool)(AvailableFlags & (1<<ChID));
+  return (AvailableFlags & (1<<ChID)) > 0;
 }
 
 AE_DSP_CHANNEL CADSPHelpers::GetNextChID(AE_DSP_CHANNEL_FLAGS AvailableFlags, AE_DSP_CHANNEL ChID)
